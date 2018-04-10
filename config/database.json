@@ -1,0 +1,9 @@
+{
+  "dev": {
+    "driver": "mysql",
+    "multipleStatements": true,
+    "user": "root",
+    "password": "vagrant",
+    "database": "konta"
+  }
+}
