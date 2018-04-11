@@ -1,6 +1,6 @@
 /* Replace with your SQL commands */
 CREATE TABLE IF NOT EXISTS activities (
-  id INTEGER PRIMARY KEY,
+  id INTEGER AUTO_INCREMENT PRIMARY KEY,
   name TEXT,
   description TEXT,
   duration_minutes INTEGER,
