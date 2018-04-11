@@ -1,10 +1,19 @@
 const express = require('express');
 const multer  = require('multer');
-const libXML = require('libxmljs');
 const cheerio = require('cheerio');
+const mysql = require('mysql');
 
 const router = express.Router();
 const upload = multer();
+
+const connection = mysql.createConnection({
+  host     : process.env.DB_HOST,
+  user     : process.env.DB_USER,
+  password : process.env.DB_PASSWD,
+  database : process.env.DB_NAME,
+});
+
+connection.connect();
 
 const parseXml = xml => {
   const $ = cheerio.load(xml, { xmlMode: true });

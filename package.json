@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "migration:up": "db-migrate up --config config/database.json"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
@@ -15,8 +16,8 @@
     "express": "~4.16.0",
     "hbs": "~4.0.1",
     "http-errors": "~1.6.2",
-    "libxmljs": "^0.18.7",
     "morgan": "~1.9.0",
-    "multer": "^1.3.0"
+    "multer": "^1.3.0",
+    "mysql": "^2.15.0"
   }
 }

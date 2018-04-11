@@ -2,8 +2,8 @@
   "dev": {
     "driver": "mysql",
     "multipleStatements": true,
-    "user": "root",
-    "password": "vagrant",
-    "database": "konta"
+    "user": {"ENV": "DB_USER" },
+    "password": {"ENV": "DB_PASSWD" },
+    "database": { "ENV": "DB_NAME" }
   }
 }
