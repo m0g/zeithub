@@ -1,7 +1,8 @@
 const express = require('express');
 const multer  = require('multer');
 const cheerio = require('cheerio');
-const mysql = require('mysql');
+const mysql = require('mysql2');
+const slug = require('slug');
 
 const router = express.Router();
 const upload = multer();
@@ -34,6 +35,30 @@ const parseXml = xml => {
   return activities;
 };
 
+async function insertProjects(activities) {
+  let tags = [];
+
+  activities.forEach(activity => {
+    if (tags.indexOf(activity.tags) === -1) {
+      tags.push(activity.tags);
+    }
+  });
+
+  for (let tag of tags) {
+    try {
+      const res = await connection.execute(
+        `INSERT INTO projects (name, slug)
+        VALUES ("${tag}", "${slug(tag)}");`
+      );
+      console.log(res);
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  return tags;
+}
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.render('hamster');
@@ -47,6 +72,10 @@ router.post('/', upload.single('xml'), (req, res, next) => {
     const data = parseXml(xml);
 
     console.log(data);
+    // TODO: insert projects if not exists
+    console.log(insertProjects(data));
+
+    // TODO: insert activities
   }
 });
 
