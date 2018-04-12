@@ -6,7 +6,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const Vue = require('vue');
-//const { createRenderer } = require('vue-server-renderer');
 
 const renderer = require('./renderer');
 const indexRouter = require('./routes/index');
@@ -19,22 +18,12 @@ const ErrorPage = require('./components/error');
 
 const app = express();
 
-//const renderer = createRenderer({
-//  template: require('fs').readFileSync('./src/index.template.html', 'utf-8')
-//});
-
-// view engine setup
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'hbs');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use('/, indexRouter);
-//app.use('/users', usersRouter);
 app.use('/hamster', hamsterRouter);
 app.use('/projects', projectsRouter);
 
