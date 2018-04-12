@@ -11,5 +11,11 @@ module.exports = {
         loader: 'vue-loader'
       }
     ]
+  },
+  resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js'
+    },
+    extensions: ['*', '.js', '.vue', '.json']
   }
 }

@@ -9,12 +9,14 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "connect-history-api-fallback": "^1.5.0",
     "cookie-parser": "~1.4.3",
     "db-migrate": "^0.10.7",
     "db-migrate-mysql": "^1.1.10",
     "debug": "~2.6.9",
     "dotenv": "^5.0.1",
     "express": "~4.16.0",
+    "express-history-api-fallback": "^2.2.1",
     "hbs": "~4.0.1",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
@@ -23,6 +25,7 @@
     "mysql2": "^1.5.3",
     "slug": "^0.9.1",
     "vue": "^2.5.16",
+    "vue-router": "^3.0.1",
     "vue-server-renderer": "^2.5.16"
   },
   "devDependencies": {
