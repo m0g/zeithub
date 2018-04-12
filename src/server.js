@@ -5,7 +5,6 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const Vue = require('vue');
 
 const renderer = require('./renderer');
 const indexRouter = require('./routes/index');
@@ -13,26 +12,29 @@ const usersRouter = require('./routes/users');
 const hamsterRouter = require('./routes/hamster');
 const projectsRouter = require('./routes/projects');
 
-const App = require('./components/app');
-const ErrorPage = require('./components/error');
-
 const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/hamster', hamsterRouter);
-app.use('/projects', projectsRouter);
+app.use('/dist', express.static('dist'))
+app.use('/api/hamster', hamsterRouter);
+app.use('/api/projects', projectsRouter);
 
 app.get('*', (req, res) => {
-  renderer.renderToString(App, (err, html) => {
-    res.end(html);
-  })
+  res.end(`
+    <!DOCTYPE html>
+    <html lang="en">
+      <head><title>Hello</title></head>
+      <body>
+        <div id="root"></div>
+        <script src="dist/bundle.js" type="text/javascript"></script>
+      </body>
+    </html>
+  `);
 })
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -49,9 +51,10 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   console.error(err);
   //res.render('error');
-  renderer.renderToString(ErrorPage({ err }), (err, html) => {
-    res.end(html);
-  })
+  res.json({ error: err });
+  //renderer.renderToString(ErrorPage({ err }), (err, html) => {
+  //  res.end(html);
+  //})
 });
 
 module.exports = app;

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "prestart": "webpack",
     "start": "node ./bin/www",
     "migration:up": "db-migrate up --config config/database.json",
     "migration:reset": "db-migrate reset --config config/database.json"
@@ -24,5 +25,11 @@
     "slug": "^0.9.1",
     "vue": "^2.5.16",
     "vue-server-renderer": "^2.5.16"
+  },
+  "devDependencies": {
+    "vue-loader": "^14.2.2",
+    "vue-template-compiler": "^2.5.16",
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14"
   }
 }

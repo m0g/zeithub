@@ -4,9 +4,6 @@ const cheerio = require('cheerio');
 const mysql = require('mysql2');
 const slug = require('slug');
 
-const renderer = require('./../renderer');
-const Hamster = require('./../components/hamster');
-
 const router = express.Router();
 const upload = multer();
 
@@ -63,11 +60,11 @@ async function insertProjects(activities) {
 }
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  renderer.renderToString(Hamster(), (err, html) => {
-    res.end(html);
-  })
-});
+//router.get('/', function(req, res, next) {
+//  renderer.renderToString(Hamster(), (err, html) => {
+//    res.end(html);
+//  })
+//});
 
 router.post('/', upload.single('xml'), (req, res, next) => {
   const file = req.file;

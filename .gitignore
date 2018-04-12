@@ -1,3 +1,4 @@
 node_modules/
 .vagrant
 .env
+dist/

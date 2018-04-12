@@ -1,9 +1,6 @@
 const express = require('express');
 const mysql = require('mysql2');
 
-const renderer = require('./../renderer');
-const Projects = require('./../components/projects');
-
 const router = express.Router();
 
 const connection = mysql.createConnection({
@@ -18,9 +15,7 @@ connection.connect();
 router.get('/', (req, res, next) => {
   connection.query('SELECT * from projects', (err, projects) => {
     if (projects) {
-      renderer.renderToString(Projects({ projects }), (err, html) => {
-        res.end(html);
-      })
+      res.json(projects);
     }
   });
 
