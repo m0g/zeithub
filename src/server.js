@@ -11,7 +11,6 @@ const logger = require('morgan');
 const history = require('connect-history-api-fallback');
 const fallback = require('express-history-api-fallback');
 
-//const renderer = require('./renderer');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const hamsterRouter = require('./routes/hamster');
@@ -25,7 +24,6 @@ app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath
 }));
 
-//app.use(history());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -34,29 +32,12 @@ app.use(cookieParser());
 app.use('/dist', express.static('dist'))
 app.use('/api/hamster', hamsterRouter);
 app.use('/api/projects', projectsRouter);
+app.use('/api/users', usersRouter);
 app.use(fallback('index.html', { root: __dirname }))
 
 app.get('/', (req, res) => {
   res.sendFile('./index.html')
 })
-
-//app.get('*', (req, res) => {
-//  res.end(`
-//    <!DOCTYPE html>
-//    <html lang="en">
-//      <head><title>Hello</title></head>
-//      <body>
-//        <div id="root"></div>
-//        <script src="dist/bundle.js" type="text/javascript"></script>
-//      </body>
-//    </html>
-//  `);
-//})
-
-// catch 404 and forward to error handler
-//app.use(function(req, res, next) {
-//  next(createError(404));
-//});
 
 // error handler
 app.use(function(err, req, res, next) {
