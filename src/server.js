@@ -1,5 +1,8 @@
 require('dotenv').config();
+const webpack = require('webpack');
+const config = require('../webpack.config');
 
+const compiler = webpack(config);
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -13,6 +16,12 @@ const hamsterRouter = require('./routes/hamster');
 const projectsRouter = require('./routes/projects');
 
 const app = express();
+
+app.use(require('webpack-dev-middleware')(compiler, {
+  writeToDisk: true,
+  noInfo: true,
+  publicPath: config.output.publicPath
+}));
 
 app.use(logger('dev'));
 app.use(express.json());

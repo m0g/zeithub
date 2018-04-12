@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>Konta</h1>
-    <TodoList/>
+    <h1>Welcome to Konta!</h1>
   </div>
 </template>
