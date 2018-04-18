@@ -60,7 +60,9 @@
           })
             .then(response => response.json())
             .then(response => {
-              console.log(response);
+              if (response.success === true) {
+                localStorage.setItem('token', response.token);
+              }
             });
         }
       }

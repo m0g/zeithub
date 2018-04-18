@@ -1,6 +1,6 @@
 require('dotenv').config();
 const webpack = require('webpack');
-const config = require('../webpack.config');
+const config = require('../../webpack.config');
 
 const compiler = webpack(config);
 const createError = require('http-errors');
