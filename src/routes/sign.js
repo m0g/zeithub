@@ -1,17 +1,14 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const mysql = require('mysql2/promise');
 const jwt = require('jsonwebtoken');
 
+const DB = require('./../db');
+
 const router = express.Router();
+const db = new DB();
 
 router.post('/in', async function(req, res, next) {
-  const connection = await mysql.createConnection({
-    host     : process.env.DB_HOST,
-    user     : process.env.DB_USER,
-    password : process.env.DB_PASSWD,
-    database : process.env.DB_NAME,
-  });
+  await db.init();
 
   if (req.body.username && req.body.password) {
     const sql = `
@@ -20,10 +17,10 @@ router.post('/in', async function(req, res, next) {
       where name='${req.body.username}'
     `;
 
-    const [results, fields] = await connection.query(sql);
+    const users = await db.query(sql);
 
-    if (results.length > 0) {
-      const user = results[0];
+    if (users.length > 0) {
+      const user = users[0];
       const match = await bcrypt.compare(req.body.password, user.password);
 
       if (match) {
