@@ -16,6 +16,17 @@ class DB {
     const [results] = await this.connection.query(sql);
     return results;
   }
+
+  async queryOne(sql) {
+    const [results] = await this.connection.query(sql);
+    return results.length > 0 ? results[0] : false;
+  }
+
+  async execute(sql) {
+    const [results, fields] = await this.connection.execute(sql);
+
+    return results ? results.insertId : false;
+  }
 }
 
 module.exports = DB;

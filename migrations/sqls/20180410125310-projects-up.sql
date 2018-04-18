@@ -2,7 +2,8 @@
 CREATE TABLE IF NOT EXISTS projects (
   id INTEGER AUTO_INCREMENT PRIMARY KEY,
   name TEXT,
-  slug TEXT
+  slug TEXT,
+  user_id INTEGER
 );
 
 

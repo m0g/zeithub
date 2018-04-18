@@ -6,6 +6,8 @@ import Projects from './components/projects.vue';
 import CreateUser from './components/create-user.vue';
 import SignIn from './components/sign-in.vue';
 import SignOut from './components/sign-out.vue';
+import SignUp from './components/sign-up.vue';
+
 import { requireAuth, requireUnauth } from './auth';
 
 Vue.use(VueRouter);
@@ -33,7 +35,12 @@ export default new VueRouter({
       beforeEnter: requireAuth,
       component: SignOut
     },
-
+    {
+      path: '/signup',
+      name: 'SignUp',
+      beforeEnter: requireUnauth,
+      component: SignUp,
+    },
   ]
 })
 

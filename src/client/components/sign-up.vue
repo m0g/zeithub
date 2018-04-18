@@ -1,7 +1,7 @@
 <template>
   <fieldset>
-    <legend>Sign-in</legend>
-    <form @submit="signIn" method="post">
+    <legend>Sign up</legend>
+    <form @submit="signUp" method="post">
       <p v-if="errors.length">
         <b>Please correct the following error(s):</b>
         <ul>
@@ -16,44 +16,66 @@
       </p>
       <p>
         <input
+          type="text"
+          placeholder="Email"
+          v-model="email" />
+      </p>
+ 
+      <p>
+        <input
           type="password"
           placeholder="Password"
           v-model="password" />
+      </p>
+      <p>
+        <input
+          type="password"
+          placeholder="Repeat password"
+          v-model="passwordRepeat" />
       </p>
       <p><input type="submit" value="Send" /></p>
     </form>
   </fieldset>
 </template>
-
 <script>
   export default {
     data() {
       return {
+        email: '',
         username: '',
         password: '',
-        errors: [],
+        passwordRepeat: '',
+        errors: []
       };
     },
 
     methods: {
-      signIn(e) {
+      signUp(e) {
+        this.errors = [];
         e.preventDefault();
 
         if (!this.username) {
           this.errors.push('Username is required');
         }
 
-        if (!this.password) {
+        if (!this.email) {
+          this.errors.push('Email is required');
+        }
+
+        if (!this.password || !this.passwordRepeat) {
           this.errors.push('Password is required');
+        } else if (this.password !== this.passwordRepeat) {
+          this.errors.push('Passwords don\'t match');
         }
 
         if (this.errors.length === 0) {
           const user = {
             username: this.username,
-            password: this.password
+            password: this.password,
+            email: this.email,
           };
 
-          fetch('/api/sign/in', {
+          fetch('/api/sign/up', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
