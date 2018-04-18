@@ -12,7 +12,7 @@ router.post('/in', async function(req, res, next) {
 
   if (req.body.username && req.body.password) {
     const sql = `
-      select name, password
+      select id, name, password
       from users
       where name='${req.body.username}'
     `;
@@ -25,13 +25,13 @@ router.post('/in', async function(req, res, next) {
 
       if (match) {
         const token = jwt.sign({
-          data: { username: user.name }
+          data: { id: user.id, username: user.name }
           }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRATION,
+            expiresIn: '1d',
             algorithm: 'HS256'
         });
 
-        res.json({ sucess: true, token });
+        res.json({ success: true, token });
       } else {
         res.status(500).json({ success: false });
       }

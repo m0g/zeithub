@@ -5,13 +5,15 @@
 </template>
 
 <script>
+  import http from './../http';
+
   export default {
     data() {
       return { projects: [] };
     },
 
     created() {
-      fetch('/api/projects')
+      http('/api/projects')
         .then(data => data.json())
         .then(projects => {
           this.projects = projects;
