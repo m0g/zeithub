@@ -15,6 +15,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const hamsterRouter = require('./routes/hamster');
 const projectsRouter = require('./routes/projects');
+const signRouter = require('./routes/sign');
 
 const app = express();
 
@@ -33,6 +34,8 @@ app.use('/dist', express.static('dist'))
 app.use('/api/hamster', hamsterRouter);
 app.use('/api/projects', projectsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/sign', signRouter);
+
 app.use(fallback('index.html', { root: __dirname }))
 
 app.get('/', (req, res) => {

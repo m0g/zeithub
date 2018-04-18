@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import Home from './components/home.vue';
 import Projects from './components/projects.vue';
 import CreateUser from './components/create-user.vue';
+import SignIn from './components/sign-in.vue';
 
 Vue.use(VueRouter);
 
@@ -13,6 +14,7 @@ export default new VueRouter({
     { path: '/', name: 'Home', component: Home },
     { path: '/projects', name: 'Projects', component: Projects },
     { path: '/users/new', name: 'CreateUser', component: CreateUser },
+    { path: '/signin', name: 'SignIn', component: SignIn },
   ]
 })
 
