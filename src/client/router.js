@@ -8,6 +8,7 @@ import SignIn from './components/sign-in.vue';
 import SignOut from './components/sign-out.vue';
 import SignUp from './components/sign-up.vue';
 import Hamster from './components/hamster.vue';
+import Time from './components/time.vue';
 
 import { requireAuth, requireUnauth } from './auth';
 
@@ -50,6 +51,11 @@ export default new VueRouter({
       path: '/hamster',
       name: 'Hamster',
       component: Hamster,
+    },
+    {
+      path: '/time',
+      name: 'Time',
+      component: Time,
     },
   ]
 });

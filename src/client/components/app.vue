@@ -2,6 +2,7 @@
   <div id="app">
     <header>
       <router-link id="app-name" to="/">Konta</router-link>
+      <router-link to="/time" v-if="isLoggedIn">Time</router-link>
       <router-link to="/projects" v-if="isLoggedIn">Projects</router-link>
       <router-link to="/hamster" v-if="isLoggedIn">Upload hamster file</router-link>
       <router-link to="/signin" v-if="!isLoggedIn">Sign-in</router-link>
