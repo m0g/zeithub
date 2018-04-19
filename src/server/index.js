@@ -2,10 +2,6 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-const webpack = require('webpack');
-const config = require('../../webpack.config');
-
-const compiler = webpack(config);
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -18,11 +14,17 @@ const activitiesRouter = require('./routes/activities');
 
 const app = express();
 
-app.use(require('webpack-dev-middleware')(compiler, {
-  writeToDisk: true,
-  noInfo: true,
-  publicPath: config.output.publicPath
-}));
+if (process.env.NODE_ENV !== 'production') {
+  const webpack = require('webpack');
+  const config = require('../../webpack.dev');
+  const compiler = webpack(config);
+
+  app.use(require('webpack-dev-middleware')(compiler, {
+    writeToDisk: true,
+    noInfo: true,
+    publicPath: config.output.publicPath
+  }));
+}
 
 app.use(logger('dev'));
 app.use(express.json());
