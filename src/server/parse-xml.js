@@ -7,11 +7,11 @@ module.exports = xml => {
   $('activity').each(function(i, el) {
     activities.push({
       category: $(this).attr('category'),
-      description: $(this).attr('description'),
+      description: $(this).attr('description').replace(/'/g, "\\'"),
       durationMinutes: parseInt($(this).attr('duration_minutes')),
       startTime: $(this).attr('start_time'),
       endTime: $(this).attr('end_time'),
-      name: $(this).attr('name'),
+      name: $(this).attr('name').replace(/'/g, "\\'"),
       tags: $(this).attr('tags'), // TODO: this should be split
     });
   });

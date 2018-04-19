@@ -1,7 +1,5 @@
 const express = require('express');
 const multer  = require('multer');
-// const cheerio = require('cheerio');
-// const mysql = require('mysql2');
 const slug = require('slug');
 
 const verifyToken = require('./../verify-token');
@@ -11,58 +9,6 @@ const DB = require('./../db');
 const router = express.Router();
 const upload = multer();
 const db = new DB();
-
-// const connection = mysql.createConnection({
-//   host     : process.env.DB_HOST,
-//   user     : process.env.DB_USER,
-//   password : process.env.DB_PASSWD,
-//   database : process.env.DB_NAME,
-// });
-
-// connection.connect();
-
-// const parseXml = xml => {
-//   const $ = cheerio.load(xml, { xmlMode: true });
-//   let activities = [];
-
-//   $('activity').each(function(i, el) {
-//     activities.push({
-//       category: $(this).attr('category'),
-//       description: $(this).attr('description'),
-//       durationMinutes: $(this).attr('duration_minutes'),
-//       startTime: $(this).attr('start_time'),
-//       endTime: $(this).attr('end_time'),
-//       name: $(this).attr('name'),
-//       tags: $(this).attr('tags'),
-//     });
-//   });
-
-//   return activities;
-// };
-
-// async function insertProjects(activities) {
-//   let tags = [];
-
-//   activities.forEach(activity => {
-//     if (tags.indexOf(activity.tags) === -1) {
-//       tags.push(activity.tags);
-//     }
-//   });
-
-//   for (let tag of tags) {
-//     try {
-//       const res = await connection.execute(
-//         `INSERT INTO projects (name, slug)
-//         VALUES ("${tag}", "${slug(tag)}");`
-//       );
-//       console.log(res);
-//     } catch(e) {
-//       console.error(e);
-//     }
-//   }
-
-//   return tags;
-// }
 
 router.post('/', verifyToken, upload.single('xml'), async (req, res) => {
   await db.init();
@@ -122,30 +68,51 @@ router.post('/', verifyToken, upload.single('xml'), async (req, res) => {
   }
 
   for (let activity of activities) {
-    const sql = `
-      insert into activities (
-        name, 
-        description, 
-        duration_minutes, 
-        start_time, 
-        end_time, 
-        project_id, 
-        user_id
-      ) values (
-        '${activity.name}',
-        '${activity.description}',
-        ${activity.durationMinutes},
-        '${activity.startTime}',
-        '${activity.endTime}',
-        ${projectIDs[activity.tags]},
-        ${userId}
-      )
+    const sqlQuery = `
+      select id
+      from activities
+      where name = '${activity.name}'
+      and duration_minutes = ${activity.durationMinutes}
+      and start_time = '${activity.startTime}'
+      and end_time = '${activity.endTime}'
+      and project_id = ${projectIDs[activity.tags]}
+      and user_id = ${userId}
     `;
 
+    let existingActivity;
+
     try {
-      await db.execute(sql);
+      existingActivity = await db.queryOne(sqlQuery);
     } catch(err) {
-      return res.status(500).json({ success: false, message: 'Error on insert', err });
+      return res.status(500).json({ success: false, message: 'Error on select', err });
+    }
+
+    if (!existingActivity) {
+      const sqlInsert = `
+        insert into activities (
+          name, 
+          description, 
+          duration_minutes, 
+          start_time, 
+          end_time, 
+          project_id, 
+          user_id
+        ) values (
+          '${activity.name}',
+          '${activity.description}',
+          ${activity.durationMinutes},
+          '${activity.startTime}',
+          '${activity.endTime}',
+          ${projectIDs[activity.tags]},
+          ${userId}
+        )
+      `;
+
+      try {
+        await db.execute(sqlInsert);
+      } catch(err) {
+        return res.status(500).json({ success: false, message: 'Error on insert', err });
+      }
     }
   }
 
