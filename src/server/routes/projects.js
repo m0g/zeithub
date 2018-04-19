@@ -10,7 +10,11 @@ const db = new DB();
 router.get('/', verifyToken, async (req, res) => {
   await db.init();
 
-  const projects = await db.query('select id, name from projects');
+  const projects = await db.query(`
+    select id, name 
+    from projects
+    where user_id = ${req.userId}
+  `);
 
   res.json(projects);
 });
@@ -18,17 +22,19 @@ router.get('/', verifyToken, async (req, res) => {
 router.post('/', verifyToken, async (req, res) => {
   await db.init();
 
+  const userId = req.userId;
+
   if (!req.body.name) {
     return res.status(403).json({ success: false, message: 'Missing name' });
   }
 
   const name = req.body.name;
-  const slug = slugify(req.body.name);
+  const slug = slugify(req.body.name).toLowerCase();
 
   const project = await db.queryOne(`
     select id 
     from projects 
-    where id = ${req.userId} and slug = '${slug}'
+    where user_id = ${userId} and slug = '${slug}'
   `);
 
   if (project) {
@@ -39,7 +45,8 @@ router.post('/', verifyToken, async (req, res) => {
   }
 
   const id = await db.execute(`
-    insert into projects (name, slug) values ('${name}', '${slug}') 
+    insert into projects (name, slug, user_id) 
+    values ('${name}', '${slug}', ${userId}) 
   `);
 
   if (!id) {
@@ -58,4 +65,3 @@ router.post('/', verifyToken, async (req, res) => {
 });
 
 module.exports = router;
-

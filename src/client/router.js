@@ -7,6 +7,7 @@ import CreateProject from './components/create-project.vue';
 import SignIn from './components/sign-in.vue';
 import SignOut from './components/sign-out.vue';
 import SignUp from './components/sign-up.vue';
+import Hamster from './components/hamster.vue';
 
 import { requireAuth, requireUnauth } from './auth';
 
@@ -44,6 +45,11 @@ export default new VueRouter({
       path: '/projects/new',
       name: 'CreateProject',
       component: CreateProject,
+    },
+    {
+      path: '/hamster',
+      name: 'Hamster',
+      component: Hamster,
     },
   ]
 });
