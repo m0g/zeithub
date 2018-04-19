@@ -9,7 +9,5 @@ export default (url, options = {}) => {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
 
-  console.log(options);
-
   return fetch(url, options);
 }

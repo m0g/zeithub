@@ -4,7 +4,10 @@ import moment from 'moment';
 import App from './components/app.vue';
 import router from './router';
 
-Vue.filter('moment', date => moment(date).format('MMMM Do YYYY, h:mm:ss a'));
+Vue.filter(
+  'formatDate',
+  (date, format = 'MMMM Do YYYY, h:mm:ss a') => moment(date).format(format)
+);
 
 new Vue({
   router,
