@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 
 import Home from './components/home.vue';
 import Projects from './components/projects.vue';
+import CreateProject from './components/create-project.vue';
 import CreateUser from './components/create-user.vue';
 import SignIn from './components/sign-in.vue';
 import SignOut from './components/sign-out.vue';
@@ -22,7 +23,11 @@ export default new VueRouter({
       beforeEnter: requireAuth,
       component: Projects 
     },
-    { path: '/users/new', name: 'CreateUser', component: CreateUser },
+    { 
+      path: '/users/new', 
+      name: 'CreateUser', 
+      component: CreateUser 
+    },
     {
       path: '/signin', 
       name: 'SignIn', 
@@ -40,6 +45,11 @@ export default new VueRouter({
       name: 'SignUp',
       beforeEnter: requireUnauth,
       component: SignUp,
+    },
+    {
+      path: '/projects/new',
+      name: 'CreateProject',
+      component: CreateProject,
     },
   ]
 })

@@ -1,7 +1,10 @@
 <template>
-  <ul>
-    <li v-for="project in projects">{{project.name}}</li>
-  </ul>
+  <div>
+    <router-link to="/projects/new">Create project</router-link>
+    <ul>
+      <li v-for="project in projects">{{project.name}}</li>
+    </ul>
+  </div>
 </template>
 
 <script>
