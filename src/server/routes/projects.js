@@ -7,17 +7,15 @@ const verifyToken = require('./../verify-token');
 const router = express.Router();
 const db = new DB();
 
-router.get('/', verifyToken, async (req, res, next) => {
+router.get('/', verifyToken, async (req, res) => {
   await db.init();
 
-  console.log('username', req.username, req.userId);
   const projects = await db.query('select id, name from projects');
-  console.log('projects', projects);
 
   res.json(projects);
 });
 
-router.post('/', verifyToken, async (req, res, next) => {
+router.post('/', verifyToken, async (req, res) => {
   await db.init();
 
   if (!req.body.name) {
@@ -31,7 +29,7 @@ router.post('/', verifyToken, async (req, res, next) => {
     select id 
     from projects 
     where id = ${req.userId} and slug = '${slug}'
-  `)
+  `);
 
   if (project) {
     return res.status(500).json({ 
@@ -50,7 +48,7 @@ router.post('/', verifyToken, async (req, res, next) => {
 
   const newProject = await db.queryOne(`
     select id, name, slug from projects where id = ${id}
-  `)
+  `);
 
   if (!newProject) {
     return res.status(500).json({ success: false, message: 'Error' });

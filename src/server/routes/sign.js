@@ -8,7 +8,7 @@ const router = express.Router();
 const db = new DB();
 const saltRounds = parseInt(process.env.BCRYPT_SALT);
 
-router.post('/up', async function(req, res, next) {
+router.post('/up', async (req, res) => {
   await db.init();
 
   if (!req.body.username) {
@@ -29,7 +29,7 @@ router.post('/up', async function(req, res, next) {
 
   const users = await db.query(`
     select id from users where name = '${username}' or email = '${email}'
-  `)
+  `);
 
   if (users.length > 0) {
     return res.status(500).json({ success: false, message: 'User already exists' });
@@ -46,7 +46,7 @@ router.post('/up', async function(req, res, next) {
 
   const user = await db.queryOne(`
     select id, name, email, password from users where id = ${id}
-  `)
+  `);
 
   if (!user) {
     return res.status(500).json({ success: false, message: 'Error' });
@@ -54,15 +54,15 @@ router.post('/up', async function(req, res, next) {
 
   const token = jwt.sign({
     data: { id: user.id, username: user.name }
-    }, process.env.JWT_SECRET, {
-      expiresIn: '1d',
-      algorithm: 'HS256'
+  }, process.env.JWT_SECRET, {
+    expiresIn: '1d',
+    algorithm: 'HS256'
   });
 
   res.json({ success: true, user, token });
 });
 
-router.post('/in', async function(req, res, next) {
+router.post('/in', async (req, res) => {
   await db.init();
 
   if (req.body.username && req.body.password) {
@@ -81,9 +81,9 @@ router.post('/in', async function(req, res, next) {
       if (match) {
         const token = jwt.sign({
           data: { id: user.id, username: user.name }
-          }, process.env.JWT_SECRET, {
-            expiresIn: '1d',
-            algorithm: 'HS256'
+        }, process.env.JWT_SECRET, {
+          expiresIn: '1d',
+          algorithm: 'HS256'
         });
 
         res.json({ success: true, token });
