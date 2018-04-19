@@ -2,6 +2,10 @@
   "name": "konta",
   "version": "0.0.0",
   "private": true,
+  "engineStrict": true,
+  "engines": {
+    "node": "9.11.1"
+  },
   "scripts": {
     "start": "nodemon ./bin/www --watch src/",
     "lint": "eslint src/",
