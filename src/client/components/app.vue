@@ -9,7 +9,7 @@
       <router-link to="/signup" v-if="!isLoggedIn">Sign-up</router-link>
       <router-link to="/signout" v-if="isLoggedIn">Sign-out</router-link>
     </header>
-    <router-view></router-view>
+    <router-view id="router-view"></router-view>
   </div>
 </template>
 <script>
@@ -24,19 +24,25 @@
 <style>
   html, body {
     font-family: arial;
+    margin: 0;
+    padding: 0;
   }
 
   #app-name {
-    color: red;
+    color: #ff7979;
   }
 
   header {
     margin-bottom: 10px;
+    padding: 10px 15px;
+    background: #333;
   }
 
   header a {
-    color: #333;
+    color: #eee;
     text-decoration: none;
     margin: 0 5px;
   }
+
+  #router-view { margin: 10px; }
 </style>
