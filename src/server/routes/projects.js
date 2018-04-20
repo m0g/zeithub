@@ -7,11 +7,38 @@ const verifyToken = require('./../verify-token');
 const router = express.Router();
 const db = new DB();
 
+router.get('/:slug', verifyToken, async (req, res) => {
+  await db.init();
+
+  const slug = req.params.slug;
+  const userId = req.userId;
+
+  const project = await db.queryOne(`
+    select id, name, slug
+    from projects 
+    where slug = '${slug}' and user_id = ${userId}
+  `);
+
+  const activities = await db.query(`
+    select 
+      a.id, 
+      a.name, 
+      a.start_time as 'startTime', 
+      a.end_time as 'endTime',
+      a.duration_minutes as 'durationMinutes'
+    from activities a
+    where a.project_id = ${project.id}
+    order by a.start_time asc
+  `);
+
+  res.json({ success: true, project, activities });
+});
+
 router.get('/', verifyToken, async (req, res) => {
   await db.init();
 
   const projects = await db.query(`
-    select id, name 
+    select name, slug
     from projects
     where user_id = ${req.userId}
   `);

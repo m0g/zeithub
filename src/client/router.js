@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 
 import Home from './components/home.vue';
 import Projects from './components/projects.vue';
+import Project from './components/project.vue';
 import CreateProject from './components/create-project.vue';
 import SignIn from './components/sign-in.vue';
 import SignOut from './components/sign-out.vue';
@@ -25,6 +26,13 @@ export default new VueRouter({
       component: Projects 
     },
     {
+      path: '/projects/:slug',
+      name: 'Project', 
+      beforeEnter: requireAuth,
+      component: Project
+    },
+
+    {
       path: '/signin', 
       name: 'SignIn', 
       beforeEnter: requireUnauth,
@@ -45,16 +53,19 @@ export default new VueRouter({
     {
       path: '/projects/new',
       name: 'CreateProject',
+      beforeEnter: requireAuth,
       component: CreateProject,
     },
     {
       path: '/hamster',
       name: 'Hamster',
+      beforeEnter: requireAuth,
       component: Hamster,
     },
     {
       path: '/time',
       name: 'Time',
+      beforeEnter: requireAuth,
       component: Time,
     },
   ]

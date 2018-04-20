@@ -6,7 +6,9 @@
     </span>
     <span>{{activity.name}}</span>
     <span>{{activity.durationMinutes}}</span>
-    <span>{{activity.projectName}}</span>
+    <router-link :to="{ name: 'Project', params: { slug: activity.projectSlug } }">
+      {{activity.projectName}}
+    </router-link>
   </li>
 </template>
 
