@@ -32,12 +32,14 @@
     "mysql2": "^1.5.3",
     "slug": "^0.9.1",
     "vue": "^2.5.16",
+    "vue-flatpickr-component": "^7.0.1",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
     "nodemon": "^1.17.3",
+    "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "vue-loader": "^14.2.2",
     "vue-template-compiler": "^2.5.16",

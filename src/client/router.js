@@ -10,6 +10,7 @@ import SignOut from './components/sign-out.vue';
 import SignUp from './components/sign-up.vue';
 import Hamster from './components/hamster.vue';
 import Time from './components/time.vue';
+import Expenses from './components/expenses.vue';
 
 import { requireAuth, requireUnauth } from './auth';
 
@@ -68,5 +69,11 @@ export default new VueRouter({
       beforeEnter: requireAuth,
       component: Time,
     },
+    {
+      path: '/expenses',
+      name: 'Expenses',
+      beforeEnter: requireAuth,
+      component: Expenses
+    }
   ]
 });

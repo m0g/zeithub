@@ -11,6 +11,7 @@ const hamsterRouter = require('./routes/hamster');
 const projectsRouter = require('./routes/projects');
 const signRouter = require('./routes/sign');
 const activitiesRouter = require('./routes/activities');
+const expensesRouter = require('./routes/expenses');
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use('/api/hamster', hamsterRouter);
 app.use('/api/projects', projectsRouter);
 app.use('/api/sign', signRouter);
 app.use('/api/activities', activitiesRouter);
+app.use('/api/expenses', expensesRouter);
 
 app.use(fallback('index.html', { root: __dirname }));
 
