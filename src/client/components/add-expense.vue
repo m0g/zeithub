@@ -9,7 +9,7 @@
         </ul>
       </p>
       <input type="text" placeholder="Label" v-model="name" />
-      <flat-pickr v-model="date"></flat-pickr>
+      <input type="date" placeholder="Date" v-model="date" />
       <input type="number" placeholder="Amount in Euro" v-model="amount" step=".01" />
       <input type="submit" value="Add" />
     </form>
@@ -18,8 +18,6 @@
 
 <script>
 import http from './../http';
-import flatPickr from 'vue-flatpickr-component';
-import 'flatpickr/dist/flatpickr.css';
 
 export default {
   props: [ 'getExpenses' ],
@@ -72,9 +70,5 @@ export default {
       }
     }
   },
-
-  components: {
-    flatPickr
-  }
 }
 </script>
