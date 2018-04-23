@@ -4,7 +4,7 @@
     <add-expense :get-expenses="getExpenses"></add-expense> 
     <fieldset>
       <legend>€</legend>
-      <p><b>Turnover:</b> {{turnover}}€</p>
+      <p><b>Turnover:</b> {{turnover | currency}}</p>
     </fieldset>
     <fieldset>
       <legend>List of expenses</legend>
@@ -12,7 +12,7 @@
         <tr v-for="expense in expenses" :key="expense.id">
           <td>{{expense.name}}</td>
           <td>{{expense.date | formatDate('DD/MM/YYYY')}}</td>
-          <td>{{expense.amount}}€</td>
+          <td>{{expense.amount | currency}}</td>
         </tr>
       </table>
     </fieldset>
@@ -46,7 +46,7 @@ export default {
 
     getTurnover(expenses) {
       return expenses
-        .map(expense => parseInt(expense.amount))
+        .map(expense => parseFloat(expense.amount))
         .reduce((acc, amount) => acc + amount);
     }
   },
