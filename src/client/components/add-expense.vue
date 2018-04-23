@@ -10,7 +10,7 @@
       </p>
       <input type="text" placeholder="Label" v-model="name" />
       <flat-pickr v-model="date"></flat-pickr>
-      <input type="number" placeholder="Amount in Euro" v-model="amount" />
+      <input type="number" placeholder="Amount in Euro" v-model="amount" step=".01" />
       <input type="submit" value="Add" />
     </form>
   </fieldset> 
@@ -69,7 +69,6 @@ export default {
               this.getExpenses();
             }
           });
- 
       }
     }
   },

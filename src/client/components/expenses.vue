@@ -3,6 +3,10 @@
     <h1>Expenses</h1>
     <add-expense :get-expenses="getExpenses"></add-expense> 
     <fieldset>
+      <legend>€</legend>
+      <p><b>Turnover:</b> {{turnover}}€</p>
+    </fieldset>
+    <fieldset>
       <legend>List of expenses</legend>
       <table>
         <tr v-for="expense in expenses" :key="expense.id">
@@ -21,7 +25,7 @@ import AddExpense from './add-expense';
 
 export default {
   data() {
-    return { expenses: [] };
+    return { expenses: [], turnover: 0 };
   },
 
   created() {
@@ -35,8 +39,15 @@ export default {
         .then(data => {
           if (data.success && data.expenses.length > 0) {
             this.expenses = data.expenses;
+            this.turnover = this.getTurnover(data.expenses);
           }
         });
+    },
+
+    getTurnover(expenses) {
+      return expenses
+        .map(expense => parseInt(expense.amount))
+        .reduce((acc, amount) => acc + amount);
     }
   },
 
