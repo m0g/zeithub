@@ -22,6 +22,8 @@ import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 
 export default {
+  props: [ 'getExpenses' ],
+
   data() {
     return {
       name: '',
@@ -64,6 +66,7 @@ export default {
               this.name = '';
               this.amount = 0;
               this.date = null;
+              this.getExpenses();
             }
           });
  
