@@ -8,7 +8,7 @@ Vagrant.configure(2) do |config|
     config.vm.network "private_network", ip: "192.168.2.100", lxc__bridge_name: 'lxcbr0'
   end
 
-  config.vm.network "forwarded_port", guest: 9000, host: 9000
+  config.vm.network "forwarded_port", guest: 8888, host: 8888
   config.vm.network "forwarded_port", guest: 3000, host: 3000
 
   config.vm.provision "shell", path: "provision.sh", privileged: false
