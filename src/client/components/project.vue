@@ -3,6 +3,7 @@
     <h1>{{project.name}}</h1>
     <fieldset>
       <legend>Stats</legend>
+      <p><b>Total time:</b> {{stats.duration}} hours</p>
     </fieldset>
     <fieldset>
       <legend>Time tracking</legend>
@@ -28,7 +29,11 @@
 
   export default {
     data() {
-      return { project: [], activityGroups: [] };
+      return { 
+        project: [], 
+        activityGroups: [], 
+        stats: {} 
+      };
     },
 
     created() {
@@ -37,10 +42,23 @@
         .then(data => {
           this.project = data.project;
           this.activityGroups = this.groupByDate(data.activities);
+          this.stats = this.getStats(data.activities);
         });
     },
 
     methods: {
+      getStats(activities) {
+        const durationMinutes = activities
+          .map(activity => activity.durationMinutes)
+          .reduce((acc, duration) => acc + duration);
+
+        const duration = `
+          ${Math.floor(durationMinutes / 60)}:${Math.floor(durationMinutes % 60)}
+        `;
+
+        return { duration };
+      },
+
       groupByDate(activities) {
         let activityGroups = {};
 
