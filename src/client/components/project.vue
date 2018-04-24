@@ -1,12 +1,15 @@
 <template>
-  <div>
+  <section>
     <h1>{{project.name}}</h1>
-    <project-filters :get-project="getProject"></project-filters>
-    <fieldset>
-      <legend>Stats</legend>
-      <p><b>Total time:</b> {{stats.duration}} hours</p>
-    </fieldset>
-    <fieldset>
+    <aside>
+      <project-filters :get-project="getProject"></project-filters>
+      <fieldset>
+        <legend>Stats</legend>
+        <p><b>Total time:</b> {{stats.duration}} hours</p>
+      </fieldset>
+      <generate-invoice></generate-invoice>
+    </aside>
+    <fieldset class="time-tracking">
       <legend>Time tracking</legend>
       <ul>
         <li v-for="activities, date in activityGroups" :key="date">
@@ -20,7 +23,7 @@
         </li>
       </ul>
     </fieldset>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -28,6 +31,7 @@
   import http from './../http';
   import Activity from './activity.vue';
   import ProjectFilters from './project-filters.vue';
+  import GenerateInvoice from './generate-invoice.vue';
 
   export default {
     data() {
@@ -39,7 +43,6 @@
     },
 
     created() {
-      console.log('loaded');
       this.getProject();
     },
 
@@ -92,6 +95,29 @@
     components: {
       Activity,
       ProjectFilters,
+      GenerateInvoice,
     }
   }
 </script>
+
+<style scoped>
+section {
+  display: flex;
+  flex-flow: row wrap;
+  min-height: 100%;
+  height: 100%;
+}  
+
+section h1 {
+  flex: 1 100%;
+  margin: 0 0 10px;
+}
+
+section aside {
+  flex: 1;
+}
+
+section fieldset.time-tracking {
+  flex: 3;
+}
+</style>
