@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>{{project.name}}</h1>
+    <project-filters :get-project="getProject"></project-filters>
     <fieldset>
       <legend>Stats</legend>
       <p><b>Total time:</b> {{stats.duration}} hours</p>
@@ -26,6 +27,7 @@
   import moment from 'moment';
   import http from './../http';
   import Activity from './activity.vue';
+  import ProjectFilters from './project-filters.vue';
 
   export default {
     data() {
@@ -37,16 +39,20 @@
     },
 
     created() {
-      http(`/api/projects/${this.$route.params.slug}`)
-        .then(data => data.json())
-        .then(data => {
-          this.project = data.project;
-          this.activityGroups = this.groupByDate(data.activities);
-          this.stats = this.getStats(data.activities);
-        });
+      this.getProject();
     },
 
     methods: {
+      getProject(params = {}) {
+        http(`/api/projects/${this.$route.params.slug}`, { params })
+          .then(data => data.json())
+          .then(data => {
+            this.project = data.project;
+            this.activityGroups = this.groupByDate(data.activities);
+            this.stats = this.getStats(data.activities);
+          });
+      },
+
       getStats(activities) {
         const durationMinutes = activities
           .map(activity => activity.durationMinutes)
@@ -77,7 +83,8 @@
     },
 
     components: {
-      Activity
+      Activity,
+      ProjectFilters,
     }
   }
 </script>
