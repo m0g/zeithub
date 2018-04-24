@@ -1,12 +1,14 @@
 <template>
-  <div>
+  <section>
     <h1>Expenses</h1>
+    <aside>
     <add-expense :get-expenses="getExpenses"></add-expense> 
     <fieldset>
       <legend>€</legend>
       <p><b>Turnover:</b> {{turnover | currency}}</p>
     </fieldset>
-    <fieldset>
+    </aside>
+    <fieldset class="expenses">
       <legend>List of expenses</legend>
       <table>
         <tr v-for="expense in expenses" :key="expense.id">
@@ -16,7 +18,7 @@
         </tr>
       </table>
     </fieldset>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -54,3 +56,25 @@ export default {
   components: { AddExpense }
 }
 </script>
+
+<style scoped>
+section {
+  display: flex;
+  flex-flow: row wrap;
+  min-height: 100%;
+  height: 100%;
+}  
+
+section h1 {
+  flex: 1 100%;
+  margin: 0 0 10px;
+}
+
+section aside {
+  flex: 1;
+}
+
+section fieldset.expenses {
+  flex: 3;
+}
+</style>
