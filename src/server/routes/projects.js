@@ -7,11 +7,25 @@ const verifyToken = require('./../verify-token');
 const router = express.Router();
 const db = new DB();
 
+const filterByMonth = monthDate => {
+  if (!monthDate) {
+    return '';
+  }
+
+  let [year, month] = monthDate.split('-');
+
+  return `
+    and month(a.start_time) = ${month} 
+    and year(a.start_time) = ${year}
+  `;
+};
+
 router.get('/:slug', verifyToken, async (req, res) => {
   await db.init();
 
   const slug = req.params.slug;
   const userId = req.userId;
+  const month = req.query.month || '';
 
   const project = await db.queryOne(`
     select id, name, slug
@@ -28,6 +42,7 @@ router.get('/:slug', verifyToken, async (req, res) => {
       a.duration_minutes as 'durationMinutes'
     from activities a
     where a.project_id = ${project.id}
+    ${filterByMonth(month)}
     order by a.start_time asc
   `);
 
