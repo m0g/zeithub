@@ -4,7 +4,7 @@ module.exports = xml => {
   const $ = cheerio.load(xml, { xmlMode: true });
   let activities = [];
 
-  $('activity').each(function(i, el) {
+  $('activity').each(function() {
     activities.push({
       category: $(this).attr('category'),
       description: $(this).attr('description').replace(/'/g, "\\'"),

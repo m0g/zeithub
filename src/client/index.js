@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vue';
 import moment from 'moment';
 
 import App from './components/app.vue';
@@ -16,5 +16,5 @@ new Vue({
   el: '#app',
   template: '<App/>',
   components: { App }
-})
+});
 

@@ -1,6 +1,5 @@
 const express = require('express');
 const multer  = require('multer');
-const slug = require('slug');
 
 const verifyToken = require('./../verify-token');
 const parseXml = require('./../parse-xml');
@@ -60,7 +59,6 @@ router.post('/', verifyToken, upload.single('xml'), async (req, res) => {
 
       if (projectID) {
         projectIDs[tag] = projectID;
-
       }
     } else {
       projectIDs[tag] = project.id;

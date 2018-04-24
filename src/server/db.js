@@ -27,7 +27,7 @@ class DB {
   }
 
   async execute(sql) {
-    const [results, fields] = await this.connection.execute(sql);
+    const [results] = await this.connection.execute(sql);
 
     return results ? results.insertId : false;
   }
