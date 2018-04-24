@@ -11,8 +11,8 @@ export default (uri, options = {}) => {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
 
-  if (options.params) {
-    url.search = new URLSearchParams(options.params);
+  if (options.query) {
+    url.search = new URLSearchParams(options.query);
   }
 
   return fetch(url, options);

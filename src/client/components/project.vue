@@ -39,17 +39,24 @@
     },
 
     created() {
+      console.log('loaded');
       this.getProject();
     },
 
     methods: {
-      getProject(params = {}) {
-        http(`/api/projects/${this.$route.params.slug}`, { params })
+      getProject(query = {}) {
+        const newQuery = Object.assign({}, this.$route.query, query);
+
+        http(`/api/projects/${this.$route.params.slug}`, { query: newQuery })
           .then(data => data.json())
           .then(data => {
             this.project = data.project;
             this.activityGroups = this.groupByDate(data.activities);
             this.stats = this.getStats(data.activities);
+
+            if (Object.keys(query).length > 0) {
+              this.$router.push({ query });
+            }
           });
       },
 
