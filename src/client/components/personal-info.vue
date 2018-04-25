@@ -8,7 +8,10 @@
       <p><b>First name:</b> {{me.firstName}}</p>
       <p><b>Last name:</b> {{me.lastName}}</p>
       <p><b>Telephone:</b> {{me.tel}}</p>
-      <p><b>Website:</b> {{me.website}}</p>
+      <p>
+        <b>Website:</b>&nbsp;
+        <a :href="me.website" target="_blank">{{me.website}}</a>
+      </p>
     </div>
     <form v-if="editMode" @submit="save" method="POST">
       <form-errors :errors="errors"></form-errors>
@@ -18,12 +21,6 @@
       <p><b>Last name:</b> <input type="text" v-model="user.lastName" /></p>
       <p><b>Telephone:</b> <input type="text" v-model="user.tel" /></p>
       <p><b>Website:</b> <input type="text" v-model="user.website" /></p>
-      <p><b>Current password:</b> <input type="password" v-model="pass.currentPasswd" /></p>
-      <p><b>New password:</b> <input type="password" v-model="pass.password" /></p>
-      <p>
-        <b>New password repeat:</b>&nbsp;
-        <input type="password" v-model="pass.passwordRepeat" />
-      </p>
       <p><input type="submit" value="Save" /></p>
     </form>
   </fieldset>
@@ -32,14 +29,11 @@
 <script>
 import FormErrors from './form-errors.vue';
 import http from './../http';
-import { diff } from './../utils';
+import { diff } from './../../utils';
 
 export default {
   components: { FormErrors },
-
-  props: {
-    me: { type: Object, required: true },
-  },
+  props: [ 'me', 'getMe' ],
 
   data() {
     return {
@@ -61,20 +55,8 @@ export default {
       this.errors = [];
       e.preventDefault();
 
-      if (Object.keys(this.pass).length > 0) {
-        if (!this.pass.currentPasswd) {
-          this.errors.push('Current password is required');
-        }
-
-        if (!this.pass.password || !this.pass.passwordRepeat) {
-          this.errors.push('Password is required');
-        } else if (this.pass.password !== this.pass.passwordRepeat) {
-          this.errors.push('Passwords don\'t match');
-        }
-      }
-
       if (this.errors.length === 0) {
-        const body = Object.assign({}, diff(this.me, this.user), this.pass);
+        const body = diff(this.me, this.user);
 
         http('/api/me', {
           method: 'PUT',
@@ -84,6 +66,10 @@ export default {
           .then(response => response.json())
           .then(response => {
             console.log(response);
+            if (response.success) {
+              this.getMe();
+              this.editMode = false;
+            }
           });
       }
     }

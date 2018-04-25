@@ -1,7 +1,7 @@
 <template>
   <section>
     <h1>Me</h1>
-    <personal-info :me="me"></personal-info>
+    <personal-info :me="me" :get-me="getMe"></personal-info>
     <fieldset><legend>Addresses</legend></fieldset>
     <fieldset><legend>Bank accounts</legend></fieldset>
   </section>
@@ -21,13 +21,19 @@ export default {
   },
 
   created() {
-    http('/api/me')
-      .then(data => data.json())
-      .then(data => {
-        if (data.success) {
-          this.me = data.me
-        }
-      })
+    this.getMe();
+  },
+
+  methods: {
+    getMe() {
+      http('/api/me')
+        .then(data => data.json())
+        .then(data => {
+          if (data.success) {
+            this.me = data.me
+          }
+        });
+    }
   }
 }
 </script>
