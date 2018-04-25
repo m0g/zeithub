@@ -4,16 +4,19 @@
     <personal-info :me="me" :get-me="getMe"></personal-info>
     <fieldset><legend>Addresses</legend></fieldset>
     <fieldset><legend>Bank accounts</legend></fieldset>
+    <change-password></change-password>
   </section>
 </template>
 
 <script>
 import http from '../http';
 import PersonalInfo from './personal-info.vue';
+import ChangePassword from './change-password.vue';
 
 export default {
   components: { 
     PersonalInfo, 
+    ChangePassword,
   },
 
   data() {

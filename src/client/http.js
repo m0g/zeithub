@@ -3,10 +3,13 @@ export default (uri, options = {}) => {
   const token = localStorage.getItem('token');
   const url = new URL(urlString);
 
+  if (!options.headers) {
+    options.headers = {};
+  }
+
+  options.headers['Content-Type'] = 'application/json';
+
   if (token) {
-    if (!options.headers) {
-      options.headers = {};
-    }
 
     options.headers['Authorization'] = `Bearer ${token}`;
   }

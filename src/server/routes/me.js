@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 
 const DB = require('./../db');
 const verifyToken = require('./../verify-token');
@@ -6,6 +7,7 @@ const { camelToSnake } = require('./../../utils');
 
 const router = express.Router();
 const db = new DB();
+const saltRounds = parseInt(process.env.BCRYPT_SALT);
 
 const buildQuery = body => {
   let query = '';
@@ -83,6 +85,65 @@ router.put('/', verifyToken, async (req, res) => {
   `);
 
   res.json({ success: true, me });
+});
+
+router.put('/passwd', verifyToken, async (req, res) => {
+  await db.init();
+
+  const userId = req.userId;
+
+  console.log(req.body);
+  if (!req.body.currentPassword) {
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Missing current password' 
+    });
+  }
+
+  if (!req.body.password) {
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Missing new password' 
+    });
+  }
+
+  const { currentPassword, password } = req.body;
+
+  const user = await db.queryOne(`
+    select password
+    from users
+    where id = ${userId}
+  `);
+
+  if (!user) {
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Could not find user' 
+    });
+  }
+
+  const match = await bcrypt.compare(currentPassword, user.password);
+
+  if (!match) {
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Current password is wrong' 
+    });
+  }
+
+  const hash = await bcrypt.hash(password, saltRounds);
+
+  try {
+    await db.execute(`
+      update users
+      set password = '${hash}'
+      where id = ${userId}
+    `);
+  } catch(error) {
+    res.status(500).json({ success: false, error });
+  }
+
+  res.json({ success: true });
 });
 
 module.exports = router;
