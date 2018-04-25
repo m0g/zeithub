@@ -4,7 +4,8 @@
   "private": true,
   "engineStrict": true,
   "engines": {
-    "node": "9.11.1"
+    "node": "9.11.1",
+    "npm": "6.0.0"
   },
   "scripts": {
     "start": "node ./bin/www",
@@ -15,12 +16,11 @@
     "heroku-postbuild": "db-migrate up && webpack --config webpack.prod.js"
   },
   "dependencies": {
-    "bcrypt": "^2.0.0",
+    "bcrypt": "2.0.1",
     "cheerio": "^1.0.0-rc.2",
     "cookie-parser": "~1.4.3",
-    "db-migrate": "^0.10.7",
+    "db-migrate": "^0.11.1",
     "db-migrate-mysql": "^1.1.10",
-    "debug": "~2.6.9",
     "dotenv": "^5.0.1",
     "express": "~4.16.0",
     "express-history-api-fallback": "^2.2.1",
@@ -40,11 +40,12 @@
     "nodemon": "^1.17.3",
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.5",
-    "vue-loader": "^14.2.2",
+    "vue-loader": "14.2.2",
+    "vue-style-loader": "^4.1.0",
     "vue-template-compiler": "^2.5.16",
-    "webpack": "^4.5.0",
+    "webpack": "4.6.0",
     "webpack-bundle-analyzer": "^2.11.1",
-    "webpack-cli": "^2.0.14",
+    "webpack-cli": "2.0.15",
     "webpack-dev-middleware": "^3.1.2",
     "webpack-merge": "^4.1.2"
   }
