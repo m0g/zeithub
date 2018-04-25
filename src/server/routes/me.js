@@ -30,4 +30,12 @@ router.get('/', verifyToken, async (req, res) => {
   }
 });
 
+router.put('/', verifyToken, async (req, res) => {
+  await db.init();
+
+  const userId = req.userId;
+
+  res.json({ success: true, body: req.body });
+});
+
 module.exports = router;
