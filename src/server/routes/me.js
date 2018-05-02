@@ -92,7 +92,6 @@ router.put('/passwd', verifyToken, async (req, res) => {
 
   const userId = req.userId;
 
-  console.log(req.body);
   if (!req.body.currentPassword) {
     return res.status(500).json({ 
       success: false, 

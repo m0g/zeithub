@@ -7,10 +7,7 @@ export default (uri, options = {}) => {
     options.headers = {};
   }
 
-  options.headers['Content-Type'] = 'application/json';
-
   if (token) {
-
     options.headers['Authorization'] = `Bearer ${token}`;
   }
 
