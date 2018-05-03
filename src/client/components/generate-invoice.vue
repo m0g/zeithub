@@ -36,7 +36,7 @@ export default {
       if (this.errors.length === 0) {
         const body = {
           hourlyRate: this.hourlyRate,
-          projectName: this.$route.params.slug,
+          projectSlug: this.$route.params.slug,
           month: this.$route.query.month
         };
 
