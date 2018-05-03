@@ -13,6 +13,7 @@ const signRouter = require('./routes/sign');
 const activitiesRouter = require('./routes/activities');
 const expensesRouter = require('./routes/expenses');
 const meRouter = require('./routes/me');
+const invoicesRouter = require('./routes/invoices');
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use('/api/sign', signRouter);
 app.use('/api/activities', activitiesRouter);
 app.use('/api/expenses', expensesRouter);
 app.use('/api/me', meRouter);
+app.use('/api/invoices', invoicesRouter);
 
 app.use(fallback('index.html', { root: __dirname }));
 
