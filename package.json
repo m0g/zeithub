@@ -12,6 +12,7 @@
     "dev": "nodemon ./bin/www --watch src/",
     "lint": "eslint src/",
     "db:up": "db-migrate up --config config/database.json",
+    "db:down": "db-migrate down --config config/database.json",
     "db:reset": "db-migrate reset --config config/database.json",
     "heroku-postbuild": "db-migrate up && webpack --config webpack.prod.js"
   },
