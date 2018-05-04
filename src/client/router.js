@@ -11,6 +11,8 @@ import SignUp from './components/sign-up.vue';
 import Time from './components/time.vue';
 import Expenses from './components/expenses.vue';
 import Me from './components/me.vue';
+import Invoices from './components/invoices.vue';
+import Invoice from './components/invoice.vue';
 
 import { requireAuth, requireUnauth } from './auth';
 
@@ -74,6 +76,18 @@ export default new VueRouter({
       name: 'Me',
       beforeEnter: requireAuth,
       component: Me
+    },
+    {
+      path: '/invoices',
+      name: 'Invoices',
+      beforeEnter: requireAuth,
+      component: Invoices
+    },
+    {
+      path: '/invoices/:number',
+      name: 'Invoice',
+      beforeEnter: requireAuth,
+      component: Invoice
     }
   ]
 });

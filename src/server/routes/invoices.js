@@ -7,6 +7,21 @@ const verifyToken = require('./../verify-token');
 const router = express.Router();
 const db = new DB();
 
+router.get('/', verifyToken, async (req, res) => {
+  await db.init();
+
+  const userId = req.userId;
+
+  const invoices = await db.query(`
+    select number, name, date
+    from invoices
+    where user_id = ${userId}
+    order by date desc
+  `);
+
+  res.json({ success: true, invoices });
+});
+
 router.post('/', verifyToken, async (req, res) => {
   await db.init();
 
