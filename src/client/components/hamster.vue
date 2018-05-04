@@ -6,6 +6,7 @@
       type="file"
       name="xml"
       @change="handleFileUpload" />
+    <p v-if="success">Upload complete!</p>
   </fieldset>
 </template>
 
@@ -13,6 +14,10 @@
 import http from './../http';
 
 export default {
+  data() {
+    return { success: false };
+  },
+
   methods: {
     handleFileUpload(e) {
       const data = new FormData();
@@ -23,6 +28,10 @@ export default {
         method: 'POST',
         body: data
       })
+        .then(response => response.json())
+        .then(response => {
+          this.success = response.success;
+        });
     }
   }
 }
