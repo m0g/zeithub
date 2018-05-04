@@ -7,6 +7,37 @@ const verifyToken = require('./../verify-token');
 const router = express.Router();
 const db = new DB();
 
+router.get('/:number', verifyToken, async (req, res) => {
+  await db.init();
+
+  const number = req.params.number;
+  const userId = req.userId;
+
+  const invoice = await db.queryOne(`
+    select id, number, name, date, due_date as 'dueDate'
+    from invoices
+    where number = ${number} and user_id = ${userId}
+  `);
+
+  const activities = await db.query(`
+    select
+      a.id, 
+      a.name, 
+      a.start_time as 'startTime', 
+      a.end_time as 'endTime',
+      a.duration_minutes as 'durationMinutes',
+      p.name as 'projectName',
+      p.slug as 'projectSlug'
+    from activities a
+    join projects p on a.project_id = p.id
+    where a.user_id = ${req.userId}
+    and a.invoice_id = ${invoice.id}
+    order by a.start_time asc
+  `);
+
+  res.json({ success: true, invoice, activities });
+});
+
 router.get('/', verifyToken, async (req, res) => {
   await db.init();
 
