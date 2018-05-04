@@ -10,6 +10,10 @@ const db = new DB();
 router.post('/', verifyToken, async (req, res) => {
   await db.init();
 
+  if (!req.body.name) {
+    return res.status(403).json({ success: false, message: 'Missing name' });
+  }
+
   if (!req.body.hourlyRate) {
     return res.status(403).json({ success: false, message: 'Missing hourly rate' });
   }
@@ -23,7 +27,9 @@ router.post('/', verifyToken, async (req, res) => {
   }
 
   const userId = req.userId;
-  const { hourlyRate, month, projectSlug } = req.body;
+  const { hourlyRate, projectSlug } = req.body;
+  
+  const [ year, month ] = req.body.month.split('-');
 
   const project = await db.queryOne(`
     select id
@@ -55,11 +61,16 @@ router.post('/', verifyToken, async (req, res) => {
     values (${userId}, curdate(), '${dueDate}', 'test', ${number}, ${project.id})
   `);
 
-  // const activityInvoices = await db.execute(`
-  //   update 
-  // `);
+  const activityInvoices = await db.execute(`
+    update activities
+    set invoice_id = ${invoiceId}
+    where month(start_time) = ${month}
+    and year(start_time) = ${year}
+    and project_id = ${project.id}
+    and user_id = ${userId}
+  `);
 
-  res.json({ success: true, invoiceId });
+  res.json({ success: true, invoiceId, activityInvoices });
 });
 
 module.exports = router;
