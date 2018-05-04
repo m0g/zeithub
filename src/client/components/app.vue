@@ -6,7 +6,6 @@
       <router-link to="/projects" v-if="isLoggedIn">Projects</router-link>
       <router-link to="/expenses" v-if="isLoggedIn">Expenses</router-link>
       <router-link to="/me" v-if="isLoggedIn">Profile</router-link>
-      <router-link to="/hamster" v-if="isLoggedIn">Upload hamster file</router-link>
       <router-link to="/signin" v-if="!isLoggedIn">Sign-in</router-link>
       <router-link to="/signup" v-if="!isLoggedIn">Sign-up</router-link>
       <router-link to="/signout" v-if="isLoggedIn">Sign-out</router-link>

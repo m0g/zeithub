@@ -8,7 +8,6 @@ import CreateProject from './components/create-project.vue';
 import SignIn from './components/sign-in.vue';
 import SignOut from './components/sign-out.vue';
 import SignUp from './components/sign-up.vue';
-import Hamster from './components/hamster.vue';
 import Time from './components/time.vue';
 import Expenses from './components/expenses.vue';
 import Me from './components/me.vue';
@@ -57,12 +56,6 @@ export default new VueRouter({
       name: 'CreateProject',
       beforeEnter: requireAuth,
       component: CreateProject,
-    },
-    {
-      path: '/hamster',
-      name: 'Hamster',
-      beforeEnter: requireAuth,
-      component: Hamster,
     },
     {
       path: '/time',
