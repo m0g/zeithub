@@ -39,6 +39,8 @@
       signIn(e) {
         e.preventDefault();
 
+        this.errors = [];
+
         if (!this.username) {
           this.errors.push('Username is required');
         }
@@ -63,6 +65,8 @@
               if (response.success === true) {
                 localStorage.setItem('token', response.token);
                 window.location.href = '/';
+              } else {
+                this.errors.push(response.message);
               }
             });
         }

@@ -65,33 +65,41 @@ router.post('/up', async (req, res) => {
 router.post('/in', async (req, res) => {
   await db.init();
 
-  if (req.body.username && req.body.password) {
-    const sql = `
-      select id, name, password
-      from users
-      where name='${req.body.username}'
-    `;
-
-    const users = await db.query(sql);
-
-    if (users.length > 0) {
-      const user = users[0];
-      const match = await bcrypt.compare(req.body.password, user.password);
-
-      if (match) {
-        const token = jwt.sign({
-          data: { id: user.id, username: user.name }
-        }, process.env.JWT_SECRET, {
-          expiresIn: '1d',
-          algorithm: 'HS256'
-        });
-
-        res.json({ success: true, token });
-      } else {
-        res.status(500).json({ success: false });
-      }
-    }
+  if (!req.body.username) {
+    return res.status(403).json({ success: false, message: 'Missing user name' });
   }
+
+  if (!req.body.password) {
+    return res.status(403).json({ success: false, message: 'Missing password' });
+  }
+
+  const sql = `
+    select id, name, password
+    from users
+    where name='${req.body.username}'
+  `;
+
+  const users = await db.query(sql);
+
+  if (users.length === 0) {
+    return res.status(403).json({ success: false, message: 'Wrong credentials' });
+  }
+
+  const user = users[0];
+  const match = await bcrypt.compare(req.body.password, user.password);
+
+  if (match) {
+    const token = jwt.sign({
+      data: { id: user.id, username: user.name }
+    }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
+      algorithm: 'HS256'
+    });
+
+    return res.json({ success: true, token });
+  }
+  
+  return res.status(403).json({ success: false, message: 'Wrong credentials' });
 });
 
 module.exports = router;
