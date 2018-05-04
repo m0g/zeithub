@@ -8,6 +8,7 @@
       <p><b>First name:</b> {{me.firstName}}</p>
       <p><b>Last name:</b> {{me.lastName}}</p>
       <p><b>Telephone:</b> {{me.tel}}</p>
+      <p><b>Tax number:</b> {{me.taxNumber}}</p>
       <p>
         <b>Website:</b>&nbsp;
         <a :href="me.website" target="_blank">{{me.website}}</a>
@@ -20,6 +21,7 @@
       <p><b>First name:</b> <input type="text" v-model="user.firstName" /></p>
       <p><b>Last name:</b> <input type="text" v-model="user.lastName" /></p>
       <p><b>Telephone:</b> <input type="text" v-model="user.tel" /></p>
+      <p><b>Tax number:</b> <input type="text" v-model="user.taxNumber" /></p>
       <p><b>Website:</b> <input type="text" v-model="user.website" /></p>
       <p><input type="submit" value="Save" /></p>
     </form>
@@ -60,6 +62,7 @@ export default {
 
         http('/api/me', {
           method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body)
         })
           .then(response => response.json())

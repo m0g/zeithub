@@ -32,6 +32,7 @@ router.get('/', verifyToken, async (req, res) => {
         name, 
         first_name as 'firstName', 
         last_name as 'lastName', 
+        tax_number as 'taxNumber',
         tel, 
         website
       from users
@@ -48,7 +49,7 @@ router.put('/', verifyToken, async (req, res) => {
   await db.init();
 
   const userId = req.userId;
-  const fields = ['email', 'firstName', 'lastName', 'tel', 'website'];
+  const fields = ['email', 'firstName', 'lastName', 'tel', 'website', 'taxNumber'];
 
   if (Object.keys(req.body).length === 0) {
     return res.status(500).json({ success: false, message: 'Empty body' });
