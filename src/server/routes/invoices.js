@@ -14,7 +14,7 @@ router.get('/:number', verifyToken, async (req, res) => {
   const userId = req.userId;
 
   const invoice = await db.queryOne(`
-    select id, number, name, date, due_date as 'dueDate'
+    select id, number, name, date, due_date as 'dueDate', amount
     from invoices
     where number = ${number} and user_id = ${userId}
   `);
@@ -103,8 +103,24 @@ router.post('/', verifyToken, async (req, res) => {
   }
 
   const invoiceId = await db.execute(`
-    insert into invoices (user_id, date, due_date, name, number, project_id)
-    values (${userId}, curdate(), '${dueDate}', 'test', ${number}, ${project.id})
+    insert into invoices (
+      user_id, 
+      date, 
+      due_date, 
+      name, 
+      number, 
+      project_id, 
+      amount
+    )
+    values (
+      ${userId}, 
+      curdate(), 
+      '${dueDate}', 
+      'test', 
+      ${number}, 
+      ${project.id}, 
+      ${hourlyRate}
+    )
   `);
 
   const activityInvoices = await db.execute(`
