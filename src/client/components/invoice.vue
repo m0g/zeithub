@@ -3,7 +3,10 @@
     <button @click="generatePDF">Download!</button>
     <section id="invoice">
       <h1>{{invoice.name}}</h1>
-      <div>
+      <div class="from">
+        <p><b>{{me.firstName}} {{me.lastName}}</b></p>
+      </div>
+      <div class="to">
         <p><b>{{me.firstName}} {{me.lastName}}</b></p>
       </div>
       <table class="info">
@@ -25,6 +28,12 @@
         </tr>
       </table>
       <table class="activities">
+        <tr>
+          <th>Project</th>
+          <th>Task</th>
+          <th>Time (in minutes)</th>
+          <th>Amount (in €)</th>
+        </tr>
         <tr v-for="activity in activities" :key="activity.id">
           <td>{{activity.projectName}}</td>
           <td>{{activity.name}}</td>
@@ -35,6 +44,40 @@
     </section>
   </div>
 </template>
+
+<style scoped>
+#invoice {
+  max-width: 960px;
+  padding: 30px 20px;
+  margin: auto;
+}
+
+#invoice .from {
+  float: left;
+  width: 50%;
+}
+
+#invoice .to {
+  float: right;
+  width: 50%;
+}
+
+#invoice .info {
+  width: 100%;
+}
+
+#invoice .activities {
+  width: 100%;
+  margin-top: 20px;
+}
+
+#invoice .activities,
+#invoice .activities td,
+#invoice .info,
+#invoice .info td {
+  border: 1px solid black;
+}
+</style>
 
 <script>
 import http from "./../http";
