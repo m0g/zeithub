@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import moment from 'moment';
+import * as moment from 'moment';
 
 import App from './components/app.vue';
 import router from './router';
@@ -17,4 +17,3 @@ new Vue({
   template: '<App/>',
   components: { App }
 });
-
