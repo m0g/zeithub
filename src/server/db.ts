@@ -1,6 +1,8 @@
-const mysql = require('mysql2/promise');
+import * as mysql from 'mysql2/promise';
 
 class DB {
+  private connection: mysql.connection;
+
   async init() {
     if (process.env.CLEARDB_DATABASE_URL) {
       this.connection = await mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
