@@ -43,10 +43,11 @@ app.use('/api/expenses', expensesRouter);
 app.use('/api/me', meRouter);
 app.use('/api/invoices', invoicesRouter);
 
-app.use(fallback('index.html', { root: __dirname }));
+app.use(express.static('public'))
+app.use(fallback('index.html', { root: 'public' }));
 
 app.get('/', (req, res) => {
-  res.sendFile('./index.html');
+  res.sendFile('index.html');
 });
 
 // error handler

@@ -10,6 +10,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www --watch src/",
+    "tsc": "tsc",
     "lint": "eslint src/",
     "db:up": "db-migrate up --config config/database.json",
     "db:down": "db-migrate down --config config/database.json",
@@ -42,6 +43,8 @@
     "eslint": "^4.19.1",
     "nodemon": "^1.17.3",
     "style-loader": "^0.21.0",
+    "ts-loader": "^4.3.0",
+    "typescript": "^2.8.3",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "vue-loader": "14.2.2",
     "vue-style-loader": "^4.1.0",

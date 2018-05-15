@@ -2,7 +2,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: [
-    './src/client/index.js'
+    './src/client/index.ts'
   ],
   output: { filename: 'bundle.js' },
   module: {
@@ -10,6 +10,14 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader'
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+        }
       },
       {
         test: /\.css$/,
@@ -21,7 +29,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
     },
-    extensions: ['*', '.js', '.vue', '.json']
+    extensions: ['*', '.ts', '.js', '.vue', '.json']
   },
   plugins: [
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
