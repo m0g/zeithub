@@ -3,7 +3,7 @@
     <h1>Me</h1>
     <personal-info :me="me" :get-me="getMe"></personal-info>
     <fieldset><legend>Addresses</legend></fieldset>
-    <fieldset><legend>Bank accounts</legend></fieldset>
+    <bank-accounts></bank-accounts>
     <change-password></change-password>
   </section>
 </template>
@@ -12,11 +12,13 @@
 import http from '../http';
 import PersonalInfo from './personal-info.vue';
 import ChangePassword from './change-password.vue';
+import BankAccounts from './bank-accounts.vue';
 
 export default {
   components: { 
     PersonalInfo, 
     ChangePassword,
+    BankAccounts,
   },
 
   data() {

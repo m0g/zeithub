@@ -36,6 +36,7 @@
     "mysql2": "^1.5.3",
     "slug": "^0.9.1",
     "vue": "^2.5.16",
+    "vue-class-component": "^6.2.0",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
