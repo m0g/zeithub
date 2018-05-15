@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www --watch src/",
+    "dev": "nodemon ./bin/www",
     "tsc": "tsc",
     "lint": "eslint src/",
     "db:up": "db-migrate up --config config/database.json",
@@ -44,6 +44,7 @@
     "nodemon": "^1.17.3",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.3.0",
+    "ts-node": "^6.0.3",
     "typescript": "^2.8.3",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "vue-loader": "14.2.2",
