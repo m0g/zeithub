@@ -3,8 +3,9 @@
     "outDir": "build",
     "sourceMap": true,
     "strict": true,
+    "noImplicitAny": false,
     "noImplicitReturns": true,
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
     "target": "es5"
   },

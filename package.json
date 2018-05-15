@@ -8,7 +8,7 @@
     "npm": "6.0.0"
   },
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "ts-node ./src/server/index.ts",
     "dev": "nodemon ./bin/www",
     "tsc": "tsc",
     "lint": "eslint src/",
@@ -39,6 +39,9 @@
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.1",
+    "@types/express": "^4.11.1",
+    "@types/morgan": "^1.7.35",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
     "nodemon": "^1.17.3",
