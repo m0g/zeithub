@@ -5,8 +5,6 @@ const db = new DB();
 const create = async (req, res) => {
   await db.init();
 
-  console.log(req.body);
-
   if (!req.body.name) {
     return res.status(403).json({ success: false, message: 'Missing name' });
   }

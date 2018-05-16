@@ -1,14 +1,12 @@
 <template>
   <fieldset>
     <legend>Bank accounts</legend>
-    <form method="POST" @submit="addBankAccount">
-      <form-errors :errors="errors"></form-errors>
-      <input type="text" placeholder="Name" v-model="name"/>
-      <input type="text" placeholder="Owner" v-model="owner"/>
-      <input type="text" placeholder="IBAN" v-model="iban"/>
-      <input type="text" placeholder="BIC" v-model="bic"/>
-      <input type="submit" value="Add" />
-    </form>
+    <add-bank-account></add-bank-account>
+    <ul>
+      <li v-for="account in bankAccounts" :key="account.iban">
+        <b>{{account.name}}</b> {{account.owner}} {{account.iban}} {{account.bic}}
+      </li>
+    </ul>
   </fieldset>
 </template>
 
@@ -17,58 +15,30 @@ import Vue from 'vue'
 import Component from 'vue-class-component';
 
 import http from '../http';
-import FormErrors from './form-errors.vue';
+import AddBankAccount from './add-bank-account.vue';
 
 @Component({
-  components: { FormErrors },
+  components: { AddBankAccount },
 })
 export default class BankAccounts extends Vue {
-  errors:string[] = [];
-  name:string = '';
-  owner:string = '';
-  iban:string = '';
-  bic:string = '';
- 
-  addBankAccount(e) {
-    this.errors = [];
-    e.preventDefault();
+  bankAccounts:{}[] = [];
 
-    if (!this.name) {
-      this.errors.push('Name is missing');
-    }
+  created() {
+    this.getBankAccounts();
+  }
 
-    if (!this.owner) {
-      this.errors.push('Owner is missing');
-    }
-
-    if (!this.iban) {
-      this.errors.push('IBAN is missing');
-    }
-
-    if (!this.bic) {
-      this.errors.push('BIC is missing');
-    }
-
-    if (this.errors.length === 0) {
-      const body = {
-        name: this.name,
-        owner: this.owner,
-        iban: this.iban,
-        bic: this.bic
-      };
-
-      http('/api/bank-accounts', { 
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST', 
-        body: JSON.stringify(body) 
-      })
-        .then(response => response.json())
-        .then(response => {
-          if (response.success) {
-            console.log(response);
-          }
-        });
-    }
+  getBankAccounts() {
+    http('/api/bank-accounts', { 
+      headers: { 'Content-Type': 'application/json' },
+      method: 'GET', 
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          console.log(response);
+          this.bankAccounts = response.bankAccounts;
+        }
+      });
   }
 };
 </script>
