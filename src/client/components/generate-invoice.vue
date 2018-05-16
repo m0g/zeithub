@@ -5,6 +5,17 @@
       <form-errors :errors="errors"></form-errors>
       <p><input type="text" placeholder="Title" v-model="name"></p>
       <p><input type="number" placeholder="Hourly rate" v-model="hourlyRate" /></p>
+      <p>
+        <select v-model="iban">
+          <option value="" disabled selected>Select a bank account</option>
+          <option
+            v-for="account in bankAccounts" 
+            :key="account.iban"
+            :value="account.iban">
+              {{account.name}} {{account.owner}} {{account.iban}} {{account.bic}}
+          </option>
+        </select>
+      </p>
       <p><input type="submit" value="Generate Invoice" /></p>
     </form>
   </fieldset>
@@ -18,10 +29,34 @@ export default {
   components: { FormErrors },
 
   data() {
-    return { name: '', hourlyRate: 0, errors: [] };
+    return {
+      name: '', 
+      hourlyRate: 0, 
+      errors: [], 
+      bankAccounts: [] ,
+      iban: ''
+    };
+  },
+
+  created() {
+    this.getBankAccounts();
   },
 
   methods: {
+    getBankAccounts() {
+      http('/api/bank-accounts', { 
+        headers: { 'Content-Type': 'application/json' },
+        method: 'GET', 
+      })
+        .then(response => response.json())
+        .then(response => {
+          if (response.success) {
+            console.log(response);
+            this.bankAccounts = response.bankAccounts;
+          }
+        });
+    },
+
     generate(e) {
       this.errors = [];
       e.preventDefault();
@@ -34,6 +69,10 @@ export default {
         this.errors.push('You need to add an hourly rate');
       }
 
+      if (!this.iban) {
+        this.errors.push('You need to select a bank account');
+      }
+
       if (!this.$route.query.month) {
         this.errors.push('You need to select a month in the filter area');
       }
@@ -43,7 +82,8 @@ export default {
           name: this.name,
           hourlyRate: this.hourlyRate,
           projectSlug: this.$route.params.slug,
-          month: this.$route.query.month
+          month: this.$route.query.month,
+          iban: this.iban
         };
 
         http('/api/invoices', {
