@@ -58,6 +58,7 @@ export default class BankAccounts extends Vue {
       };
 
       http('/api/bank-accounts', { 
+        headers: { 'Content-Type': 'application/json' },
         method: 'POST', 
         body: JSON.stringify(body) 
       })

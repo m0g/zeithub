@@ -13,6 +13,8 @@ import * as http from 'http';
 // const logger = require('morgan');
 // const fallback = require('express-history-api-fallback');
 
+import bankAccounts from './routes/bank-accounts';
+
 const hamsterRouter = require('./routes/hamster');
 const projectsRouter = require('./routes/projects');
 const signRouter = require('./routes/sign');
@@ -48,6 +50,7 @@ app.use('/api/activities', activitiesRouter);
 app.use('/api/expenses', expensesRouter);
 app.use('/api/me', meRouter);
 app.use('/api/invoices', invoicesRouter);
+app.use('/api/bank-accounts', bankAccounts);
 
 app.use(express.static('public'))
 app.use(fallback('index.html', { root: 'public' }));
