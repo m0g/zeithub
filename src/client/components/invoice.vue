@@ -41,6 +41,11 @@
           <td>{{invoice.amount}}</td>
         </tr>
       </table>
+      <div class="footer">
+        <p><b>{{bankAccount.name}}</b></p>
+        <p><b>IBAN:</b> {{bankAccount.iban}}</p>
+        <p><b>BIC:</b> {{bankAccount.iban}}</p>
+      </div>
     </section>
   </div>
 </template>
@@ -48,8 +53,10 @@
 <style scoped>
 #invoice {
   max-width: 960px;
-  padding: 30px 20px;
+  /* min-height: 1200px; */
+  padding: 30px 20px 130px;
   margin: auto;
+  position: relative;
 }
 
 #invoice .from {
@@ -77,6 +84,13 @@
 #invoice .info td {
   border: 1px solid black;
 }
+
+#invoice .footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid black;
+}
 </style>
 
 <script>
@@ -91,7 +105,8 @@ export default {
     return {
       invoice: {},
       activities: {},
-      me: {}
+      me: {},
+      bankAccount: {}
     };
   },
 
@@ -128,6 +143,7 @@ export default {
           if (response.success) {
             this.invoice = response.invoice;
             this.activities = response.activities;
+            this.bankAccount = response.bankAccount;
           }
         });
     },

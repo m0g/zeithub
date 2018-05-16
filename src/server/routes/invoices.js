@@ -14,9 +14,22 @@ router.get('/:number', verifyToken, async (req, res) => {
   const userId = req.userId;
 
   const invoice = await db.queryOne(`
-    select id, number, name, date, due_date as 'dueDate', amount
+    select 
+      id, 
+      number, 
+      name, 
+      date, 
+      due_date as 'dueDate', 
+      amount, 
+      bank_account_id as 'bankAccountId'
     from invoices
     where number = ${number} and user_id = ${userId}
+  `);
+
+  const bankAccount = await db.queryOne(`
+    select name, owner, iban, bic
+    from bank_accounts
+    where id = ${invoice.bankAccountId}
   `);
 
   const activities = await db.query(`
@@ -35,7 +48,7 @@ router.get('/:number', verifyToken, async (req, res) => {
     order by a.start_time asc
   `);
 
-  res.json({ success: true, invoice, activities });
+  res.json({ success: true, invoice, activities, bankAccount });
 });
 
 router.get('/', verifyToken, async (req, res) => {
@@ -72,8 +85,12 @@ router.post('/', verifyToken, async (req, res) => {
     return res.status(403).json({ success: false, message: 'Missing project' });
   }
 
+  if (!req.body.iban) {
+    return res.status(403).json({ success: false, message: 'Missing bank account' });
+  }
+
   const userId = req.userId;
-  const { hourlyRate, projectSlug } = req.body;
+  const { name, hourlyRate, projectSlug, iban } = req.body;
   
   const [ year, month ] = req.body.month.split('-');
 
@@ -86,6 +103,12 @@ router.post('/', verifyToken, async (req, res) => {
   if (!project) {
     return res.status(500).json({ success: false, message: 'Project does not exists' });
   }
+
+  const bankAccount = await db.queryOne(`
+    select id
+    from bank_accounts
+    where user_id = ${userId} and iban = '${iban}'
+  `);
 
   const dueDate = moment().add(1, 'month').format('YYYY-MM-DD');
   let number = 1;
@@ -110,16 +133,18 @@ router.post('/', verifyToken, async (req, res) => {
       name, 
       number, 
       project_id, 
-      amount
+      amount,
+      bank_account_id
     )
     values (
       ${userId}, 
       curdate(), 
       '${dueDate}', 
-      'test', 
+      '${name}', 
       ${number}, 
       ${project.id}, 
-      ${hourlyRate}
+      ${hourlyRate},
+      ${bankAccount.id}
     )
   `);
 
