@@ -1,7 +1,7 @@
 const express = require('express');
 const multer  = require('multer');
 
-const verifyToken = require('./../verify-token');
+const verifyToken = require('./../verify-token').default;
 const parseXml = require('./../parse-xml');
 const DB = require('./../db').default;
 

@@ -2,7 +2,7 @@ const express = require('express');
 const moment = require('moment');
 
 const DB = require('./../db').default;
-const verifyToken = require('./../verify-token');
+const verifyToken = require('./../verify-token').default;
 
 const router = express.Router();
 const db = new DB();

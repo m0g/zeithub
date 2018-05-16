@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 
 const DB = require('./../db').default;
-const verifyToken = require('./../verify-token');
+const verifyToken = require('./../verify-token').default;
 const { camelToSnake } = require('./../../utils');
 
 const router = express.Router();

@@ -1,7 +1,7 @@
 const express = require('express');
 
 const DB = require('./../db').default;
-const verifyToken = require('./../verify-token');
+const verifyToken = require('./../verify-token').default;
 
 const router = express.Router();
 const db = new DB();
