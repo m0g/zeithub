@@ -11,15 +11,50 @@
     <fieldset class="expenses">
       <legend>List of expenses</legend>
       <table>
+        <tr><th>Name</th><th>Date</th><th>Amount</th></tr>
         <tr v-for="expense in expenses" :key="expense.id">
           <td>{{expense.name}}</td>
-          <td>{{expense.date | formatDate('DD/MM/YYYY')}}</td>
-          <td>{{expense.amount | currency}}</td>
+          <td class="align-center">{{expense.date | formatDate('DD/MM/YYYY')}}</td>
+          <td class="align-right">{{expense.amount | currency}}</td>
         </tr>
       </table>
     </fieldset>
   </section>
 </template>
+
+<style scoped>
+section {
+  display: flex;
+  flex-flow: row wrap;
+  min-height: 100%;
+  height: 100%;
+}  
+
+section h1 {
+  flex: 1 100%;
+  margin: 0 0 10px;
+}
+
+section aside {
+  flex: 1;
+}
+
+section fieldset.expenses {
+  flex: 3;
+}
+
+section table {
+  width: 100%;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.align-right {
+  text-align: right;
+}
+</style>
 
 <script>
 import http from './../http';
@@ -56,25 +91,3 @@ export default {
   components: { AddExpense }
 }
 </script>
-
-<style scoped>
-section {
-  display: flex;
-  flex-flow: row wrap;
-  min-height: 100%;
-  height: 100%;
-}  
-
-section h1 {
-  flex: 1 100%;
-  margin: 0 0 10px;
-}
-
-section aside {
-  flex: 1;
-}
-
-section fieldset.expenses {
-  flex: 3;
-}
-</style>
