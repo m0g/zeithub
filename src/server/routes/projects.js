@@ -1,7 +1,7 @@
 const express = require('express');
 const slugify = require('slug');
 
-const DB = require('./../db');
+const DB = require('./../db').default;
 const verifyToken = require('./../verify-token');
 
 const router = express.Router();

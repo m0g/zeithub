@@ -1,7 +1,10 @@
 import * as mysql from 'mysql2/promise';
 
-class DB {
+export default class DB {
   private connection: mysql.connection;
+
+  constructor() {
+  }
 
   async init() {
     if (process.env.CLEARDB_DATABASE_URL) {
@@ -33,6 +36,4 @@ class DB {
 
     return results ? results.insertId : false;
   }
-}
-
-module.exports = DB;
+};

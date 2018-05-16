@@ -3,7 +3,7 @@ const multer  = require('multer');
 
 const verifyToken = require('./../verify-token');
 const parseXml = require('./../parse-xml');
-const DB = require('./../db');
+const DB = require('./../db').default;
 
 const router = express.Router();
 const upload = multer();
