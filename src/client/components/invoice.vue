@@ -95,10 +95,6 @@
 
 <script>
 import http from "./../http";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-
-window.html2canvas = html2canvas;
 
 export default {
   data() {
@@ -117,10 +113,14 @@ export default {
 
   methods: {
     async generatePDF(e) {
+      const jsPDF = await import(/* webpackChunkName: "jspdf" */ 'jspdf');
+      const html2canvas = await import(/* webpackChunkName: "html2canvas" */ 'html2canvas');
       const pdfConf = {
         pagesplit: false,
         background: "#fff"
       };
+
+      window.html2canvas = html2canvas;
 
       const canvas = await html2canvas(document.getElementById("invoice"));
       const pdf = new jsPDF("p", "pt", "a4");
