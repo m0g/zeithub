@@ -6,6 +6,7 @@
     <fieldset>
       <legend>€</legend>
       <p><b>Turnover:</b> {{turnover | currency}}</p>
+      <p><b>Profit:</b> {{profit | currency}}</p>
     </fieldset>
     </aside>
     <fieldset class="expenses">
@@ -62,7 +63,7 @@ import AddExpense from './add-expense';
 
 export default {
   data() {
-    return { expenses: [], turnover: 0 };
+    return { expenses: [], turnover: 0, profit: 0 };
   },
 
   created() {
@@ -77,11 +78,19 @@ export default {
           if (data.success && data.expenses.length > 0) {
             this.expenses = data.expenses;
             this.turnover = this.getTurnover(data.expenses);
+            this.profit = this.getProfit(data.expenses);
           }
         });
     },
 
     getTurnover(expenses) {
+      return expenses
+        .map(expense => parseFloat(expense.amount))
+        .filter(amount => amount > 0)
+        .reduce((acc, amount) => acc + amount);
+    },
+
+    getProfit(expenses) {
       return expenses
         .map(expense => parseFloat(expense.amount))
         .reduce((acc, amount) => acc + amount);
