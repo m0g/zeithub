@@ -35,6 +35,10 @@
       </p>
       <p><input type="submit" value="Send" /></p>
     </form>
+    <p>How to write a password:</p>
+    <a href="https://xkcd.com/936/" target="_blank">
+      <img src="https://imgs.xkcd.com/comics/password_strength.png" />
+    </a>
   </fieldset>
 </template>
 <script>
