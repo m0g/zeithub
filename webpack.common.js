@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
   entry: [
@@ -7,10 +8,6 @@ module.exports = {
   output: { filename: 'bundle.js' },
   module: {
     rules: [
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      },
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
@@ -21,8 +18,16 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
-      }
+        use: [
+          'vue-style-loader',
+          'style-loader', 
+          'css-loader' 
+        ]
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
     ]
   },
   resolve: {
@@ -33,5 +38,9 @@ module.exports = {
   },
   plugins: [
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-  ]
+    new VueLoaderPlugin(),
+  ],
+  node: {
+    fs: 'empty'
+ }
 };
