@@ -52,6 +52,7 @@ header a {
 
 #router-view {
   margin: 10px;
+  padding: 0;
   height: calc(100% - 58px);
 }
 </style>

@@ -1,8 +1,7 @@
 <template>
   <div>
-    <button @click="generatePDF" v-show="!pdfGenerated">Download!</button>
     <iframe src="" ref="iframe" frameborder="0" v-show="pdfGenerated"></iframe>
-    <section id="invoice" v-show="!pdfGenerated">
+    <section id="invoice" v-show="!pdfGenerated" ref="container">
       <h1>{{invoice.name}}</h1>
       <div class="from">
         <p><b>{{me.firstName}} {{me.lastName}}</b></p>
@@ -54,9 +53,10 @@
 <style scoped>
 #invoice {
   max-width: 560px;
-  padding: 30px 10px 130px;
-  /* margin: auto; */
+  height: 740px;
+  padding: 0 10px;
   position: relative;
+  font-size: 10pt;
 }
 
 #invoice .from {
@@ -90,6 +90,7 @@
   bottom: 0;
   left: 0;
   border-top: 1px solid black;
+  font-size: 10pt;
 }
 
 iframe {
@@ -114,14 +115,16 @@ export default {
   },
 
   created() {
-    this.getInvoice();
-    this.getMe();
+    this.generatePDF();
   },
 
   methods: {
-    async generatePDF(e) {
+    async generatePDF() {
+      await this.getInvoice();
+      await this.getMe();
+
       const jsPDF = await import(/* webpackChunkName: "jspdf" */ 'jspdf');
-      const container = document.getElementById("invoice");
+      const container = this.$refs.container;
 
       const pdf = new jsPDF.default("p", "pt", "a4");
       pdf.canvas.height = 72 * 11;
