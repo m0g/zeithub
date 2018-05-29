@@ -34,18 +34,15 @@ router.get('/:number', verifyToken, async (req, res) => {
 
   const activities = await db.query(`
     select
-      a.id, 
       a.name, 
-      a.start_time as 'startTime', 
-      a.end_time as 'endTime',
-      a.duration_minutes as 'durationMinutes',
+      sum(a.duration_minutes) as 'durationMinutes',
       p.name as 'projectName',
       p.slug as 'projectSlug'
     from activities a
     join projects p on a.project_id = p.id
     where a.user_id = ${req.userId}
     and a.invoice_id = ${invoice.id}
-    order by a.start_time asc
+    group by a.name, p.name, p.slug
   `);
 
   res.json({ success: true, invoice, activities, bankAccount });

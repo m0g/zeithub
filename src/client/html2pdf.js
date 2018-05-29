@@ -8,7 +8,7 @@
 
 import html2canvas from 'html2canvas';
 
-export default function html2pdf (html,pdf,callback) {
+export default (html,pdf,callback) => {
 	var canvas = pdf.canvas;
 	if (!canvas) {
 		alert('jsPDF canvas plugin not installed');
@@ -49,8 +49,8 @@ export default function html2pdf (html,pdf,callback) {
 		}
 
 	};
-	canvas.annotations = pdf.annotations;
-	
+  canvas.annotations = pdf.annotations;
+
 	pdf.context2d._pageBreakAt = function(y) {
 		this.pageBreaks.push(y);
 	};
@@ -60,7 +60,7 @@ export default function html2pdf (html,pdf,callback) {
 			pdf.addPage();
 		}
 		pdf.setPage(pageOneBased);
-	}
+	};
 
 	if (typeof html === 'string') {
 		// remove all scripts

@@ -101,7 +101,6 @@ iframe {
 
 <script>
 import http from "./../http";
-import html2pdf from './../../html2pdf';
 
 export default {
   data() {
@@ -123,16 +122,17 @@ export default {
       await this.getInvoice();
       await this.getMe();
 
-      const jsPDF = await import(/* webpackChunkName: "jspdf" */ 'jspdf');
+      const jsPDF = await import('jspdf');
+      const html2pdf = await import('./../html2pdf');
       const container = this.$refs.container;
+      const pdf = new jsPDF.default('p', 'pt', 'a4');
 
-      const pdf = new jsPDF.default("p", "pt", "a4");
       pdf.canvas.height = 72 * 11;
       pdf.canvas.width = 72 * 8.5;
 
-      html2pdf(document.getElementById("invoice"), pdf, pdf => {
+      html2pdf.default(document.getElementById("invoice"), pdf, pdf => {
         this.pdfGenerated = true;
-        this.$refs.iframe.src = pdf.output('datauristring');
+        this.$refs.iframe.src = pdf.output("datauristring");
       });
     },
 
