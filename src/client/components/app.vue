@@ -15,36 +15,43 @@
   </div>
 </template>
 <script>
-  import { isLoggedIn } from './../auth';
+import { isLoggedIn } from "./../auth";
 
-  export default {
-    data() {
-      return { isLoggedIn: isLoggedIn()}
-    }
-  };
+export default {
+  data() {
+    return { isLoggedIn: isLoggedIn() };
+  }
+};
 </script>
 <style>
-  html, body {
-    font-family: arial;
-    margin: 0;
-    padding: 0;
-  }
+html,
+body,
+#app {
+  font-family: arial;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
 
-  #app-name {
-    color: #ff7979;
-  }
+#app-name {
+  color: #ff7979;
+}
 
-  header {
-    margin-bottom: 10px;
-    padding: 10px 15px;
-    background: #333;
-  }
+header {
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  background: #333;
+}
 
-  header a {
-    color: #eee;
-    text-decoration: none;
-    margin: 0 5px;
-  }
+header a {
+  color: #eee;
+  text-decoration: none;
+  margin: 0 5px;
+}
 
-  #router-view { margin: 10px; }
+#router-view {
+  margin: 10px;
+  height: calc(100% - 58px);
+}
 </style>

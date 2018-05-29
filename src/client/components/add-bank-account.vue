@@ -18,6 +18,7 @@ import FormErrors from './form-errors.vue';
 
 @Component({
   components: { FormErrors },
+  props: [ 'getBankAccounts' ],
 })
 export default class AddBankAccount extends Vue {
   errors:string[] = [];

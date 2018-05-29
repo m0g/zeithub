@@ -1,7 +1,7 @@
 <template>
   <fieldset>
     <legend>Bank accounts</legend>
-    <add-bank-account></add-bank-account>
+    <add-bank-account get-bank-accounts="getBankAccounts"></add-bank-account>
     <ul>
       <li v-for="account in bankAccounts" :key="account.iban">
         <b>{{account.name}}</b> {{account.owner}} {{account.iban}} {{account.bic}}

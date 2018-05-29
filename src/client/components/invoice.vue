@@ -1,7 +1,8 @@
 <template>
   <div>
-    <button @click="generatePDF">Download!</button>
-    <section id="invoice">
+    <button @click="generatePDF" v-show="!pdfGenerated">Download!</button>
+    <iframe src="" ref="iframe" frameborder="0" v-show="pdfGenerated"></iframe>
+    <section id="invoice" v-show="!pdfGenerated">
       <h1>{{invoice.name}}</h1>
       <div class="from">
         <p><b>{{me.firstName}} {{me.lastName}}</b></p>
@@ -52,10 +53,9 @@
 
 <style scoped>
 #invoice {
-  max-width: 960px;
-  /* min-height: 1200px; */
-  padding: 30px 20px 130px;
-  margin: auto;
+  max-width: 560px;
+  padding: 30px 10px 130px;
+  /* margin: auto; */
   position: relative;
 }
 
@@ -91,10 +91,16 @@
   left: 0;
   border-top: 1px solid black;
 }
+
+iframe {
+  width: 100%;
+  height: 100%;
+}
 </style>
 
 <script>
 import http from "./../http";
+import html2pdf from './../../html2pdf';
 
 export default {
   data() {
@@ -102,7 +108,8 @@ export default {
       invoice: {},
       activities: {},
       me: {},
-      bankAccount: {}
+      bankAccount: {},
+      pdfGenerated: false
     };
   },
 
@@ -114,22 +121,15 @@ export default {
   methods: {
     async generatePDF(e) {
       const jsPDF = await import(/* webpackChunkName: "jspdf" */ 'jspdf');
-      const html2canvas = await import(/* webpackChunkName: "html2canvas" */ 'html2canvas');
-      const pdfConf = {
-        pagesplit: false,
-        background: "#fff"
-      };
+      const container = document.getElementById("invoice");
 
-      window.html2canvas = html2canvas;
+      const pdf = new jsPDF.default("p", "pt", "a4");
+      pdf.canvas.height = 72 * 11;
+      pdf.canvas.width = 72 * 8.5;
 
-      const canvas = await html2canvas(document.getElementById("invoice"));
-      const pdf = new jsPDF("p", "pt", "a4");
-
-      document.body.appendChild(canvas);
-
-      pdf.addHTML(canvas, 0, 0, pdfConf, () => {
-        document.body.removeChild(canvas);
-        pdf.save("test.pdf");
+      html2pdf(document.getElementById("invoice"), pdf, pdf => {
+        this.pdfGenerated = true;
+        this.$refs.iframe.src = pdf.output('datauristring');
       });
     },
 
