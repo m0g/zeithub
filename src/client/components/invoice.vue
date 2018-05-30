@@ -40,6 +40,10 @@
           <td>{{activity.durationMinutes}}</td>
           <td>{{invoice.amount}}</td>
         </tr>
+        <tr>
+          <th colspan="2">Total minutes</th>
+          <td>{{totalMinutes}}</td>
+        </tr>
       </table>
       <div class="footer">
         <p><b>{{bankAccount.name}}</b></p>
@@ -49,55 +53,6 @@
     </section>
   </div>
 </template>
-
-<style scoped>
-#invoice {
-  max-width: 560px;
-  height: 740px;
-  padding: 0 10px;
-  position: relative;
-  font-size: 10pt;
-}
-
-#invoice .from {
-  float: left;
-  width: 50%;
-}
-
-#invoice .to {
-  float: right;
-  width: 50%;
-}
-
-#invoice .info {
-  width: 100%;
-}
-
-#invoice .activities {
-  width: 100%;
-  margin-top: 20px;
-}
-
-#invoice .activities,
-#invoice .activities td,
-#invoice .info,
-#invoice .info td {
-  border: 1px solid black;
-}
-
-#invoice .footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border-top: 1px solid black;
-  font-size: 10pt;
-}
-
-iframe {
-  width: 100%;
-  height: 100%;
-}
-</style>
 
 <script>
 import http from "./../http";
@@ -109,7 +64,8 @@ export default {
       activities: {},
       me: {},
       bankAccount: {},
-      pdfGenerated: false
+      pdfGenerated: false,
+      totalMinutes: 0
     };
   },
 
@@ -147,6 +103,9 @@ export default {
             this.invoice = response.invoice;
             this.activities = response.activities;
             this.bankAccount = response.bankAccount;
+
+            this.totalMinutes = response.activities
+              .reduce((acc, next) => acc + parseInt(next.durationMinutes), 0);
           }
         });
     },
@@ -163,3 +122,52 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#invoice {
+  max-width: 560px;
+  height: 740px;
+  padding: 0 10px;
+  position: relative;
+  font-size: 9pt;
+}
+
+#invoice .from {
+  float: left;
+  width: 50%;
+}
+
+#invoice .to {
+  float: right;
+  width: 50%;
+}
+
+#invoice .info {
+  width: 100%;
+}
+
+#invoice .activities {
+  width: 100%;
+  margin-top: 20px;
+}
+
+#invoice .activities,
+#invoice .activities td,
+#invoice .info,
+#invoice .info td {
+  border: 1px solid black;
+}
+
+#invoice .footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid black;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+}
+</style>
+
