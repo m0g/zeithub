@@ -1,6 +1,10 @@
 import * as jwt from 'jsonwebtoken';
 
 function verifyToken(req, res, next) {
+  if (!req.headers['authorization']) {
+    return res.status(403).send({ auth: false, message: 'Missing Authorization headers' });
+  }
+
   const match = req.headers['authorization'].match(/Bearer (.+)/i);
 
   if (!match) {

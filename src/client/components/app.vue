@@ -15,11 +15,23 @@
   </div>
 </template>
 <script>
-import { isLoggedIn } from "./../auth";
+import { isLoggedIn, signOut } from "./../auth";
+import http from './../http';
 
 export default {
   data() {
     return { isLoggedIn: isLoggedIn() };
+  },
+
+  created() {
+    http('/api/me')
+      .then(data => data.json())
+      .then(data => {
+        if (data.auth === false && isLoggedIn()) {
+          signOut();
+          setTimeout(() => window.location.href = '/', 1000);
+        }
+      })
   }
 };
 </script>
