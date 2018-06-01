@@ -12,9 +12,14 @@ Vue.filter(
 Vue.filter('currency', amount => `${parseFloat(amount).toFixed(2)}€`);
 
 Vue.filter(
-  'currencyPDF', 
+  'currencyPDF',
   amount => `${parseFloat(amount).toFixed(2)}`
 );
+
+Vue.filter(
+  'formatHours',
+  minutes => moment().startOf('day').add(minutes, 'minutes').format('HH:mm')
+)
 
 new Vue({
   router,

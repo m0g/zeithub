@@ -37,22 +37,22 @@
         <tr v-for="activity in activities" :key="activity.id">
           <td>{{activity.projectName}}</td>
           <td>{{activity.name}}</td>
-          <td>{{activity.durationMinutes}}</td>
+          <td>{{activity.durationMinutes | formatHours}}</td>
           <td class="amount">
-            {{invoice.amount | currencyPDF}}
+            {{activity.durationMinutes / 60 * invoice.amount | currencyPDF}}
             <img src="/euro.svg" width="6px" />
           </td>
         </tr>
         <tr>
-          <th colspan="2"></th>
+          <th></th>
           <td>Total minutes</td>
-          <td>{{totalMinutes}}</td>
+          <td colspan="2">{{totalMinutes | formatHours}}</td>
         </tr>
         <tr>
-          <th colspan="2"></th>
+          <th></th>
           <td>Sub total</td>
-          <td>
-            {{totalMinutes / 60 * invoice.amount}}
+          <td colspan="2">
+            {{totalMinutes / 60 * invoice.amount | currencyPDF}}
             <img src="/euro.svg" width="6px" />
           </td>
         </tr>
