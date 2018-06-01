@@ -11,6 +11,11 @@ Vue.filter(
 
 Vue.filter('currency', amount => `${parseFloat(amount).toFixed(2)}€`);
 
+Vue.filter(
+  'currencyPDF', 
+  amount => `${parseFloat(amount).toFixed(2)}`
+);
+
 new Vue({
   router,
   el: '#app',

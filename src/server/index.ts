@@ -8,11 +8,6 @@ import * as logger from 'morgan';
 import * as fallback from 'express-history-api-fallback';
 import * as http from 'http';
 
-// const express = require('express');
-// const cookieParser = require('cookie-parser');
-// const logger = require('morgan');
-// const fallback = require('express-history-api-fallback');
-
 import bankAccounts from './routes/bank-accounts';
 
 const hamsterRouter = require('./routes/hamster');

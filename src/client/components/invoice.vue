@@ -32,23 +32,35 @@
           <th>Project</th>
           <th>Task</th>
           <th>Time (in minutes)</th>
-          <th>Amount (in €)</th>
+          <th width="12%">Amount</th>
         </tr>
         <tr v-for="activity in activities" :key="activity.id">
           <td>{{activity.projectName}}</td>
           <td>{{activity.name}}</td>
           <td>{{activity.durationMinutes}}</td>
-          <td>{{invoice.amount}}</td>
+          <td class="amount">
+            {{invoice.amount | currencyPDF}}
+            <img src="/euro.svg" width="6px" />
+          </td>
         </tr>
         <tr>
-          <th colspan="2">Total minutes</th>
+          <th colspan="2"></th>
+          <td>Total minutes</td>
           <td>{{totalMinutes}}</td>
+        </tr>
+        <tr>
+          <th colspan="2"></th>
+          <td>Sub total</td>
+          <td>
+            {{totalMinutes / 60 * invoice.amount}}
+            <img src="/euro.svg" width="6px" />
+          </td>
         </tr>
       </table>
       <div class="footer">
         <p><b>{{bankAccount.name}}</b></p>
         <p><b>IBAN:</b> {{bankAccount.iban}}</p>
-        <p><b>BIC:</b> {{bankAccount.iban}}</p>
+        <p><b>BIC:</b> {{bankAccount.bic}}</p>
       </div>
     </section>
   </div>
@@ -130,6 +142,7 @@ export default {
   padding: 0 10px;
   position: relative;
   font-size: 9pt;
+  font-family: sans-serif;
 }
 
 #invoice .from {
@@ -158,6 +171,9 @@ export default {
   border: 1px solid black;
 }
 
+#invoice .activities td {
+  text-align: right;
+}
 #invoice .footer {
   position: absolute;
   bottom: 0;
@@ -170,4 +186,3 @@ iframe {
   height: 100%;
 }
 </style>
-
