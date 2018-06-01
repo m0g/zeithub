@@ -7,7 +7,7 @@ module.exports = {
     './src/client/index.ts'
   ],
   output: { 
-    filename: '[name].bundle.js',
+    filename: 'index.bundle.js',
     chunkFilename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
