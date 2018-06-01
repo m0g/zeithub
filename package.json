@@ -17,6 +17,7 @@
     "db:up": "db-migrate up --config config/database.json",
     "db:down": "db-migrate down --config config/database.json",
     "db:reset": "db-migrate reset --config config/database.json",
+    "webpack:prod": "webpack --config webpack.prod.js",
     "heroku-postbuild": "db-migrate up && webpack --config webpack.prod.js && npm run tsc"
   },
   "dependencies": {
