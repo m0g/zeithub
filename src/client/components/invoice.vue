@@ -45,8 +45,8 @@
         </tr>
         <tr>
           <th></th>
-          <td>Total minutes</td>
-          <td colspan="2">{{totalMinutes | formatHours}}</td>
+          <td>Total time</td>
+          <td colspan="2">{{totalMinutes | totalHours}}</td>
         </tr>
         <tr>
           <th></th>

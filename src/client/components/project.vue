@@ -5,7 +5,7 @@
       <project-filters :get-project="getProject"></project-filters>
       <fieldset>
         <legend>Stats</legend>
-        <p><b>Total time:</b> {{stats.duration}} hours</p>
+        <p><b>Total time:</b> {{stats.durationMinutes | totalHours}} hours</p>
       </fieldset>
       <generate-invoice></generate-invoice>
     </aside>
@@ -68,11 +68,7 @@
           .map(activity => activity.durationMinutes)
           .reduce((acc, duration) => acc + duration);
 
-        const duration = `
-          ${Math.floor(durationMinutes / 60)}:${Math.floor(durationMinutes % 60)}
-        `;
-
-        return { duration };
+        return { durationMinutes };
       },
 
       groupByDate(activities) {

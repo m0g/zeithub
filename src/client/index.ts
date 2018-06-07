@@ -21,6 +21,11 @@ Vue.filter(
   minutes => moment().startOf('day').add(minutes, 'minutes').format('HH:mm')
 )
 
+Vue.filter(
+  'totalHours',
+  minutes => `${Math.floor(minutes / 60)}:${minutes % 60}`
+)
+
 new Vue({
   router,
   el: '#app',
