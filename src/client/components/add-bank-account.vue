@@ -16,11 +16,14 @@ import Component from 'vue-class-component';
 import http from '../http';
 import FormErrors from './form-errors.vue';
 
+const Props = Vue.extend({
+  props: { getBankAccounts: Function }
+})
+
 @Component({
   components: { FormErrors },
-  props: { getBankAccounts: Function },
 })
-export default class AddBankAccount extends Vue {
+export default class AddBankAccount extends Props {
   errors:string[] = [];
   name:string = '';
   owner:string = '';
@@ -62,7 +65,7 @@ export default class AddBankAccount extends Vue {
       })
         .then(response => response.json())
         .then(response => {
-          if (response.success) {
+          if (response.success && this.getBankAccounts) {
             this.getBankAccounts();
           }
         });
