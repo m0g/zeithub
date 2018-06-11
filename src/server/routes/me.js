@@ -13,10 +13,10 @@ const buildQuery = body => {
   let query = '';
 
   Object.keys(body).forEach(key => {
-    query += ` ${camelToSnake(key)} = '${body[key]}'`;
+    query += ` ${camelToSnake(key)} = '${body[key]}',`;
   });
 
-  return query;
+  return query.slice(0, -1);
 };
 
 
