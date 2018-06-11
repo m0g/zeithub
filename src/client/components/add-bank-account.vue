@@ -18,7 +18,7 @@ import FormErrors from './form-errors.vue';
 
 @Component({
   components: { FormErrors },
-  props: [ 'getBankAccounts' ],
+  props: { getBankAccounts: Function },
 })
 export default class AddBankAccount extends Vue {
   errors:string[] = [];
@@ -63,7 +63,7 @@ export default class AddBankAccount extends Vue {
         .then(response => response.json())
         .then(response => {
           if (response.success) {
-            console.log(response);
+            this.getBankAccounts();
           }
         });
     }
