@@ -18,7 +18,7 @@ import FormErrors from './form-errors.vue';
 
 const Props = Vue.extend({
   props: { getBankAccounts: Function }
-})
+});
 
 @Component({
   components: { FormErrors },

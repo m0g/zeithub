@@ -17,10 +17,14 @@ import Component from 'vue-class-component';
 import http from '../http';
 import FormErrors from './form-errors.vue';
 
+const Props = Vue.extend({
+  props: { getAddresses: Function }
+});
+
 @Component({
   components: { FormErrors },
 })
-export default class AddAddress extends Vue {
+export default class AddAddress extends Props {
   errors:string[] = [];
   name:string = '';
   street:string = '';
@@ -68,7 +72,7 @@ export default class AddAddress extends Vue {
       })
         .then(response => response.json())
         .then(response => {
-          console.log(response)
+          this.getAddresses();
         });
     }
  
