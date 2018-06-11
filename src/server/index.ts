@@ -9,6 +9,7 @@ import * as fallback from 'express-history-api-fallback';
 import * as http from 'http';
 
 import bankAccounts from './routes/bank-accounts';
+import addresses from './routes/addresses';
 
 const hamsterRouter = require('./routes/hamster');
 const projectsRouter = require('./routes/projects');
@@ -46,6 +47,7 @@ app.use('/api/expenses', expensesRouter);
 app.use('/api/me', meRouter);
 app.use('/api/invoices', invoicesRouter);
 app.use('/api/bank-accounts', bankAccounts);
+app.use('/api/addresses', addresses);
 
 app.use(express.static('public'))
 app.use(fallback('index.html', { root: 'public' }));
