@@ -51,7 +51,6 @@ export default {
         .then(response => response.json())
         .then(response => {
           if (response.success) {
-            console.log(response);
             this.bankAccounts = response.bankAccounts;
           }
         });

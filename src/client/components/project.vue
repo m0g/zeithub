@@ -3,6 +3,7 @@
     <h1>{{project.name}}</h1>
     <aside>
       <project-filters :get-project="getProject"></project-filters>
+      <client></client>
       <fieldset>
         <legend>Stats</legend>
         <p><b>Total time:</b> {{stats.durationMinutes | totalHours}} hours</p>
@@ -32,6 +33,7 @@
   import Activity from './activity.vue';
   import ProjectFilters from './project-filters.vue';
   import GenerateInvoice from './generate-invoice.vue';
+  import Client from './client.vue';
 
   export default {
     data() {
@@ -92,6 +94,7 @@
       Activity,
       ProjectFilters,
       GenerateInvoice,
+      Client,
     }
   }
 </script>
