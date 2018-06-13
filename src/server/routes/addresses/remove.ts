@@ -1,17 +1,17 @@
-const DB = require('./../../db').default;
+import DB from './../../db';
 
 const db = new DB();
 
-const deleteAccount = async (req, res) => {
+export default async (req, res) => {
   await db.init();
 
-  const iban = req.params.iban;
   const userId = req.userId;
+  const id = req.params.id;
 
   try {
     await db.execute(`
-      delete from bank_accounts
-      where iban = '${iban}' and user_id = ${userId}
+      delete from addresses
+      where id = '${id}' and user_id = ${userId}
     `)
   } catch (error) {
     return res.status(500).json({ 
@@ -22,6 +22,4 @@ const deleteAccount = async (req, res) => {
   }
 
   return res.json({ success: true });
-};
-
-module.exports = deleteAccount;
+}
