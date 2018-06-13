@@ -5,6 +5,8 @@
       <h1>{{invoice.name}}</h1>
       <div class="from">
         <p><b>{{me.firstName}} {{me.lastName}}</b></p>
+        <p>{{address.street}}</p>
+        <p>{{address.postcode}} {{address.country}}</p>
       </div>
       <div class="to">
         <p><b>{{me.firstName}} {{me.lastName}}</b></p>
@@ -76,6 +78,7 @@ export default {
       activities: {},
       me: {},
       bankAccount: {},
+      address: {},
       pdfGenerated: false,
       totalMinutes: 0
     };
@@ -89,6 +92,7 @@ export default {
     async generatePDF() {
       await this.getInvoice();
       await this.getMe();
+      await this.getAddress();
 
       const jsPDF = await import('jspdf');
       const html2pdf = await import('./../html2pdf');
@@ -128,6 +132,17 @@ export default {
         .then(data => {
           if (data.success) {
             this.me = data.me;
+          }
+        });
+    },
+
+    getAddress() {
+      http('/api/addresses')
+        .then(data => data.json())
+        .then(data => {
+          console.log(data)
+          if (data.success) {
+            this.address = data.addresses[0];
           }
         });
     }
