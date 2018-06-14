@@ -10,8 +10,6 @@ const upload = multer();
 const db = new DB();
 
 router.post('/', verifyToken, upload.single('xml'), async (req, res) => {
-  await db.init();
-
   const file = req.file;
   const userId = req.userId;
 

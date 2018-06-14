@@ -8,8 +8,6 @@ const router = express.Router();
 const db = new DB();
 
 router.get('/:number', verifyToken, async (req, res) => {
-  await db.init();
-
   const number = req.params.number;
   const userId = req.userId;
 
@@ -49,8 +47,6 @@ router.get('/:number', verifyToken, async (req, res) => {
 });
 
 router.get('/', verifyToken, async (req, res) => {
-  await db.init();
-
   const userId = req.userId;
 
   const invoices = await db.query(`
@@ -64,8 +60,6 @@ router.get('/', verifyToken, async (req, res) => {
 });
 
 router.post('/', verifyToken, async (req, res) => {
-  await db.init();
-
   if (!req.body.name) {
     return res.status(403).json({ success: false, message: 'Missing name' });
   }

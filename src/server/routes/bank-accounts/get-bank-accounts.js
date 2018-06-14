@@ -3,8 +3,6 @@ const DB = require('./../../db').default;
 const db = new DB();
 
 const getBankAccounts = async (req, res) => {
-  await db.init();
-
   const userId = req.userId;
 
   const bankAccounts = await db.query(`

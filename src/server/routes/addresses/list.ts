@@ -3,8 +3,6 @@ import DB from './../../db';
 const db = new DB();
 
 export default async (req, res) => {
-  await db.init();
-
   const userId = req.userId;
 
   const addresses = await db.query(`

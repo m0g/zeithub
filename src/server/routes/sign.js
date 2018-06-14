@@ -9,8 +9,6 @@ const db = new DB();
 const saltRounds = parseInt(process.env.BCRYPT_SALT);
 
 router.post('/up', async (req, res) => {
-  await db.init();
-
   if (!req.body.username) {
     return res.status(403).json({ success: false, message: 'Missing username' });
   }
@@ -63,8 +61,6 @@ router.post('/up', async (req, res) => {
 });
 
 router.post('/in', async (req, res) => {
-  await db.init();
-
   if (!req.body.username) {
     return res.status(403).json({ success: false, message: 'Missing user name' });
   }

@@ -3,8 +3,6 @@ const DB = require('./../../db').default;
 const db = new DB();
 
 const deleteAccount = async (req, res) => {
-  await db.init();
-
   const iban = req.params.iban;
   const userId = req.userId;
 

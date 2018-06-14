@@ -3,8 +3,6 @@ const DB = require('./../../db').default;
 const db = new DB();
 
 const create = async (req, res) => {
-  await db.init();
-
   const userId = req.userId;
 
   if (!req.body.name) {

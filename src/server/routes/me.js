@@ -21,8 +21,6 @@ const buildQuery = body => {
 
 
 router.get('/', verifyToken, async (req, res) => {
-  await db.init();
-
   const userId = req.userId;
 
   try {
@@ -46,8 +44,6 @@ router.get('/', verifyToken, async (req, res) => {
 });
 
 router.put('/', verifyToken, async (req, res) => {
-  await db.init();
-
   const userId = req.userId;
   const fields = ['email', 'firstName', 'lastName', 'tel', 'website', 'taxNumber'];
 
@@ -89,8 +85,6 @@ router.put('/', verifyToken, async (req, res) => {
 });
 
 router.put('/passwd', verifyToken, async (req, res) => {
-  await db.init();
-
   const userId = req.userId;
 
   if (!req.body.currentPassword) {
