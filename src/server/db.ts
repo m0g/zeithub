@@ -1,22 +1,34 @@
 import * as mysql from 'mysql2/promise';
 
 export default class DB {
+  private pool: mysql.pool;
   private connection: mysql.connection;
 
   constructor() {
-  }
-
-  async init() {
     if (process.env.CLEARDB_DATABASE_URL) {
-      this.connection = await mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
+      this.pool = mysql.createPool(process.env.CLEARDB_DATABASE_URL);
     } else {
-      this.connection = await mysql.createConnection({
+      this.pool = mysql.createPool({
         host     : process.env.DB_HOST,
         user     : process.env.DB_USER,
         password : process.env.DB_PASSWD,
         database : process.env.DB_NAME,
       });
     }
+  }
+
+  async init() {
+    this.connection = await this.pool.getConnection();
+    // if (process.env.CLEARDB_DATABASE_URL) {
+    //   this.connection = await mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
+    // } else {
+    //   this.connection = await mysql.createConnection({
+    //     host     : process.env.DB_HOST,
+    //     user     : process.env.DB_USER,
+    //     password : process.env.DB_PASSWD,
+    //     database : process.env.DB_NAME,
+    //   });
+    // }
 
     return true;
   }
