@@ -7,8 +7,6 @@ const router = express.Router();
 const db = new DB();
 
 router.get('/', verifyToken, async (req, res) => {
-  await db.init();
-
   let expenses;
 
   try {
@@ -34,8 +32,6 @@ router.get('/', verifyToken, async (req, res) => {
 });
 
 router.post('/', verifyToken, async (req, res) => {
-  await db.init();
-
   if (!req.body.name) {
     return res.status(403).json({ success: false, message: 'Missing name' });
   }

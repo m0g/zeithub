@@ -7,8 +7,6 @@ const router = express.Router();
 const db = new DB();
 
 router.get('/', verifyToken, async (req, res) => {
-  await db.init();
-
   try {
     const activities = await db.query(`
       select 

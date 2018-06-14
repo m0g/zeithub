@@ -21,8 +21,6 @@ const filterByMonth = monthDate => {
 };
 
 router.get('/:slug', verifyToken, async (req, res) => {
-  await db.init();
-
   const slug = req.params.slug;
   const userId = req.userId;
   const month = req.query.month || '';
@@ -50,8 +48,6 @@ router.get('/:slug', verifyToken, async (req, res) => {
 });
 
 router.get('/', verifyToken, async (req, res) => {
-  await db.init();
-
   const projects = await db.query(`
     select name, slug
     from projects
@@ -62,8 +58,6 @@ router.get('/', verifyToken, async (req, res) => {
 });
 
 router.post('/', verifyToken, async (req, res) => {
-  await db.init();
-
   const userId = req.userId;
 
   if (!req.body.name) {
