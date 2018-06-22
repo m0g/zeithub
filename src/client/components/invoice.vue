@@ -1,7 +1,11 @@
 <template>
   <div>
-    <iframe src="" ref="iframe" frameborder="0" v-show="pdfGenerated"></iframe>
-    <section id="invoice" v-show="!pdfGenerated" ref="container">
+    <fieldset>
+      <legend>Actions</legend>
+      <button @click="generatePDF">Generate PDF</button>
+      <button @click="editMode = true">Edit</button>
+    </fieldset>
+    <section id="invoice" ref="container">
       <h1>{{invoice.name}}</h1>
       <div class="from">
         <p><b>{{me.firstName}} {{me.lastName}}</b></p>
@@ -29,70 +33,50 @@
           <td>{{me.taxNumber}}</td>
         </tr>
       </table>
-      <table class="activities">
-        <tr>
-          <th>Project</th>
-          <th>Task</th>
-          <th>Time (in minutes)</th>
-          <th width="12%">Amount</th>
-        </tr>
-        <tr v-for="activity in activities" :key="activity.id">
-          <td>{{activity.projectName}}</td>
-          <td>{{activity.name}}</td>
-          <td>{{activity.durationMinutes | formatHours}}</td>
-          <td class="amount">
-            {{activity.durationMinutes / 60 * invoice.amount | currencyPDF}}
-            <img src="/euro.svg" width="6px" />
-          </td>
-        </tr>
-        <tr>
-          <th></th>
-          <td>Total time</td>
-          <td colspan="2">{{totalMinutes | totalHours}}</td>
-        </tr>
-        <tr>
-          <th></th>
-          <td>Sub total</td>
-          <td colspan="2">
-            {{totalMinutes / 60 * invoice.amount | currencyPDF}}
-            <img src="/euro.svg" width="6px" />
-          </td>
-        </tr>
-      </table>
+      <activities-table 
+        :total-minutes="totalMinutes"
+        :activities="activities" 
+        :invoice="invoice"></activities-table>
       <div class="footer">
         <p><b>{{bankAccount.name}}</b></p>
         <p><b>IBAN:</b> {{bankAccount.iban}}</p>
         <p><b>BIC:</b> {{bankAccount.bic}}</p>
       </div>
     </section>
+    <iframe src="" ref="iframe" frameborder="0" v-show="pdfGenerated"></iframe>
   </div>
 </template>
 
 <script>
+import ActivitiesTable from './activities-table';
 import http from "./../http";
 
 export default {
+  components: { ActivitiesTable },
+
   data() {
     return {
       invoice: {},
-      activities: {},
+      activities: [],
       me: {},
       bankAccount: {},
       address: {},
       pdfGenerated: false,
-      totalMinutes: 0
+      totalMinutes: 0,
+      editMode: false,
     };
   },
 
   created() {
-    this.generatePDF();
+    this.getInvoice();
+    this.getMe();
+    this.getAddress();
+
+    // this.generatePDF();
   },
 
   methods: {
     async generatePDF() {
-      await this.getInvoice();
-      await this.getMe();
-      await this.getAddress();
 
       const jsPDF = await import('jspdf');
       const html2pdf = await import('./../html2pdf');
@@ -119,9 +103,6 @@ export default {
             this.invoice = response.invoice;
             this.activities = response.activities;
             this.bankAccount = response.bankAccount;
-
-            this.totalMinutes = response.activities
-              .reduce((acc, next) => acc + parseInt(next.durationMinutes), 0);
           }
         });
     },
