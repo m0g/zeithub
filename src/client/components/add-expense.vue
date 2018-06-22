@@ -2,12 +2,7 @@
   <fieldset>
     <legend>Add expense</legend>
     <form method="POST" @submit="sendForm">
-      <p v-if="errors.length">
-        <b>Please correct the following error(s):</b>
-        <ul>
-          <li v-for="error in errors" :key="error">{{ error }}</li>
-        </ul>
-      </p>
+      <form-errors :errors="errors"></form-errors>
       <input type="text" placeholder="Label" v-model="name" />
       <input type="date" placeholder="Date" v-model="date" />
       <input type="number" placeholder="Amount in Euro" v-model="amount" step=".01" />
@@ -18,6 +13,7 @@
 
 <script>
 import http from './../http';
+import FormErrors from './form-errors.vue';
 
 export default {
   props: [ 'getExpenses' ],

@@ -100,4 +100,66 @@ router.post('/', verifyToken, async (req, res) => {
   res.json({ success: true, project: newProject });
 });
 
+router.get('/:slug/clients', verifyToken, async (req, res) => {
+  const slug = req.params.slug;
+  const userId = req.userId;
+
+  const clients = await db.query(`
+    select c.id, c.name
+    from clients c
+    join projects p on c.id = p.client_id
+    where c.user_id = ${userId}
+    and p.slug = '${slug}'
+  `);
+
+  res.json({ success: true, clients });
+});
+
+router.post('/:slug/clients', verifyToken, async (req, res) => {
+  const slug = req.params.slug;
+  const userId = req.userId;
+  let clientId;
+
+  if (!req.body.name) {
+    return res.status(403).json({ success: false, message: 'Missing name' });
+  }
+
+  const name = req.body.name;
+ 
+  console.log(`      insert into clients (name, user_id)
+      values ('${name}', ${userId})
+ `);
+  try {
+    clientId = await db.execute(`
+      insert into clients (name, user_id)
+      values ('${name}', ${userId})
+    `);
+  } catch (error) {
+    return res.json({ success: false, error });
+  }
+
+  try {
+    await db.execute(`
+      update projects
+      set client_id = ${clientId}
+      where slug = '${slug}'
+    `);
+  } catch (error) {
+    return res.json({ success: false, error });
+  }
+
+  const client = await db.queryOne(`
+    select id, name
+    from clients
+    where id = ${clientId}
+  `);
+
+  if (client) {
+    return res.json({ success: true, client });
+  }
+
+  return res.json({ success: false, message: 'Client not found' });
+});
+
+
 module.exports = router;
