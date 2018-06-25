@@ -15,24 +15,7 @@
       <div class="to">
         <p><b>{{me.firstName}} {{me.lastName}}</b></p>
       </div>
-      <table class="info">
-        <tr>
-          <td>Invoice number</td>
-          <td>{{invoice.number}}</td>
-        </tr>
-        <tr>
-          <td>Date</td>
-          <td>{{invoice.date | formatDate('DD/MM/YYYY')}}</td>
-        </tr>
-        <tr>
-          <td>Due date</td>
-          <td>{{invoice.dueDate | formatDate('DD/MM/YYYY')}}</td>
-        </tr>
-        <tr>
-          <td>Tax number</td>
-          <td>{{me.taxNumber}}</td>
-        </tr>
-      </table>
+      <invoice-info :invoice="invoice" :me="me"></invoice-info>
       <activities-table 
         :total-minutes="totalMinutes"
         :activities="activities" 
@@ -48,11 +31,15 @@
 </template>
 
 <script>
-import ActivitiesTable from './activities-table';
 import http from "./../http";
+import ActivitiesTable from './activities-table.vue';
+import InvoiceInfo from './invoice-info.vue'
 
 export default {
-  components: { ActivitiesTable },
+  components: { 
+    ActivitiesTable,
+    InvoiceInfo,
+  },
 
   data() {
     return {
