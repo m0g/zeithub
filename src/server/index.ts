@@ -10,6 +10,7 @@ import * as http from 'http';
 
 import bankAccounts from './routes/bank-accounts';
 import addresses from './routes/addresses';
+import clients from './routes/clients';    
 
 const hamsterRouter = require('./routes/hamster');
 const projectsRouter = require('./routes/projects');
@@ -48,6 +49,7 @@ app.use('/api/me', meRouter);
 app.use('/api/invoices', invoicesRouter);
 app.use('/api/bank-accounts', bankAccounts);
 app.use('/api/addresses', addresses);
+app.use('/api/clients', clients);
 
 app.use(express.static('public'))
 app.use(fallback('index.html', { root: 'public' }));
