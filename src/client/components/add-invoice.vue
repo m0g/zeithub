@@ -25,12 +25,12 @@
             <input type="text" placeholder="Description" v-model="activity.name" />
           </td>
           <td>
-            <input type="number" placeholder="Duration" v-model="activity.durationMinutes" @change="computeTotal" />
+            <input type="number" placeholder="Duration" v-model="activity.durationMinutes" @keyup="computeTotal" />
           </td>
           <td>
-            <input type="number" placeholder="Unit price" v-model="activity.rate" @change="computeTotal" />
+            <input type="number" placeholder="Unit price" v-model="activity.rate" @keyup="computeTotal" />&euro;
           </td>
-          <td>{{activity.durationMinutes / 60 * activity.rate}}</td>
+          <td>{{activity.durationMinutes / 60 * activity.rate | currency}}</td>
           <td><button @click="activities.splice(index, 1)">&#x2718;</button></td>
         </tr>
         <tr>
@@ -38,19 +38,19 @@
         </tr>
         <tr>
           <th colspan="3">Sub total</th>
-          <td>{{subTotal}}</td>
+          <td>{{subTotal | currency}}</td>
         </tr>
         <tr>
           <th colspan="3">Discount</th>
-          <td><input type="number" name="discount" v-model="discount" @change="computeTotal" /></td>
+          <td><input type="number" name="discount" v-model="discount" @keyup="computeTotal" />&euro;</td>
         </tr>
         <tr>
           <th colspan="3">Tax</th>
-          <td><input type="number" name="tax" v-model="tax" @change="computeTotal" /></td>
+          <td><input type="number" name="tax" v-model="vat" @keyup="computeTotal" />%</td>
         </tr>
         <tr>
           <th colspan="3">Total</th>
-          <td>{{total}}</td>
+          <td>{{total | currency}}</td>
         </tr>
       </table>
     </fieldset>
@@ -96,7 +96,7 @@ export default class AddInvoice extends Vue {
   activities:Array<Activity> = [];
   invoice:Object = {};
   discount:number = 0;
-  tax:number = 0;
+  vat:number = 0;
   subTotal:number = 0;
   total:number = 0;
 
@@ -132,6 +132,16 @@ export default class AddInvoice extends Vue {
     this.subTotal = this.activities.reduce((acc:number, activity:Activity) => {
       return acc + activity.durationMinutes / 60 * activity.rate
     }, 0);
+
+    this.total = this.subTotal;
+
+    if (this.discount > 0) {
+      this.total = this.total - this.discount;
+    }
+
+    if (this.vat > 0) {
+      this.total = this.total * (1 + this.vat / 100);
+    }
   }
 
   createInvoice(e) {
