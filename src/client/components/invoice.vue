@@ -93,7 +93,7 @@ export default {
     },
 
     getInvoice() {
-      http(`/api/invoices/${this.$route.params.number}`, {
+      http(`/api/invoices/${this.$route.params.id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
       })

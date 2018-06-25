@@ -7,8 +7,8 @@ const verifyToken = require('./../verify-token').default;
 const router = express.Router();
 const db = new DB();
 
-router.get('/:number', verifyToken, async (req, res) => {
-  const number = req.params.number;
+router.get('/:id', verifyToken, async (req, res) => {
+  const id = req.params.id;
   const userId = req.userId;
 
   const invoice = await db.queryOne(`
@@ -21,7 +21,7 @@ router.get('/:number', verifyToken, async (req, res) => {
       amount, 
       bank_account_id as 'bankAccountId'
     from invoices
-    where number = ${number} and user_id = ${userId}
+    where id = ${id} and user_id = ${userId}
   `);
 
   const bankAccount = await db.queryOne(`
@@ -50,7 +50,7 @@ router.get('/', verifyToken, async (req, res) => {
   const userId = req.userId;
 
   const invoices = await db.query(`
-    select number, name, date
+    select id, number, name, date
     from invoices
     where user_id = ${userId}
     order by date desc

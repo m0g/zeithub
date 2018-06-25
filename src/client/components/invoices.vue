@@ -3,7 +3,7 @@
     <legend>Invoices</legend>
     <ul>
       <li v-for="invoice in invoices" :key="invoice.number">
-        <router-link :to="{ name: 'Invoice', params: { number: invoice.number } }">
+        <router-link :to="{ name: 'Invoice', params: { id: invoice.id } }">
           {{invoice.name}}
         </router-link>
       </li>

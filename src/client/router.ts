@@ -84,7 +84,7 @@ export default new VueRouter({
       component: Invoices
     },
     {
-      path: '/invoices/:number',
+      path: '/invoices/:id',
       name: 'Invoice',
       beforeEnter: requireAuth,
       component: Invoice
