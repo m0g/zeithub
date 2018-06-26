@@ -59,6 +59,10 @@ router.get('/', verifyToken, async (req, res) => {
   res.json({ success: true, invoices });
 });
 
+router.post('/with-activities', verifyToken, async (req, res) => {
+  res.json({ success: true });
+});
+
 router.post('/', verifyToken, async (req, res) => {
   if (!req.body.name) {
     return res.status(403).json({ success: false, message: 'Missing name' });

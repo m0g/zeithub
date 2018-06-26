@@ -20,6 +20,29 @@
     </fieldset>
     <fieldset>
       <legend>Billing</legend>
+      <p><input type="text" placeholder="Title" v-model="name"></p>
+      <p>
+        <select v-model="address">
+          <option value="" disabled selected>Select an address</option>
+          <option
+            v-for="ad in addresses" 
+            :key="ad.id"
+            :value="ad.id">
+              <b>{{ad.name}}</b> {{ad.street}}, {{ad.postcode}} {{ad.city}}, {{ad.country}}
+          </option>
+        </select>
+      </p>
+      <p>
+        <select v-model="iban">
+          <option value="" disabled selected>Select a bank account</option>
+          <option
+            v-for="account in bankAccounts" 
+            :key="account.iban"
+            :value="account.iban">
+              {{account.name}} {{account.owner}} {{account.iban}} {{account.bic}}
+          </option>
+        </select>
+      </p>
       <p>
         <label for="rate">Rate</label>
         <input type="rate" name="rate" id="rate" v-model="rate">&euro;
@@ -127,9 +150,42 @@ export default class AddInvoice extends Vue {
   date:string = '';
   dueDate:string = '';
   memo:string = '';
+  name:string = '';
+  iban:string = '';
+  bankAccounts:Array<Object> = [];
+  addresses:Array<Object> = [];
+  address:string = '';
 
   created() {
     this.getProjects();
+    this.getBankAccounts();
+    this.getAddresses();
+  }
+
+  getBankAccounts() {
+    http('/api/bank-accounts', { 
+      headers: { 'Content-Type': 'application/json' },
+      method: 'GET', 
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          this.bankAccounts = response.bankAccounts;
+        }
+      });
+  }
+
+  getAddresses() {
+    http('/api/addresses', { 
+      headers: { 'Content-Type': 'application/json' },
+      method: 'GET', 
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          this.addresses = response.addresses;
+        }
+      });
   }
 
   getProjects() {
@@ -218,7 +274,7 @@ export default class AddInvoice extends Vue {
         activities: this.activities
       };
 
-      http('/api/invoices', { 
+      http('/api/invoices/with-activities', { 
         headers: { 'Content-Type': 'application/json' },
         method: 'POST', 
         body: JSON.stringify(body) 
