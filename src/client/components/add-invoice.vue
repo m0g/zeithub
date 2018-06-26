@@ -1,8 +1,15 @@
 <template>
   <form method="POST" @submit="createInvoice">
     <fieldset>
-      <legend>Client</legend>
-      <select name="client" id="" v-model="client">
+      <legend>Project & Client</legend>
+      <select name="project" id="" v-model="project" @change="getClients">
+        <option value="">Select a project</option>
+        <option 
+          v-for="project in projects" 
+          :key="project.slug" 
+          :value="project.slug">{{project.name}}</option>
+      </select>
+      <select name="client" id="" v-model="client" :disabled="clients.length === 0">
         <option value="">Select a client</option>
         <option 
           v-for="client in clients" 
@@ -11,12 +18,27 @@
       </select>
     </fieldset>
     <fieldset>
+      <legend>Billing</legend>
+      <p>
+        <label for="rate">Rate</label>
+        <input type="rate" name="rate" id="rate" v-model="rate">&euro;
+      </p>
+      <p>
+        <label for="date">Date</label>
+        <input type="date" name="date" id="date">
+      </p>
+      <p>
+        <label for="due-date">Due date</label>
+        <input type="date" name="due-date" id="due-date">
+      </p>
+    </fieldset>
+    <fieldset>
       <legend>Invoice Activities</legend>
       <table>
         <tr>
           <th>Description</th>
           <th>Duration in min</th>
-          <th>Unit price</th>
+          <th>Hourly rate</th>
           <th>Amount</th>
           <th>Actions</th>
         </tr>
@@ -28,9 +50,9 @@
             <input type="number" placeholder="Duration" v-model="activity.durationMinutes" @keyup="computeTotal" />
           </td>
           <td>
-            <input type="number" placeholder="Unit price" v-model="activity.rate" @keyup="computeTotal" />&euro;
+            {{rate}}&euro;
           </td>
-          <td>{{activity.durationMinutes / 60 * activity.rate | currency}}</td>
+          <td>{{activity.durationMinutes / 60 * rate | currency}}</td>
           <td><button @click="activities.splice(index, 1)">&#x2718;</button></td>
         </tr>
         <tr>
@@ -58,17 +80,6 @@
       <legend>Memo</legend>
       <textarea name="memo" id="" cols="40" rows="10"></textarea>
     </fieldset>
-    <fieldset>
-      <legend>Billing</legend>
-      <p>
-        <label for="date">Date</label>
-        <input type="date" name="date" id="date">
-      </p>
-      <p>
-        <label for="due-date">Due date</label>
-        <input type="date" name="due-date" id="due-date">
-      </p>
-    </fieldset>
     <input type="submit" value="Create invoice" />
   </form>
 </template>
@@ -86,11 +97,12 @@ import {
 interface Activity {
   name: string;
   durationMinutes: number;
-  rate: number;
 };
 
 @Component
 export default class AddInvoice extends Vue {
+  project:string = '';
+  projects:Array<Object> = [];
   client:Object = {};
   clients:Array<Object> = [];
   activities:Array<Activity> = [];
@@ -99,23 +111,35 @@ export default class AddInvoice extends Vue {
   vat:number = 0;
   subTotal:number = 0;
   total:number = 0;
+  rate:number = 0;
 
   created() {
-    console.log('on created')
-    this.getClients();
+    this.getProjects();
   }
 
-  getClients() {
-    http('/api/clients', {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success && response.clients.length > 0) {
-          this.clients = response.clients;
-        }
+  getProjects() {
+    http('/api/projects')
+      .then(data => data.json())
+      .then(projects => {
+        this.projects = projects;
       });
+  }
+
+  getClients(e) {
+    const slug = e.target.value;
+
+    if (slug) {
+      http(`/api/projects/${slug}/clients`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      })
+        .then(response => response.json())
+        .then(response => {
+          if (response.success && response.clients.length > 0) {
+            this.clients = response.clients;
+          }
+        });
+    }
   }
 
   appendActivity(e) {
@@ -124,13 +148,12 @@ export default class AddInvoice extends Vue {
     this.activities.push({
       name: '',
       durationMinutes: 0,
-      rate: 0
     })
   }
 
   computeTotal() {
     this.subTotal = this.activities.reduce((acc:number, activity:Activity) => {
-      return acc + activity.durationMinutes / 60 * activity.rate
+      return acc + activity.durationMinutes / 60 * this.rate
     }, 0);
 
     this.total = this.subTotal;
