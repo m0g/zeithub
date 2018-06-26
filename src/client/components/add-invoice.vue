@@ -1,5 +1,6 @@
 <template>
   <form method="POST" @submit="createInvoice">
+    <form-errors :errors="errors"></form-errors>
     <fieldset>
       <legend>Project & Client</legend>
       <select name="project" id="" v-model="project" @change="getClients">
@@ -25,17 +26,18 @@
       </p>
       <p>
         <label for="date">Date</label>
-        <input type="date" name="date" id="date">
+        <input type="date" name="date" id="date" v-model="date">
       </p>
       <p>
         <label for="due-date">Due date</label>
-        <input type="date" name="due-date" id="due-date">
+        <input type="date" name="due-date" id="due-date" v-model="dueDate">
       </p>
     </fieldset>
     <fieldset>
       <legend>Invoice Activities</legend>
       <table>
         <tr>
+          <th>Project</th>
           <th>Description</th>
           <th>Duration in min</th>
           <th>Hourly rate</th>
@@ -43,11 +45,16 @@
           <th>Actions</th>
         </tr>
         <tr v-for="(activity, index) in activities" :key="index">
+          <td>{{project}}</td>
           <td>
             <input type="text" placeholder="Description" v-model="activity.name" />
           </td>
           <td>
-            <input type="number" placeholder="Duration" v-model="activity.durationMinutes" @keyup="computeTotal" />
+            <input 
+              type="number"
+              placeholder="Duration" 
+              v-model="activity.durationMinutes" 
+              @keyup="computeTotal" />
           </td>
           <td>
             {{rate}}&euro;
@@ -64,7 +71,10 @@
         </tr>
         <tr>
           <th colspan="3">Discount</th>
-          <td><input type="number" name="discount" v-model="discount" @keyup="computeTotal" />&euro;</td>
+          <td>
+            <input type="number" name="discount" v-model="discount" @keyup="computeTotal" />
+            &euro;
+          </td>
         </tr>
         <tr>
           <th colspan="3">Tax</th>
@@ -78,7 +88,7 @@
     </fieldset>
     <fieldset>
       <legend>Memo</legend>
-      <textarea name="memo" id="" cols="40" rows="10"></textarea>
+      <textarea name="memo" id="" cols="40" rows="10" v-model="memo"></textarea>
     </fieldset>
     <input type="submit" value="Create invoice" />
   </form>
@@ -86,6 +96,7 @@
 
 <script lang="ts">
 import http from './../http';
+import FormErrors from './form-errors.vue';
 
 import {
   Component,
@@ -99,11 +110,11 @@ interface Activity {
   durationMinutes: number;
 };
 
-@Component
+@Component({ components: { FormErrors }})
 export default class AddInvoice extends Vue {
   project:string = '';
   projects:Array<Object> = [];
-  client:Object = {};
+  client:string = '';
   clients:Array<Object> = [];
   activities:Array<Activity> = [];
   invoice:Object = {};
@@ -112,6 +123,10 @@ export default class AddInvoice extends Vue {
   subTotal:number = 0;
   total:number = 0;
   rate:number = 0;
+  errors:Array<string> = [];
+  date:string = '';
+  dueDate:string = '';
+  memo:string = '';
 
   created() {
     this.getProjects();
@@ -169,6 +184,50 @@ export default class AddInvoice extends Vue {
 
   createInvoice(e) {
     e.preventDefault();
+    this.errors = [];
+
+    if (!this.client) {
+      this.errors.push('Client is missing');
+    }
+
+    if (!this.project) {
+      this.errors.push('Project is missing');
+    }
+
+    if (!this.date) {
+      this.errors.push('Date is missing');
+    }
+
+    if (!this.dueDate) {
+      this.errors.push('Due date is missing');
+    }
+
+    if (this.activities.length === 0) {
+      this.errors.push('You should at least add one activity');
+    }
+
+    if (this.errors.length === 0) {
+      const body = {
+        client: this.client,
+        projectSlug: this.project,
+        date: this.date,
+        dueDate: this.dueDate,
+        rate: this.rate,
+        discount: this.discount,
+        vat: this.vat,
+        activities: this.activities
+      };
+
+      http('/api/invoices', { 
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', 
+        body: JSON.stringify(body) 
+      })
+        .then(response => response.json())
+        .then(response => {
+          console.log(response);
+        });
+    }
   }
 }
 </script>
