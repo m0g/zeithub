@@ -1,0 +1,2 @@
+ALTER TABLE `activities` 
+ADD COLUMN `tracked` TINYINT NOT NULL DEFAULT 1 AFTER `end_time`;
