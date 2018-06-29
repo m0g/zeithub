@@ -1,6 +1,7 @@
 <template>
   <fieldset>
     <legend>Invoices</legend>
+    <router-link to="/invoices/new">Create new invoice</router-link>
     <ul>
       <li v-for="invoice in invoices" :key="invoice.number">
         <router-link :to="{ name: 'Invoice', params: { id: invoice.id } }">
