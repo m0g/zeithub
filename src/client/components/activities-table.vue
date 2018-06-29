@@ -11,7 +11,7 @@
       <td>{{activity.name}}</td>
       <td>{{activity.durationMinutes | formatHours}}</td>
       <td class="amount">
-        {{activity.durationMinutes / 60 * invoice.amount | currencyPDF}}
+        {{activity.durationMinutes / 60 * invoice.rate | currencyPDF}}
         <img src="/euro.svg" width="6px" />
       </td>
     </tr>

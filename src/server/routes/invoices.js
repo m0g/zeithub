@@ -19,7 +19,7 @@ router.get('/:id', verifyToken, async (req, res) => {
       memo,
       date, 
       due_date as 'dueDate', 
-      amount, 
+      rate, 
       tax,
       discount,
       user_address_id as 'userAddressId',
@@ -161,7 +161,7 @@ router.post('/with-activities', verifyToken, async (req, res) => {
         name, 
         memo,
         number, 
-        amount,
+        rate,
         tax,
         discount,
         project_id, 
@@ -281,7 +281,7 @@ router.post('/', verifyToken, async (req, res) => {
       name, 
       number, 
       project_id, 
-      amount,
+      rate,
       bank_account_id
     )
     values (
