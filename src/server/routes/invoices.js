@@ -197,7 +197,7 @@ router.post('/with-activities', verifyToken, async (req, res) => {
     }
   }
 
-  res.json({ success: true });
+  res.json({ success: true, invoiceId });
 });
 
 router.post('/', verifyToken, async (req, res) => {

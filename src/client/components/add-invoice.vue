@@ -327,7 +327,12 @@ export default class AddInvoice extends Vue {
       })
         .then(response => response.json())
         .then(response => {
-          console.log(response);
+          if (response.success && response.invoiceId) {
+            this.$router.push({
+              name: 'Invoice',
+              params: { id: response.invoiceId }
+            });
+          }
         });
     }
   }
