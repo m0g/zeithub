@@ -25,9 +25,11 @@ import {
   Vue,
 } from "vue-property-decorator";
 
+import { Invoice } from './../../models';
+
 @Component
 export default class InvoiceInfo extends Vue {
-  @Prop({ type: Object, default: {} }) invoice: Object;
-  @Prop({ type: Object, default: {} }) me: Object;
+  @Prop() invoice!: Invoice;
+  @Prop() me!: Object;
 }
 </script>
