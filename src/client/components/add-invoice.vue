@@ -21,6 +21,11 @@
     <fieldset>
       <legend>Billing</legend>
       <p><input type="text" placeholder="Title" v-model="name"></p>
+      <p><input 
+        type="number" 
+        placeholder="Invoice number" 
+        :min="lastInvoiceNumber + 1" 
+        v-model="invoiceNumber"></p>
       <p>
         <select v-model="address">
           <option value="" disabled selected>Select an address</option>
@@ -45,7 +50,7 @@
       </p>
       <p>
         <label for="rate">Rate</label>
-        <input type="rate" name="rate" id="rate" v-model="rate">&euro;
+        <input type="number" name="rate" id="rate" v-model="rate">&euro;
       </p>
       <p>
         <label for="date">Date</label>
@@ -113,7 +118,10 @@
       <legend>Memo</legend>
       <textarea name="memo" id="" cols="40" rows="10" v-model="memo"></textarea>
     </fieldset>
-    <input type="submit" value="Create invoice" />
+    <fieldset>
+      <legend>Actions</legend>
+      <input type="submit" value="Create invoice" />
+    </fieldset>
   </form>
 </template>
 
@@ -155,11 +163,33 @@ export default class AddInvoice extends Vue {
   bankAccounts:Array<Object> = [];
   addresses:Array<Object> = [];
   address:string = '';
+  invoiceNumber:number = 0;
+  lastInvoiceNumber:number = 0;
 
   created() {
     this.getProjects();
     this.getBankAccounts();
     this.getAddresses();
+    this.getLastInvoiceNumber();
+  }
+
+  getLastInvoiceNumber() {
+    http('/api/invoices', { 
+      headers: { 'Content-Type': 'application/json' },
+      method: 'GET', 
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          response.invoices.forEach(invoice => {
+            if (invoice.number > this.lastInvoiceNumber) {
+              this.lastInvoiceNumber = invoice.number;
+            }
+          });
+
+          this.invoiceNumber = this.lastInvoiceNumber + 1;
+        }
+      });
   }
 
   getBankAccounts() {
@@ -250,12 +280,24 @@ export default class AddInvoice extends Vue {
       this.errors.push('Project is missing');
     }
 
+    if (!this.name) {
+      this.errors.push('Title is missing');
+    }
+
     if (!this.date) {
       this.errors.push('Date is missing');
     }
 
     if (!this.dueDate) {
       this.errors.push('Due date is missing');
+    }
+
+    if (!this.iban) {
+      this.errors.push('Bank account is missing');
+    }
+
+    if (!this.address) {
+      this.errors.push('Address is missing');
     }
 
     if (this.activities.length === 0) {
@@ -266,11 +308,15 @@ export default class AddInvoice extends Vue {
       const body = {
         client: this.client,
         projectSlug: this.project,
+        name: this.name,
+        number: this.invoiceNumber,
         date: this.date,
         dueDate: this.dueDate,
         rate: this.rate,
         discount: this.discount,
         vat: this.vat,
+        iban: this.iban,
+        address: this.address,
         activities: this.activities
       };
 

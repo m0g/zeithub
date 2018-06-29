@@ -12,3 +12,6 @@ export default {
   props: ['errors']
 }
 </script>
+<style scoped>
+li { color: red; }
+</style>
