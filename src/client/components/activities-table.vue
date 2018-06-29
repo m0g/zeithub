@@ -24,7 +24,7 @@
       <th></th>
       <td>Sub total</td>
       <td colspan="2">
-        {{totalMinutes / 60 * invoice.amount | currencyPDF}}
+        {{totalMinutes / 60 * invoice.rate | currencyPDF}}
         <img src="/euro.svg" width="6px" />
       </td>
     </tr>
@@ -66,19 +66,19 @@ import {
   Watch
 } from "vue-property-decorator";
 
-import { Activity, Invoice } from './../../types';
+import { Activity, Invoice } from './../../models';
 
 @Component
 export default class ActivitiesTable extends Vue {
   totalMinutes: number = 0;
 
   @Prop({ type: Array, default: [] }) activities: Array<Activity>;
-  @Prop({ type: Object, default: {} }) invoice: Invoice;
+  @Prop({ type: Object, default: new Invoice() }) invoice: Invoice;
 
   @Watch('activities')
   onActivitiesChanged(activities: Array<Activity>) {
     this.totalMinutes = activities
-      .reduce((acc: number, next: Activity) => acc + parseInt(next.durationMinutes), 0);
+      .reduce((acc: number, next: Activity) => acc + next.durationMinutes, 0);
   }
 
   computeTotal() {
