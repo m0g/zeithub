@@ -246,6 +246,8 @@ export default class AddInvoice extends Vue {
     this.activities.push({
       name: '',
       durationMinutes: 0,
+      projectName: '',
+      projectSlug: this.project
     })
   }
 

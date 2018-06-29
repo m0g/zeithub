@@ -72,8 +72,8 @@ import { Activity, Invoice } from './../../models';
 export default class ActivitiesTable extends Vue {
   totalMinutes: number = 0;
 
-  @Prop({ type: Array, default: [] }) activities: Array<Activity>;
-  @Prop({ type: Object, default: new Invoice() }) invoice: Invoice;
+  @Prop() activities!: Array<Activity>;
+  @Prop() invoice!: Invoice;
 
   @Watch('activities')
   onActivitiesChanged(activities: Array<Activity>) {
