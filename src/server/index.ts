@@ -11,6 +11,7 @@ import * as http from 'http';
 import bankAccounts from './routes/bank-accounts';
 import addresses from './routes/addresses';
 import clients from './routes/clients';    
+import invoices from './routes/invoices';
 
 const hamsterRouter = require('./routes/hamster');
 const projectsRouter = require('./routes/projects');
@@ -18,7 +19,7 @@ const signRouter = require('./routes/sign');
 const activitiesRouter = require('./routes/activities');
 const expensesRouter = require('./routes/expenses');
 const meRouter = require('./routes/me');
-const invoicesRouter = require('./routes/invoices');
+// const invoicesRouter = require('./routes/invoices');
 
 const app = express();
 
@@ -46,7 +47,7 @@ app.use('/api/sign', signRouter);
 app.use('/api/activities', activitiesRouter);
 app.use('/api/expenses', expensesRouter);
 app.use('/api/me', meRouter);
-app.use('/api/invoices', invoicesRouter);
+app.use('/api/invoices', invoices);
 app.use('/api/bank-accounts', bankAccounts);
 app.use('/api/addresses', addresses);
 app.use('/api/clients', clients);
