@@ -31,92 +31,93 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import http from "./../http";
 import ActivitiesTable from './activities-table.vue';
 import InvoiceInfo from './invoice-info.vue'
 
-export default {
+import * as M from './../../models';
+
+import {
+  Component,
+  Prop,
+  Watch,
+  Vue,
+} from "vue-property-decorator";
+
+@Component({
   components: { 
     ActivitiesTable,
     InvoiceInfo,
   },
-
-  data() {
-    return {
-      invoice: {},
-      activities: [],
-      me: {},
-      bankAccount: {},
-      address: {},
-      pdfGenerated: false,
-      totalMinutes: 0,
-      editMode: false,
-    };
-  },
+})
+export default class Invoice extends Vue {
+  invoice:M.Invoice = new M.Invoice();
+  activities:Array<M.Activity> = [];
+  me:Object = {};
+  bankAccount:M.BankAccount = new M.BankAccount();
+  address:Object = {};
+  pdfGenerated:boolean = false;
+  totalMinutes:number = 0;
+  editMode:boolean = false;
 
   created() {
     this.getInvoice();
     this.getMe();
     this.getAddress();
-
-    // this.generatePDF();
-  },
-
-  methods: {
-    async generatePDF() {
-
-      const jsPDF = await import('jspdf');
-      const html2pdf = await import('./../html2pdf');
-      const container = this.$refs.container;
-      const pdf = new jsPDF.default('p', 'pt', 'a4');
-
-      pdf.canvas.height = 72 * 11;
-      pdf.canvas.width = 72 * 8.5;
-
-      html2pdf.default(document.getElementById("invoice"), pdf, pdf => {
-        this.pdfGenerated = true;
-        this.$refs.iframe.src = pdf.output("datauristring");
-      });
-    },
-
-    getInvoice() {
-      http(`/api/invoices/${this.$route.params.id}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" }
-      })
-        .then(response => response.json())
-        .then(response => {
-          if (response.success) {
-            this.invoice = response.invoice;
-            this.activities = response.activities;
-            this.bankAccount = response.bankAccount;
-          }
-        });
-    },
-
-    getMe() {
-      http("/api/me")
-        .then(data => data.json())
-        .then(data => {
-          if (data.success) {
-            this.me = data.me;
-          }
-        });
-    },
-
-    getAddress() {
-      http('/api/addresses')
-        .then(data => data.json())
-        .then(data => {
-          console.log(data)
-          if (data.success) {
-            this.address = data.addresses[0];
-          }
-        });
-    }
   }
-};
+
+  async generatePDF() {
+    const jsPDF = await import('jspdf');
+    const html2pdf = await import('./../html2pdf');
+    const container = this.$refs.container;
+    const pdf = new jsPDF.default('p', 'pt', 'a4');
+
+    pdf.canvas.height = 72 * 11;
+    pdf.canvas.width = 72 * 8.5;
+
+    html2pdf.default(document.getElementById("invoice"), pdf, pdf => {
+      this.pdfGenerated = true;
+      this.$refs.iframe.src = pdf.output("datauristring");
+    });
+  }
+
+  getInvoice() {
+    http(`/api/invoices/${this.$route.params.id}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          this.invoice = response.invoice;
+          this.activities = response.activities;
+          this.bankAccount = response.bankAccount;
+        }
+      });
+  }
+
+  getMe() {
+    http("/api/me")
+      .then(data => data.json())
+      .then(data => {
+        if (data.success) {
+          this.me = data.me;
+        }
+      });
+  }
+
+  getAddress() {
+    http('/api/addresses')
+      .then(data => data.json())
+      .then(data => {
+        console.log(data)
+        if (data.success) {
+          this.address = data.addresses[0];
+        }
+      });
+  }
+}
 </script>
 
 <style scoped>

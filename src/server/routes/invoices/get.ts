@@ -1,4 +1,5 @@
 import DB from './../../db';
+import { Invoice, BankAccount, Activity } from './../../../types';
 
 const db = new DB();
 
@@ -6,7 +7,7 @@ export default async (req, res) => {
   const id = req.params.id;
   const userId = req.userId;
 
-  const invoice = await db.queryOne(`
+  const invoice:Invoice = await db.queryOne(`
     select 
       id, 
       number, 
@@ -23,13 +24,13 @@ export default async (req, res) => {
     where id = ${id} and user_id = ${userId}
   `);
 
-  const bankAccount = await db.queryOne(`
+  const bankAccount:BankAccount = await db.queryOne(`
     select name, owner, iban, bic
     from bank_accounts
     where id = ${invoice.bankAccountId}
   `);
 
-  const activities = await db.query(`
+  const activities:Array<Activity> = await db.query(`
     select
       a.name, 
       sum(a.duration_minutes) as 'durationMinutes',
