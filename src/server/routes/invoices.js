@@ -114,6 +114,16 @@ router.post('/with-activities', verifyToken, async (req, res) => {
     activities 
   } = req.body;
 
+  const isNumberExisting = await db.queryOne(`
+    select id
+    from invoices
+    where user_id = ${userId} and number = ${number}
+  `);
+
+  if (isNumberExisting) {
+    return res.status(500).json({ success: false, message: 'Invoice number already existing' });
+  }
+
   const project = await db.queryOne(`
     select id
     from projects
