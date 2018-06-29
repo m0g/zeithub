@@ -28,6 +28,29 @@
         <img src="/euro.svg" width="6px" />
       </td>
     </tr>
+    <tr>
+      <th></th>
+      <td>Discount</td>
+      <td colspan="2">
+        {{invoice.discount | currencyPDF}}
+        <img src="/euro.svg" width="6px" />
+      </td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Tax (VAT)</td>
+      <td colspan="2">
+        {{invoice.tax | currencyPDF}}%
+      </td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Total</td>
+      <td colspan="2">
+        {{computeTotal() | currencyPDF}}
+        <img src="/euro.svg" width="6px" />
+      </td>
+    </tr>
   </table>
 </template>
 
@@ -43,21 +66,37 @@ import {
   Watch
 } from "vue-property-decorator";
 
-interface Activity {
-  durationMinutes: string;
-};
+import { Activity, Invoice } from './../../types';
 
 @Component
 export default class ActivitiesTable extends Vue {
   totalMinutes: number = 0;
 
   @Prop({ type: Array, default: [] }) activities: Array<Activity>;
-  @Prop({ type: Object, default: {} }) invoice: Object;
+  @Prop({ type: Object, default: {} }) invoice: Invoice;
 
   @Watch('activities')
   onActivitiesChanged(activities: Array<Activity>) {
     this.totalMinutes = activities
       .reduce((acc: number, next: Activity) => acc + parseInt(next.durationMinutes), 0);
+  }
+
+  computeTotal() {
+    const subTotal = this.activities.reduce((acc:number, activity:Activity) => {
+      return acc + activity.durationMinutes / 60 * this.invoice.rate
+    }, 0);
+
+    let total = subTotal;
+
+    if (this.invoice.discount > 0) {
+      total = total - this.invoice.discount;
+    }
+
+    if (this.invoice.tax > 0) {
+      total = total * (1 + this.invoice.tax / 100);
+    }
+
+    return total;
   }
 }
 </script>

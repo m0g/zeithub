@@ -136,10 +136,7 @@ import {
   Vue,
 } from "vue-property-decorator";
 
-interface Activity {
-  name: string;
-  durationMinutes: number;
-};
+import { Activity } from './../../types';
 
 @Component({ components: { FormErrors }})
 export default class AddInvoice extends Vue {
@@ -317,6 +314,7 @@ export default class AddInvoice extends Vue {
         vat: this.vat,
         iban: this.iban,
         address: this.address,
+        memo: this.memo,
         activities: this.activities
       };
 

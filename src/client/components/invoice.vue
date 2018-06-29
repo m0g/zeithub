@@ -20,6 +20,7 @@
         :total-minutes="totalMinutes"
         :activities="activities" 
         :invoice="invoice"></activities-table>
+      <p v-if="invoice.memo">{{invoice.memo}}</p>
       <div class="footer">
         <p><b>{{bankAccount.name}}</b></p>
         <p><b>IBAN:</b> {{bankAccount.iban}}</p>

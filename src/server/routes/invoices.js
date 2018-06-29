@@ -16,9 +16,13 @@ router.get('/:id', verifyToken, async (req, res) => {
       id, 
       number, 
       name, 
+      memo,
       date, 
       due_date as 'dueDate', 
       amount, 
+      tax,
+      discount,
+      user_address_id as 'userAddressId',
       bank_account_id as 'bankAccountId'
     from invoices
     where id = ${id} and user_id = ${userId}
@@ -111,6 +115,10 @@ router.post('/with-activities', verifyToken, async (req, res) => {
     dueDate, 
     number, 
     rate, 
+    memo,
+    discount,
+    vat,
+    address,
     activities 
   } = req.body;
 
@@ -151,9 +159,13 @@ router.post('/with-activities', verifyToken, async (req, res) => {
         date, 
         due_date, 
         name, 
+        memo,
         number, 
-        project_id, 
         amount,
+        tax,
+        discount,
+        project_id, 
+        user_address_id,
         bank_account_id
       )
       values (
@@ -161,9 +173,13 @@ router.post('/with-activities', verifyToken, async (req, res) => {
         '${date}', 
         '${dueDate}', 
         '${name}', 
+        '${memo}',
         ${number}, 
-        ${project.id}, 
         ${rate},
+        ${vat},
+        ${discount},
+        ${project.id}, 
+        ${address},
         ${bankAccount.id}
       )
     `);
