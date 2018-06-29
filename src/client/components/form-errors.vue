@@ -10,8 +10,10 @@
 <script>
 export default {
   props: ['errors']
-}
+};
 </script>
 <style scoped>
-li { color: red; }
+li {
+  color: red;
+}
 </style>

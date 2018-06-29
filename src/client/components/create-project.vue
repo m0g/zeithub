@@ -26,8 +26,8 @@ export default {
   data() {
     return {
       name: '',
-      errors: [],
-    }
+      errors: []
+    };
   },
 
   methods: {
@@ -55,5 +55,5 @@ export default {
       }
     }
   }
-}
+};
 </script>

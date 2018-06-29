@@ -32,34 +32,29 @@
 </template>
 
 <script lang="ts">
-import http from "./../http";
+import http from './../http';
 import ActivitiesTable from './activities-table.vue';
-import InvoiceInfo from './invoice-info.vue'
+import InvoiceInfo from './invoice-info.vue';
 
 import * as M from './../../models';
 
-import {
-  Component,
-  Prop,
-  Watch,
-  Vue,
-} from "vue-property-decorator";
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 @Component({
-  components: { 
+  components: {
     ActivitiesTable,
-    InvoiceInfo,
-  },
+    InvoiceInfo
+  }
 })
 export default class Invoice extends Vue {
-  invoice:M.Invoice = new M.Invoice();
-  activities:Array<M.Activity> = [];
-  me:Object = {};
-  bankAccount:M.BankAccount = new M.BankAccount();
-  address:Object = {};
-  pdfGenerated:boolean = false;
-  totalMinutes:number = 0;
-  editMode:boolean = false;
+  invoice: M.Invoice = new M.Invoice();
+  activities: Array<M.Activity> = [];
+  me: Object = {};
+  bankAccount: M.BankAccount = new M.BankAccount();
+  address: Object = {};
+  pdfGenerated: boolean = false;
+  totalMinutes: number = 0;
+  editMode: boolean = false;
 
   created() {
     this.getInvoice();
@@ -77,16 +72,16 @@ export default class Invoice extends Vue {
     pdf.canvas.height = 72 * 11;
     pdf.canvas.width = 72 * 8.5;
 
-    html2pdf.default(document.getElementById("invoice"), pdf, pdf => {
+    html2pdf.default(document.getElementById('invoice'), pdf, pdf => {
       this.pdfGenerated = true;
-      iframe.src = pdf.output("datauristring");
+      iframe.src = pdf.output('datauristring');
     });
   }
 
   getInvoice() {
     http(`/api/invoices/${this.$route.params.id}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
     })
       .then(response => response.json())
       .then(response => {
@@ -99,7 +94,7 @@ export default class Invoice extends Vue {
   }
 
   getMe() {
-    http("/api/me")
+    http('/api/me')
       .then(data => data.json())
       .then(data => {
         if (data.success) {
@@ -112,7 +107,7 @@ export default class Invoice extends Vue {
     http('/api/addresses')
       .then(data => data.json())
       .then(data => {
-        console.log(data)
+        console.log(data);
         if (data.success) {
           this.address = data.addresses[0];
         }

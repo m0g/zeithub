@@ -29,7 +29,7 @@ section {
   flex-flow: row wrap;
   min-height: 100%;
   height: 100%;
-}  
+}
 
 section h1 {
   flex: 1 100%;
@@ -98,5 +98,5 @@ export default {
   },
 
   components: { AddExpense }
-}
+};
 </script>

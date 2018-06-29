@@ -30,10 +30,10 @@ export default {
 
   data() {
     return {
-      name: '', 
-      hourlyRate: 0, 
-      errors: [], 
-      bankAccounts: [] ,
+      name: '',
+      hourlyRate: 0,
+      errors: [],
+      bankAccounts: [],
       iban: ''
     };
   },
@@ -44,9 +44,9 @@ export default {
 
   methods: {
     getBankAccounts() {
-      http('/api/bank-accounts', { 
+      http('/api/bank-accounts', {
         headers: { 'Content-Type': 'application/json' },
-        method: 'GET', 
+        method: 'GET'
       })
         .then(response => response.json())
         .then(response => {
@@ -97,5 +97,5 @@ export default {
       }
     }
   }
-}
+};
 </script>

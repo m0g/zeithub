@@ -38,7 +38,7 @@ export default {
   created() {
     http('/api/activities')
       .then(response => response.json())
-      .then(this.groupByDate)
+      .then(this.groupByDate);
   },
 
   methods: {
@@ -46,7 +46,7 @@ export default {
       let activityGroups = {};
       activities.forEach(activity => {
         const date = moment(activity.startTime).format('dddd, Do MMMM YYYY');
-        
+
         if (!activityGroups[date]) {
           activityGroups[date] = [];
         }
@@ -56,8 +56,8 @@ export default {
 
       this.activityGroups = activityGroups;
     }
-  },
-}
+  }
+};
 </script>
 
 <style scoped>
@@ -66,7 +66,7 @@ section {
   flex-flow: row wrap;
   min-height: 100%;
   height: 100%;
-}  
+}
 
 section h1 {
   flex: 1 100%;

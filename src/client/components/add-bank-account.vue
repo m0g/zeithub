@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Component from 'vue-class-component';
 
 import http from '../http';
@@ -21,15 +21,15 @@ const Props = Vue.extend({
 });
 
 @Component({
-  components: { FormErrors },
+  components: { FormErrors }
 })
 export default class AddBankAccount extends Props {
-  errors:string[] = [];
-  name:string = '';
-  owner:string = '';
-  iban:string = '';
-  bic:string = '';
- 
+  errors: string[] = [];
+  name: string = '';
+  owner: string = '';
+  iban: string = '';
+  bic: string = '';
+
   addBankAccount(e) {
     this.errors = [];
     e.preventDefault();
@@ -58,10 +58,10 @@ export default class AddBankAccount extends Props {
         bic: this.bic
       };
 
-      http('/api/bank-accounts', { 
+      http('/api/bank-accounts', {
         headers: { 'Content-Type': 'application/json' },
-        method: 'POST', 
-        body: JSON.stringify(body) 
+        method: 'POST',
+        body: JSON.stringify(body)
       })
         .then(response => response.json())
         .then(response => {
@@ -71,5 +71,5 @@ export default class AddBankAccount extends Props {
         });
     }
   }
-};
+}
 </script>

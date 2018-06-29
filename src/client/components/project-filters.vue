@@ -20,9 +20,9 @@ export default {
 
   methods: {
     filterByMonth(e) {
-      console.log(this.month, e.target.value)
+      console.log(this.month, e.target.value);
       this.getProject({ month: this.month });
     }
   }
-}
+};
 </script>

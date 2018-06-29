@@ -35,14 +35,14 @@ import { diff } from './../../utils';
 
 export default {
   components: { FormErrors },
-  props: [ 'me', 'getMe' ],
+  props: ['me', 'getMe'],
 
   data() {
     return {
       editMode: false,
       user: {},
       pass: {},
-      errors: [],
+      errors: []
     };
   },
 
@@ -76,6 +76,5 @@ export default {
       }
     }
   }
-}
+};
 </script>
-

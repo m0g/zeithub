@@ -129,39 +129,34 @@
 import http from './../http';
 import FormErrors from './form-errors.vue';
 
-import {
-  Component,
-  Prop,
-  Watch,
-  Vue,
-} from "vue-property-decorator";
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 import { Activity } from './../../types';
 
-@Component({ components: { FormErrors }})
+@Component({ components: { FormErrors } })
 export default class AddInvoice extends Vue {
-  project:string = '';
-  projects:Array<Object> = [];
-  client:string = '';
-  clients:Array<Object> = [];
-  activities:Array<Activity> = [];
-  invoice:Object = {};
-  discount:number = 0;
-  vat:number = 0;
-  subTotal:number = 0;
-  total:number = 0;
-  rate:number = 0;
-  errors:Array<string> = [];
-  date:string = '';
-  dueDate:string = '';
-  memo:string = '';
-  name:string = '';
-  iban:string = '';
-  bankAccounts:Array<Object> = [];
-  addresses:Array<Object> = [];
-  address:string = '';
-  invoiceNumber:number = 0;
-  lastInvoiceNumber:number = 0;
+  project: string = '';
+  projects: Array<Object> = [];
+  client: string = '';
+  clients: Array<Object> = [];
+  activities: Array<Activity> = [];
+  invoice: Object = {};
+  discount: number = 0;
+  vat: number = 0;
+  subTotal: number = 0;
+  total: number = 0;
+  rate: number = 0;
+  errors: Array<string> = [];
+  date: string = '';
+  dueDate: string = '';
+  memo: string = '';
+  name: string = '';
+  iban: string = '';
+  bankAccounts: Array<Object> = [];
+  addresses: Array<Object> = [];
+  address: string = '';
+  invoiceNumber: number = 0;
+  lastInvoiceNumber: number = 0;
 
   created() {
     this.getProjects();
@@ -171,9 +166,9 @@ export default class AddInvoice extends Vue {
   }
 
   getLastInvoiceNumber() {
-    http('/api/invoices', { 
+    http('/api/invoices', {
       headers: { 'Content-Type': 'application/json' },
-      method: 'GET', 
+      method: 'GET'
     })
       .then(response => response.json())
       .then(response => {
@@ -190,9 +185,9 @@ export default class AddInvoice extends Vue {
   }
 
   getBankAccounts() {
-    http('/api/bank-accounts', { 
+    http('/api/bank-accounts', {
       headers: { 'Content-Type': 'application/json' },
-      method: 'GET', 
+      method: 'GET'
     })
       .then(response => response.json())
       .then(response => {
@@ -203,9 +198,9 @@ export default class AddInvoice extends Vue {
   }
 
   getAddresses() {
-    http('/api/addresses', { 
+    http('/api/addresses', {
       headers: { 'Content-Type': 'application/json' },
-      method: 'GET', 
+      method: 'GET'
     })
       .then(response => response.json())
       .then(response => {
@@ -228,8 +223,8 @@ export default class AddInvoice extends Vue {
 
     if (slug) {
       http(`/api/projects/${slug}/clients`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" }
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
       })
         .then(response => response.json())
         .then(response => {
@@ -241,20 +236,23 @@ export default class AddInvoice extends Vue {
   }
 
   appendActivity(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     this.activities.push({
       name: '',
       durationMinutes: 0,
       projectName: '',
       projectSlug: this.project
-    })
+    });
   }
 
   computeTotal() {
-    this.subTotal = this.activities.reduce((acc:number, activity:Activity) => {
-      return acc + activity.durationMinutes / 60 * this.rate
-    }, 0);
+    this.subTotal = this.activities.reduce(
+      (acc: number, activity: Activity) => {
+        return acc + (activity.durationMinutes / 60) * this.rate;
+      },
+      0
+    );
 
     this.total = this.subTotal;
 
@@ -320,10 +318,10 @@ export default class AddInvoice extends Vue {
         activities: this.activities
       };
 
-      http('/api/invoices/with-activities', { 
+      http('/api/invoices/with-activities', {
         headers: { 'Content-Type': 'application/json' },
-        method: 'POST', 
-        body: JSON.stringify(body) 
+        method: 'POST',
+        body: JSON.stringify(body)
       })
         .then(response => response.json())
         .then(response => {

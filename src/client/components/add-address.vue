@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Component from 'vue-class-component';
 
 import http from '../http';
@@ -22,15 +22,15 @@ const Props = Vue.extend({
 });
 
 @Component({
-  components: { FormErrors },
+  components: { FormErrors }
 })
 export default class AddAddress extends Props {
-  errors:string[] = [];
-  name:string = '';
-  street:string = '';
-  city:string = '';
-  postcode:string = '';
-  country:string = '';
+  errors: string[] = [];
+  name: string = '';
+  street: string = '';
+  city: string = '';
+  postcode: string = '';
+  country: string = '';
 
   addAddress(e) {
     this.errors = [];
@@ -62,20 +62,19 @@ export default class AddAddress extends Props {
         street: this.street,
         city: this.city,
         postcode: this.postcode,
-        country: this.country,
+        country: this.country
       };
 
-      http('/api/addresses', { 
+      http('/api/addresses', {
         headers: { 'Content-Type': 'application/json' },
-        method: 'POST', 
-        body: JSON.stringify(body) 
+        method: 'POST',
+        body: JSON.stringify(body)
       })
         .then(response => response.json())
         .then(response => {
           this.getAddresses();
         });
     }
- 
   }
 }
 </script>

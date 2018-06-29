@@ -26,8 +26,8 @@ export default {
       errors: [],
       currentPassword: '',
       password: '',
-      passwordRepeat: '',
-    }
+      passwordRepeat: ''
+    };
   },
 
   methods: {
@@ -42,7 +42,7 @@ export default {
       if (!this.password || !this.passwordRepeat) {
         this.errors.push('New password is required');
       } else if (this.password !== this.passwordRepeat) {
-        this.errors.push('New Passwords don\'t match');
+        this.errors.push("New Passwords don't match");
       }
 
       if (this.errors.length === 0) {
@@ -51,9 +51,9 @@ export default {
           password: this.password
         };
 
-        http('/api/me/passwd', { 
-          method: 'PUT', 
-          body: JSON.stringify(body) 
+        http('/api/me/passwd', {
+          method: 'PUT',
+          body: JSON.stringify(body)
         })
           .then(response => response.json())
           .then(response => {
@@ -66,5 +66,5 @@ export default {
       }
     }
   }
-}
+};
 </script>

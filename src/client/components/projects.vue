@@ -12,19 +12,19 @@
 </template>
 
 <script>
-  import http from './../http';
+import http from './../http';
 
-  export default {
-    data() {
-      return { projects: [] };
-    },
+export default {
+  data() {
+    return { projects: [] };
+  },
 
-    created() {
-      http('/api/projects')
-        .then(data => data.json())
-        .then(projects => {
-          this.projects = projects;
-        });
-    }
+  created() {
+    http('/api/projects')
+      .then(data => data.json())
+      .then(projects => {
+        this.projects = projects;
+      });
   }
+};
 </script>

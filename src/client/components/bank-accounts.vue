@@ -12,26 +12,26 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Component from 'vue-class-component';
 
 import http from '../http';
 import AddBankAccount from './add-bank-account.vue';
 
 @Component({
-  components: { AddBankAccount },
+  components: { AddBankAccount }
 })
 export default class BankAccounts extends Vue {
-  bankAccounts:{}[] = [];
+  bankAccounts: {}[] = [];
 
   created() {
     this.getBankAccounts();
   }
 
   getBankAccounts() {
-    http('/api/bank-accounts', { 
+    http('/api/bank-accounts', {
       headers: { 'Content-Type': 'application/json' },
-      method: 'GET', 
+      method: 'GET'
     })
       .then(response => response.json())
       .then(response => {
@@ -43,9 +43,9 @@ export default class BankAccounts extends Vue {
   }
 
   deleteAccount(iban) {
-    http(`/api/bank-accounts/${iban}`, { 
+    http(`/api/bank-accounts/${iban}`, {
       headers: { 'Content-Type': 'application/json' },
-      method: 'DELETE', 
+      method: 'DELETE'
     })
       .then(response => response.json())
       .then(response => {
@@ -54,5 +54,5 @@ export default class BankAccounts extends Vue {
         }
       });
   }
-};
+}
 </script>

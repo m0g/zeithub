@@ -16,15 +16,15 @@ import http from './../http';
 import FormErrors from './form-errors.vue';
 
 export default {
-  props: [ 'getExpenses' ],
+  props: ['getExpenses'],
 
   data() {
     return {
       name: '',
       date: null,
       amount: 0,
-      errors: [],
-    }
+      errors: []
+    };
   },
 
   methods: {
@@ -65,6 +65,6 @@ export default {
           });
       }
     }
-  },
-}
+  }
+};
 </script>

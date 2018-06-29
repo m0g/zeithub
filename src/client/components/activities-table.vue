@@ -64,7 +64,7 @@ import {
   Provide,
   Vue,
   Watch
-} from "vue-property-decorator";
+} from 'vue-property-decorator';
 
 import { Activity, Invoice } from './../../models';
 
@@ -77,14 +77,19 @@ export default class ActivitiesTable extends Vue {
 
   @Watch('activities')
   onActivitiesChanged(activities: Array<Activity>) {
-    this.totalMinutes = activities
-      .reduce((acc: number, next: Activity) => acc + next.durationMinutes, 0);
+    this.totalMinutes = activities.reduce(
+      (acc: number, next: Activity) => acc + next.durationMinutes,
+      0
+    );
   }
 
   computeTotal() {
-    const subTotal = this.activities.reduce((acc:number, activity:Activity) => {
-      return acc + activity.durationMinutes / 60 * this.invoice.rate
-    }, 0);
+    const subTotal = this.activities.reduce(
+      (acc: number, activity: Activity) => {
+        return acc + (activity.durationMinutes / 60) * this.invoice.rate;
+      },
+      0
+    );
 
     let total = subTotal;
 

@@ -42,57 +42,57 @@
   </fieldset>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        email: '',
-        username: '',
-        password: '',
-        passwordRepeat: '',
-        errors: []
-      };
-    },
+export default {
+  data() {
+    return {
+      email: '',
+      username: '',
+      password: '',
+      passwordRepeat: '',
+      errors: []
+    };
+  },
 
-    methods: {
-      signUp(e) {
-        this.errors = [];
-        e.preventDefault();
+  methods: {
+    signUp(e) {
+      this.errors = [];
+      e.preventDefault();
 
-        if (!this.username) {
-          this.errors.push('Username is required');
-        }
+      if (!this.username) {
+        this.errors.push('Username is required');
+      }
 
-        if (!this.email) {
-          this.errors.push('Email is required');
-        }
+      if (!this.email) {
+        this.errors.push('Email is required');
+      }
 
-        if (!this.password || !this.passwordRepeat) {
-          this.errors.push('Password is required');
-        } else if (this.password !== this.passwordRepeat) {
-          this.errors.push('Passwords don\'t match');
-        }
+      if (!this.password || !this.passwordRepeat) {
+        this.errors.push('Password is required');
+      } else if (this.password !== this.passwordRepeat) {
+        this.errors.push("Passwords don't match");
+      }
 
-        if (this.errors.length === 0) {
-          const user = {
-            username: this.username,
-            password: this.password,
-            email: this.email,
-          };
+      if (this.errors.length === 0) {
+        const user = {
+          username: this.username,
+          password: this.password,
+          email: this.email
+        };
 
-          fetch('/api/sign/up', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(user)
-          })
-            .then(response => response.json())
-            .then(response => {
-              if (response.success === true) {
-                localStorage.setItem('token', response.token);
-                window.location.href = '/';
-              }
-            });
-        }
+        fetch('/api/sign/up', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(user)
+        })
+          .then(response => response.json())
+          .then(response => {
+            if (response.success === true) {
+              localStorage.setItem('token', response.token);
+              window.location.href = '/';
+            }
+          });
       }
     }
-  };
+  }
+};
 </script>

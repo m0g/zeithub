@@ -26,51 +26,51 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        username: '',
-        password: '',
-        errors: [],
-      };
-    },
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      errors: []
+    };
+  },
 
-    methods: {
-      signIn(e) {
-        e.preventDefault();
+  methods: {
+    signIn(e) {
+      e.preventDefault();
 
-        this.errors = [];
+      this.errors = [];
 
-        if (!this.username) {
-          this.errors.push('Username is required');
-        }
+      if (!this.username) {
+        this.errors.push('Username is required');
+      }
 
-        if (!this.password) {
-          this.errors.push('Password is required');
-        }
+      if (!this.password) {
+        this.errors.push('Password is required');
+      }
 
-        if (this.errors.length === 0) {
-          const user = {
-            username: this.username,
-            password: this.password
-          };
+      if (this.errors.length === 0) {
+        const user = {
+          username: this.username,
+          password: this.password
+        };
 
-          fetch('/api/sign/in', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(user)
-          })
-            .then(response => response.json())
-            .then(response => {
-              if (response.success === true) {
-                localStorage.setItem('token', response.token);
-                window.location.href = '/';
-              } else {
-                this.errors.push(response.message);
-              }
-            });
-        }
+        fetch('/api/sign/in', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(user)
+        })
+          .then(response => response.json())
+          .then(response => {
+            if (response.success === true) {
+              localStorage.setItem('token', response.token);
+              window.location.href = '/';
+            } else {
+              this.errors.push(response.message);
+            }
+          });
       }
     }
-  };
+  }
+};
 </script>

@@ -12,5 +12,5 @@ export default {
   data() {
     return { version };
   }
-}
+};
 </script>

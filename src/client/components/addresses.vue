@@ -12,25 +12,25 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import http from '../http';
 import Component from 'vue-class-component';
 import AddAddress from './add-address.vue';
 
-@Component({ 
-  components: { AddAddress },
+@Component({
+  components: { AddAddress }
 })
 export default class Addresses extends Vue {
-  addresses:{}[] = [];
+  addresses: {}[] = [];
 
   created() {
     this.getAddresses();
   }
 
   getAddresses() {
-    http('/api/addresses', { 
+    http('/api/addresses', {
       headers: { 'Content-Type': 'application/json' },
-      method: 'GET', 
+      method: 'GET'
     })
       .then(response => response.json())
       .then(response => {
@@ -41,9 +41,9 @@ export default class Addresses extends Vue {
   }
 
   deleteAddress(id) {
-    http(`/api/addresses/${id}`, { 
+    http(`/api/addresses/${id}`, {
       headers: { 'Content-Type': 'application/json' },
-      method: 'DELETE', 
+      method: 'DELETE'
     })
       .then(response => response.json())
       .then(response => {

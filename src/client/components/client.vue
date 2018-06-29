@@ -13,38 +13,37 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import http from '../http';
 import Component from 'vue-class-component';
 import FormErrors from './form-errors.vue';
 
-@Component({ components: { FormErrors }})
+@Component({ components: { FormErrors } })
 export default class Client extends Vue {
-  exists:boolean = false;
-  showForm:boolean = false;
-  errors:Array<string> = [];
-  name:string = '';
+  exists: boolean = false;
+  showForm: boolean = false;
+  errors: Array<string> = [];
+  name: string = '';
 
   created() {
     this.getClient();
   }
 
   getClient() {
-    const slug:string = this.$route.params.slug;
-
+    const slug: string = this.$route.params.slug;
 
     http(`/api/projects/${slug}/clients`)
       .then(data => data.json())
       .then(data => {
         if (data.success && data.clients.length > 0) {
-          this.exists = true
+          this.exists = true;
           this.name = data.clients[0].name;
         }
-      })
+      });
   }
 
   createClient(e) {
-    const slug:string = this.$route.params.slug;
+    const slug: string = this.$route.params.slug;
 
     e.preventDefault();
     this.errors = [];
@@ -58,7 +57,7 @@ export default class Client extends Vue {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: this.name,
+          name: this.name
         })
       })
         .then(response => response.json())

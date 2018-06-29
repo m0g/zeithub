@@ -16,11 +16,11 @@ import BankAccounts from './bank-accounts.vue';
 import Addresses from './addresses.vue';
 
 export default {
-  components: { 
-    PersonalInfo, 
+  components: {
+    PersonalInfo,
     ChangePassword,
     BankAccounts,
-    Addresses,
+    Addresses
   },
 
   data() {
@@ -37,10 +37,10 @@ export default {
         .then(data => data.json())
         .then(data => {
           if (data.success) {
-            this.me = data.me
+            this.me = data.me;
           }
         });
     }
   }
-}
+};
 </script>

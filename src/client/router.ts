@@ -25,26 +25,26 @@ export default new VueRouter({
     { path: '/', name: 'Home', component: Home },
     {
       path: '/projects',
-      name: 'Projects', 
+      name: 'Projects',
       beforeEnter: requireAuth,
-      component: Projects 
+      component: Projects
     },
     {
       path: '/projects/:slug',
-      name: 'Project', 
+      name: 'Project',
       beforeEnter: requireAuth,
       component: Project
     },
 
     {
-      path: '/signin', 
-      name: 'SignIn', 
+      path: '/signin',
+      name: 'SignIn',
       beforeEnter: requireUnauth,
-      component: SignIn 
+      component: SignIn
     },
     {
-      path: '/signout', 
-      name: 'SignOut', 
+      path: '/signout',
+      name: 'SignOut',
       beforeEnter: requireAuth,
       component: SignOut
     },
@@ -52,19 +52,19 @@ export default new VueRouter({
       path: '/signup',
       name: 'SignUp',
       beforeEnter: requireUnauth,
-      component: SignUp,
+      component: SignUp
     },
     {
       path: '/projects/new',
       name: 'CreateProject',
       beforeEnter: requireAuth,
-      component: CreateProject,
+      component: CreateProject
     },
     {
       path: '/time',
       name: 'Time',
       beforeEnter: requireAuth,
-      component: Time,
+      component: Time
     },
     {
       path: '/expenses',
@@ -95,6 +95,6 @@ export default new VueRouter({
       name: 'Invoice',
       beforeEnter: requireAuth,
       component: Invoice
-    },
+    }
   ]
 });

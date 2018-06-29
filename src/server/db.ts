@@ -1,4 +1,4 @@
-import * as mysql from 'mysql2/promise';
+import * as mysql from "mysql2/promise";
 
 export default class DB {
   private pool: mysql.pool;
@@ -9,10 +9,10 @@ export default class DB {
       this.pool = mysql.createPool(process.env.CLEARDB_DATABASE_URL);
     } else {
       this.pool = mysql.createPool({
-        host     : process.env.DB_HOST,
-        user     : process.env.DB_USER,
-        password : process.env.DB_PASSWD,
-        database : process.env.DB_NAME,
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWD,
+        database: process.env.DB_NAME
       });
     }
   }
@@ -36,4 +36,4 @@ export default class DB {
     const [results] = await this.pool.execute(sql);
     return results ? results.insertId : false;
   }
-};
+}

@@ -23,7 +23,7 @@ export default {
   created() {
     http('/api/invoices', {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' }
     })
       .then(response => response.json())
       .then(response => {
@@ -32,5 +32,5 @@ export default {
         }
       });
   }
-}
+};
 </script>

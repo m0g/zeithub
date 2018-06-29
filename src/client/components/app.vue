@@ -15,7 +15,7 @@
   </div>
 </template>
 <script>
-import { isLoggedIn, signOut } from "./../auth";
+import { isLoggedIn, signOut } from './../auth';
 import http from './../http';
 
 export default {
@@ -29,9 +29,9 @@ export default {
       .then(data => {
         if (data.auth === false && isLoggedIn()) {
           signOut();
-          setTimeout(() => window.location.href = '/', 1000);
+          setTimeout(() => (window.location.href = '/'), 1000);
         }
-      })
+      });
   }
 };
 </script>

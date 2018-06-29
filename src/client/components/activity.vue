@@ -15,5 +15,5 @@
 <script>
 export default {
   props: ['activity']
-}
+};
 </script>
