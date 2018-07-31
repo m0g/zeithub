@@ -10,8 +10,10 @@ describe("Array", function() {
   });
 });
 
-describe("Get api/me", () => {
-  it("should respond with 403 if not logged", done => {
+describe("Get api/me", function() {
+  this.timeout(3000);
+
+  it("should respond with 403 if not logged", function(done) {
     request(app)
       .get("/api/me")
       .set("Accept", "application/json")

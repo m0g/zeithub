@@ -1,18 +1,29 @@
 import * as mysql from "mysql2/promise";
 
+const {
+  NODE_ENV,
+  CLEARDB_DATABASE_URL,
+  DB_HOST,
+  DB_USER,
+  DB_NAME,
+  DB_NAME_TEST,
+  DB_PASSWD
+} = process.env;
+console.log("NODE_ENV", NODE_ENV);
+
 export default class DB {
   private pool: mysql.pool;
   private connection: mysql.connection;
 
   constructor() {
-    if (process.env.CLEARDB_DATABASE_URL) {
-      this.pool = mysql.createPool(process.env.CLEARDB_DATABASE_URL);
+    if (CLEARDB_DATABASE_URL) {
+      this.pool = mysql.createPool(CLEARDB_DATABASE_URL);
     } else {
       this.pool = mysql.createPool({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWD,
-        database: process.env.DB_NAME
+        host: DB_HOST,
+        user: DB_USER,
+        password: DB_PASSWD,
+        database: NODE_ENV == "test" ? DB_NAME_TEST : DB_NAME
       });
     }
   }

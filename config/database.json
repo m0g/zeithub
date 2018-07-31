@@ -2,8 +2,15 @@
   "dev": {
     "driver": "mysql",
     "multipleStatements": true,
-    "user": {"ENV": "DB_USER" },
-    "password": {"ENV": "DB_PASSWD" },
+    "user": { "ENV": "DB_USER" },
+    "password": { "ENV": "DB_PASSWD" },
     "database": { "ENV": "DB_NAME" }
+  },
+  "test": {
+    "driver": "mysql",
+    "multipleStatements": true,
+    "user": { "ENV": "DB_USER" },
+    "password": { "ENV": "DB_PASSWD" },
+    "database": { "ENV": "DB_NAME_TEST" }
   }
 }
