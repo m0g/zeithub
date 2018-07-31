@@ -19,7 +19,6 @@ const signRouter = require("./routes/sign");
 const activitiesRouter = require("./routes/activities");
 const expensesRouter = require("./routes/expenses");
 const meRouter = require("./routes/me");
-// const invoicesRouter = require('./routes/invoices');
 
 const app = express();
 

@@ -1,64 +1,74 @@
-import DB from './../../db';
+import DB from "./../../db";
 
 const db = new DB();
 
 export default async (req, res) => {
   if (!req.body.name) {
-    return res.status(403).json({ success: false, message: 'Missing name' });
+    return res.status(403).json({ success: false, message: "Missing name" });
   }
 
   if (!req.body.rate) {
-    return res.status(403).json({ success: false, message: 'Missing hourly rate' });
+    return res
+      .status(403)
+      .json({ success: false, message: "Missing hourly rate" });
   }
 
   if (!req.body.number) {
-    return res.status(403).json({ success: false, message: 'Missing invoice number' });
+    return res
+      .status(403)
+      .json({ success: false, message: "Missing invoice number" });
   }
 
   if (!req.body.projectSlug) {
-    return res.status(403).json({ success: false, message: 'Missing project' });
+    return res.status(403).json({ success: false, message: "Missing project" });
   }
 
   if (!req.body.iban) {
-    return res.status(403).json({ success: false, message: 'Missing bank account' });
+    return res
+      .status(403)
+      .json({ success: false, message: "Missing bank account" });
   }
 
   if (!req.body.rate) {
-    return res.status(403).json({ success: false, message: 'Missing rate' });
+    return res.status(403).json({ success: false, message: "Missing rate" });
   }
 
   if (!req.body.date) {
-    return res.status(403).json({ success: false, message: 'Missing date' });
+    return res.status(403).json({ success: false, message: "Missing date" });
   }
- 
+
   if (!req.body.dueDate) {
-    return res.status(403).json({ success: false, message: 'Missing due date' });
+    return res
+      .status(403)
+      .json({ success: false, message: "Missing due date" });
   }
- 
+
   if (!req.body.address) {
-    return res.status(403).json({ success: false, message: 'Missing address' });
+    return res.status(403).json({ success: false, message: "Missing address" });
   }
 
   if (!req.body.activities || req.body.activities.length === 0) {
-    return res.status(403).json({ success: false, message: 'Missing activities' });
+    return res
+      .status(403)
+      .json({ success: false, message: "Missing activities" });
   }
 
   const userId = req.userId;
   let invoiceId;
 
-  const { 
+  const {
     name,
-    iban, 
-    projectSlug, 
-    date, 
-    dueDate, 
-    number, 
-    rate, 
+    iban,
+    projectSlug,
+    date,
+    dueDate,
+    number,
+    rate,
     memo,
     discount,
     vat,
     address,
-    activities 
+    activities
   } = req.body;
 
   const isNumberExisting = await db.queryOne(`
@@ -68,7 +78,9 @@ export default async (req, res) => {
   `);
 
   if (isNumberExisting) {
-    return res.status(500).json({ success: false, message: 'Invoice number already existing' });
+    return res
+      .status(500)
+      .json({ success: false, message: "Invoice number already existing" });
   }
 
   const project = await db.queryOne(`
@@ -78,7 +90,9 @@ export default async (req, res) => {
   `);
 
   if (!project) {
-    return res.status(500).json({ success: false, message: 'Project does not exists' });
+    return res
+      .status(500)
+      .json({ success: false, message: "Project does not exists" });
   }
 
   const bankAccount = await db.queryOne(`
@@ -88,9 +102,43 @@ export default async (req, res) => {
   `);
 
   if (!bankAccount) {
-    return res.status(500).json({ success: false, message: 'Bank account does not exists' });
+    return res
+      .status(500)
+      .json({ success: false, message: "Bank account does not exists" });
   }
 
+  console.log(
+    `
+      insert into invoices (
+        user_id, 
+        date, 
+        due_date, 
+        name, 
+        memo,
+        number, 
+        rate,
+        tax,
+        discount,
+        project_id, 
+        user_address_id,
+        bank_account_id
+      )
+      values (
+        ${userId}, 
+        '${date}', 
+        '${dueDate}', 
+        '${name}', 
+        '${memo}',
+        ${number}, 
+        ${rate},
+        ${vat},
+        ${discount},
+        ${project.id}, 
+        ${address},
+        ${bankAccount.id}
+      )
+    `
+  );
   try {
     invoiceId = await db.execute(`
       insert into invoices (
@@ -122,9 +170,7 @@ export default async (req, res) => {
         ${bankAccount.id}
       )
     `);
-
-
-  } catch(error) {
+  } catch (error) {
     return res.status(500).json({ success: false, error });
   }
 
@@ -147,7 +193,7 @@ export default async (req, res) => {
           ${project.id}
         )
       `);
-    } catch(error) {
+    } catch (error) {
       return res.status(500).json({ success: false, error });
     }
   }
