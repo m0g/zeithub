@@ -129,4 +129,4 @@ function onListening() {
   console.info("Listening on " + bind);
 }
 
-module.exports = app;
+export default app;
