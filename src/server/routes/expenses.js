@@ -1,12 +1,12 @@
-const express = require('express');
+const express = require("express");
 
-const DB = require('./../db').default;
-const verifyToken = require('./../verify-token').default;
+const DB = require("./../db").default;
+const verifyToken = require("./../verify-token").default;
 
 const router = express.Router();
 const db = new DB();
 
-router.get('/', verifyToken, async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
   let expenses;
 
   try {
@@ -16,10 +16,10 @@ router.get('/', verifyToken, async (req, res) => {
       where user_id = ${req.userId}
       order by date desc
     `);
-  } catch(error) {
-    return res.status(500).json({ 
-      success: false, 
-      message: 'Error on select', 
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error on select",
       error
     });
   }
@@ -28,20 +28,22 @@ router.get('/', verifyToken, async (req, res) => {
     return res.json({ success: true, expenses });
   }
 
-  return res.status(500).json({ success: false, message: 'Expenses not found' });
+  return res
+    .status(500)
+    .json({ success: false, message: "Expenses not found" });
 });
 
-router.post('/', verifyToken, async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   if (!req.body.name) {
-    return res.status(403).json({ success: false, message: 'Missing name' });
+    return res.status(403).json({ success: false, message: "Missing name" });
   }
 
   if (!req.body.amount) {
-    return res.status(403).json({ success: false, message: 'Missing amount' });
+    return res.status(403).json({ success: false, message: "Missing amount" });
   }
 
   if (!req.body.date) {
-    return res.status(403).json({ success: false, message: 'Missing date' });
+    return res.status(403).json({ success: false, message: "Missing date" });
   }
 
   const name = req.body.name;
@@ -51,14 +53,17 @@ router.post('/', verifyToken, async (req, res) => {
   let expenseID;
 
   try {
-    expenseID = await db.execute(`
-      insert into expenses (name, date, amount, user_id)
-      values ('${name}', '${date}', ${amount}, ${userId})
-    `);
+    expenseID = await db.execute(
+      `
+        insert into expenses (name, date, amount, user_id)
+        values (?, ?, ?, ?)
+      `,
+      [name, date, amount, userId]
+    );
   } catch (error) {
-    return res.status(500).json({ 
-      success: false, 
-      message: 'Error on insert', 
+    return res.status(500).json({
+      success: false,
+      message: "Error on insert",
       error
     });
   }
@@ -72,7 +77,9 @@ router.post('/', verifyToken, async (req, res) => {
   if (expense) {
     res.json({ success: true, expense });
   } else {
-    return res.status(500).json({ success: false, message: 'expense not found' });
+    return res
+      .status(500)
+      .json({ success: false, message: "expense not found" });
   }
 });
 

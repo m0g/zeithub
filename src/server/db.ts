@@ -32,8 +32,8 @@ export default class DB {
     return results.length > 0 ? results[0] : false;
   }
 
-  async execute(sql) {
-    const [results] = await this.pool.execute(sql);
+  async execute(sql, data) {
+    const [results] = await this.pool.execute(sql, data);
     return results ? results.insertId : false;
   }
 }

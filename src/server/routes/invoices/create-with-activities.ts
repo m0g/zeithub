@@ -107,38 +107,6 @@ export default async (req, res) => {
       .json({ success: false, message: "Bank account does not exists" });
   }
 
-  console.log(
-    `
-      insert into invoices (
-        user_id, 
-        date, 
-        due_date, 
-        name, 
-        memo,
-        number, 
-        rate,
-        tax,
-        discount,
-        project_id, 
-        user_address_id,
-        bank_account_id
-      )
-      values (
-        ${userId}, 
-        '${date}', 
-        '${dueDate}', 
-        '${name}', 
-        '${memo}',
-        ${number}, 
-        ${rate},
-        ${vat},
-        ${discount},
-        ${project.id}, 
-        ${address},
-        ${bankAccount.id}
-      )
-    `
-  );
   try {
     invoiceId = await db.execute(`
       insert into invoices (
