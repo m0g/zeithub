@@ -1,33 +1,37 @@
-import * as moment from 'moment';
-import DB from './../../db';
+import * as moment from "moment";
+import DB from "./../../db";
 
 const db = new DB();
 
 export default async (req, res) => {
   if (!req.body.name) {
-    return res.status(403).json({ success: false, message: 'Missing name' });
+    return res.status(403).json({ success: false, message: "Missing name" });
   }
 
   if (!req.body.hourlyRate) {
-    return res.status(403).json({ success: false, message: 'Missing hourly rate' });
+    return res
+      .status(403)
+      .json({ success: false, message: "Missing hourly rate" });
   }
 
   if (!req.body.month) {
-    return res.status(403).json({ success: false, message: 'Missing month' });
+    return res.status(403).json({ success: false, message: "Missing month" });
   }
 
   if (!req.body.projectSlug) {
-    return res.status(403).json({ success: false, message: 'Missing project' });
+    return res.status(403).json({ success: false, message: "Missing project" });
   }
 
   if (!req.body.iban) {
-    return res.status(403).json({ success: false, message: 'Missing bank account' });
+    return res
+      .status(403)
+      .json({ success: false, message: "Missing bank account" });
   }
 
   const userId = req.userId;
   const { name, hourlyRate, projectSlug, iban } = req.body;
-  
-  const [ year, month ] = req.body.month.split('-');
+
+  const [year, month] = req.body.month.split("-");
 
   const project = await db.queryOne(`
     select id
@@ -36,7 +40,9 @@ export default async (req, res) => {
   `);
 
   if (!project) {
-    return res.status(500).json({ success: false, message: 'Project does not exists' });
+    return res
+      .status(500)
+      .json({ success: false, message: "Project does not exists" });
   }
 
   const bankAccount = await db.queryOne(`
@@ -45,7 +51,9 @@ export default async (req, res) => {
     where user_id = ${userId} and iban = '${iban}'
   `);
 
-  const dueDate = moment().add(1, 'month').format('YYYY-MM-DD');
+  const dueDate = moment()
+    .add(1, "month")
+    .format("YYYY-MM-DD");
   let number = 1;
 
   const lastInvoice = await db.queryOne(`
@@ -60,37 +68,34 @@ export default async (req, res) => {
     number = parseInt(lastInvoice.number) + 1;
   }
 
-  const invoiceId = await db.execute(`
-    insert into invoices (
-      user_id, 
-      date, 
-      due_date, 
-      name, 
-      number, 
-      project_id, 
-      rate,
-      bank_account_id
-    )
-    values (
-      ${userId}, 
-      curdate(), 
-      '${dueDate}', 
-      '${name}', 
-      ${number}, 
-      ${project.id}, 
-      ${hourlyRate},
-      ${bankAccount.id}
-    )
-  `);
+  const invoiceId = await db.execute(
+    `
+      insert into invoices (
+        user_id, 
+        date, 
+        due_date, 
+        name, 
+        number, 
+        project_id, 
+        rate,
+        bank_account_id
+      )
+      values (?, curdate(), ?, ? , ?, ?, ?, ?)
+    `,
+    [userId, dueDate, name, number, project.id, hourlyRate, bankAccount.id]
+  );
 
-  const activityInvoices = await db.execute(`
-    update activities
-    set invoice_id = ${invoiceId}
-    where month(start_time) = ${month}
-    and year(start_time) = ${year}
-    and project_id = ${project.id}
-    and user_id = ${userId}
-  `);
+  const activityInvoices = await db.execute(
+    `
+      update activities
+      set invoice_id = ?
+      where month(start_time) = ?
+      and year(start_time) = ?
+      and project_id = ?
+      and user_id = ?
+    `,
+    [invoiceId, month, year, project.id, userId]
+  );
 
   res.json({ success: true, invoiceId, activityInvoices });
 };

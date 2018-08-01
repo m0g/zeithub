@@ -108,59 +108,66 @@ export default async (req, res) => {
   }
 
   try {
-    invoiceId = await db.execute(`
-      insert into invoices (
-        user_id, 
-        date, 
-        due_date, 
-        name, 
+    invoiceId = await db.execute(
+      `
+        insert into invoices (
+          user_id, 
+          date, 
+          due_date, 
+          name, 
+          memo,
+          number, 
+          rate,
+          tax,
+          discount,
+          project_id, 
+          user_address_id,
+          bank_account_id
+        )
+        values (?,?,?,?,?,?,?,?,?,?,?,?)
+      `,
+      [
+        userId,
+        date,
+        dueDate,
+        name,
         memo,
-        number, 
+        number,
         rate,
-        tax,
+        vat,
         discount,
-        project_id, 
-        user_address_id,
-        bank_account_id
-      )
-      values (
-        ${userId}, 
-        '${date}', 
-        '${dueDate}', 
-        '${name}', 
-        '${memo}',
-        ${number}, 
-        ${rate},
-        ${vat},
-        ${discount},
-        ${project.id}, 
-        ${address},
-        ${bankAccount.id}
-      )
-    `);
+        project.id,
+        address,
+        bankAccount.id
+      ]
+    );
   } catch (error) {
     return res.status(500).json({ success: false, error });
   }
 
+  console.log("invoice id", invoiceId);
   for (let activity of activities) {
     try {
-      await db.execute(`
-        insert into activities (
-          name, 
-          duration_minutes, 
-          tracked, 
-          user_id, 
-          invoice_id, 
-          project_id)
-        values (
-          '${activity.name}', 
-          ${activity.durationMinutes}, 
-          0, 
-          ${userId}, 
-          ${invoiceId}, 
-          ${project.id}
-        )
-      `);
+      await db.execute(
+        `
+          insert into activities (
+            name, 
+            duration_minutes, 
+            tracked, 
+            user_id, 
+            invoice_id, 
+            project_id)
+          values (?,?,?,?,?,?)
+        `,
+        [
+          activity.name,
+          activity.durationMinutes,
+          0,
+          userId,
+          invoiceId,
+          project.id
+        ]
+      );
     } catch (error) {
       return res.status(500).json({ success: false, error });
     }
