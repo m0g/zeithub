@@ -18,6 +18,14 @@ describe("Get api/me", function() {
       .get("/api/me")
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
-      .expect(403, done);
+      .expect(403)
+      .end(function(err) {
+        console.log("end", err);
+        done();
+      });
   });
+});
+
+after(() => {
+  process.exit(0);
 });
