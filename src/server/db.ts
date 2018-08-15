@@ -11,6 +11,16 @@ const {
 } = process.env;
 console.log("NODE_ENV", NODE_ENV);
 
+const checkTypes = row => {
+  for (const key of Object.keys(row)) {
+    if (key === "durationMinutes") {
+      row[key] = parseInt(row[key]);
+    }
+  }
+
+  return row;
+};
+
 export default class DB {
   private pool: mysql.pool;
   private connection: mysql.connection;
@@ -35,12 +45,13 @@ export default class DB {
 
   async query(sql) {
     const [results] = await this.pool.query(sql);
-    return results;
+
+    return results.map(checkTypes);
   }
 
   async queryOne(sql) {
     const [results] = await this.pool.query(sql);
-    return results.length > 0 ? results[0] : false;
+    return results.length > 0 ? checkTypes(results[0]) : false;
   }
 
   async execute(sql, data) {

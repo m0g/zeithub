@@ -78,7 +78,7 @@ export default class ActivitiesTable extends Vue {
   @Watch('activities')
   onActivitiesChanged(activities: Array<Activity>) {
     this.totalMinutes = activities.reduce(
-      (acc: number, next: Activity) => acc + parseInt(next.durationMinutes),
+      (acc: number, next: Activity) => acc + next.durationMinutes,
       0
     );
   }
