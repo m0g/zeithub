@@ -67,7 +67,7 @@ export default class Invoice extends Vue {
     const html2pdf = await import('./../html2pdf');
     const container = this.$refs.container;
     const iframe = this.$refs.iframe as HTMLIFrameElement;
-    const pdf = new jsPDF.default('p', 'pt', 'a4');
+    const pdf = new jsPDF('p', 'pt', 'a4');
 
     pdf.canvas.height = 72 * 11;
     pdf.canvas.width = 72 * 8.5;
