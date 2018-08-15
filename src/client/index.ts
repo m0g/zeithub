@@ -21,7 +21,8 @@ Vue.filter('formatHours', minutes =>
 
 Vue.filter(
   'totalHours',
-  minutes => `${Math.floor(minutes / 60)}:${minutes % 60}`
+  minutes =>
+    `${Math.floor(minutes / 60)}:${(minutes % 60).toString().padStart(2, '0')}`
 );
 
 new Vue({
