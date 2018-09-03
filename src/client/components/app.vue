@@ -4,6 +4,7 @@
       <router-link id="app-name" to="/">Konta</router-link>
       <router-link to="/time" v-if="isLoggedIn">Time</router-link>
       <router-link to="/projects" v-if="isLoggedIn">Projects</router-link>
+      <router-link to="/clients" v-if="isLoggedIn">Clients</router-link>
       <router-link to="/expenses" v-if="isLoggedIn">Expenses</router-link>
       <router-link to="/invoices" v-if="isLoggedIn">Invoices</router-link>
       <router-link to="/me" v-if="isLoggedIn">Profile</router-link>
