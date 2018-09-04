@@ -135,12 +135,18 @@ export default class Invoice extends Vue {
 
 <style scoped>
 #invoice {
+  margin: 0;
   max-width: 560px;
   height: 740px;
   padding: 0 10px;
   position: relative;
   font-size: 9pt;
   font-family: sans-serif;
+}
+
+#invoice h1 {
+  margin-top: 0;
+  padding: 0;
 }
 
 #invoice .from {
