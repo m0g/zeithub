@@ -3,7 +3,9 @@
     <fieldset>
       <legend>Actions</legend>
       <button @click="generatePDF">Generate PDF</button>
-      <button @click="editMode = true">Edit</button>
+      <router-link :to="{ name: 'EditInvoice', params: { id: invoice.id } }">
+        Edit
+      </router-link>
     </fieldset>
     <section id="invoice" ref="container">
       <h1>{{invoice.name}}</h1>
@@ -56,7 +58,6 @@ export default class Invoice extends Vue {
   address: Object = {};
   pdfGenerated: boolean = false;
   totalMinutes: number = 0;
-  editMode: boolean = false;
   client: { id: number; name: string } = { id: 0, name: '' };
 
   created() {

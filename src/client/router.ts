@@ -14,6 +14,7 @@ import Me from './components/me.vue';
 import Invoices from './components/invoices.vue';
 import Invoice from './components/invoice.vue';
 import AddInvoice from './components/add-invoice.vue';
+import EditInvoice from './components/edit-invoice.vue';
 import Clients from './components/clients.vue';
 
 import { requireAuth, requireUnauth } from './auth';
@@ -90,6 +91,12 @@ export default new VueRouter({
       name: 'AddInvoice',
       beforeEnter: requireAuth,
       component: AddInvoice
+    },
+    {
+      path: '/invoices/:id/edit',
+      name: 'EditInvoice',
+      beforeEnter: requireAuth,
+      component: EditInvoice
     },
     {
       path: '/invoices/:id',
