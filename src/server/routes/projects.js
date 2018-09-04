@@ -1,18 +1,18 @@
-const express = require('express');
-const slugify = require('slug');
+const express = require("express");
+const slugify = require("slug");
 
-const DB = require('./../db').default;
-const verifyToken = require('./../verify-token').default;
+const DB = require("./../db").default;
+const verifyToken = require("./../verify-token").default;
 
 const router = express.Router();
 const db = new DB();
 
 const filterByMonth = monthDate => {
   if (!monthDate) {
-    return '';
+    return "";
   }
 
-  let [year, month] = monthDate.split('-');
+  let [year, month] = monthDate.split("-");
 
   return `
     and month(a.start_time) = ${month} 
@@ -20,10 +20,10 @@ const filterByMonth = monthDate => {
   `;
 };
 
-router.get('/:slug', verifyToken, async (req, res) => {
+router.get("/:slug", verifyToken, async (req, res) => {
   const slug = req.params.slug;
   const userId = req.userId;
-  const month = req.query.month || '';
+  const month = req.query.month || "";
 
   const project = await db.queryOne(`
     select id, name, slug
@@ -47,7 +47,7 @@ router.get('/:slug', verifyToken, async (req, res) => {
   res.json({ success: true, project, activities });
 });
 
-router.get('/', verifyToken, async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
   const projects = await db.query(`
     select name, slug
     from projects
@@ -57,11 +57,35 @@ router.get('/', verifyToken, async (req, res) => {
   res.json(projects);
 });
 
-router.post('/', verifyToken, async (req, res) => {
+router.put("/:slug", verifyToken, async (req, res) => {
+  const userId = req.userId;
+  const slug = req.params.slug;
+
+  if (!req.body.clientId) {
+    return res
+      .status(403)
+      .json({ success: false, message: "Missing client id" });
+  }
+
+  const clientId = req.body.clientId;
+
+  try {
+    await db.execute(
+      "update projects set client_id = ? where slug = ? and user_id = ?",
+      [clientId, slug, userId]
+    );
+  } catch (error) {
+    return res.status(500).json({ success: false, error });
+  }
+
+  return res.json({ success: true });
+});
+
+router.post("/", verifyToken, async (req, res) => {
   const userId = req.userId;
 
   if (!req.body.name) {
-    return res.status(403).json({ success: false, message: 'Missing name' });
+    return res.status(403).json({ success: false, message: "Missing name" });
   }
 
   const name = req.body.name;
@@ -74,9 +98,9 @@ router.post('/', verifyToken, async (req, res) => {
   `);
 
   if (project) {
-    return res.status(500).json({ 
-      success: false, 
-      message: 'Project already exists' 
+    return res.status(500).json({
+      success: false,
+      message: "Project already exists"
     });
   }
 
@@ -86,7 +110,7 @@ router.post('/', verifyToken, async (req, res) => {
   `);
 
   if (!id) {
-    return res.status(500).json({ success: false, message: 'Cannot insert' });
+    return res.status(500).json({ success: false, message: "Cannot insert" });
   }
 
   const newProject = await db.queryOne(`
@@ -94,13 +118,13 @@ router.post('/', verifyToken, async (req, res) => {
   `);
 
   if (!newProject) {
-    return res.status(500).json({ success: false, message: 'Error' });
+    return res.status(500).json({ success: false, message: "Error" });
   }
 
   res.json({ success: true, project: newProject });
 });
 
-router.get('/:slug/clients', verifyToken, async (req, res) => {
+router.get("/:slug/clients", verifyToken, async (req, res) => {
   const slug = req.params.slug;
   const userId = req.userId;
 
@@ -115,20 +139,17 @@ router.get('/:slug/clients', verifyToken, async (req, res) => {
   res.json({ success: true, clients });
 });
 
-router.post('/:slug/clients', verifyToken, async (req, res) => {
+router.post("/:slug/clients", verifyToken, async (req, res) => {
   const slug = req.params.slug;
   const userId = req.userId;
   let clientId;
 
   if (!req.body.name) {
-    return res.status(403).json({ success: false, message: 'Missing name' });
+    return res.status(403).json({ success: false, message: "Missing name" });
   }
 
   const name = req.body.name;
- 
-  console.log(`      insert into clients (name, user_id)
-      values ('${name}', ${userId})
- `);
+
   try {
     clientId = await db.execute(`
       insert into clients (name, user_id)
@@ -158,8 +179,7 @@ router.post('/:slug/clients', verifyToken, async (req, res) => {
     return res.json({ success: true, client });
   }
 
-  return res.json({ success: false, message: 'Client not found' });
+  return res.json({ success: false, message: "Client not found" });
 });
-
 
 module.exports = router;

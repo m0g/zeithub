@@ -1,7 +1,18 @@
 <template>
   <fieldset>
     <legend>Client</legend>
-    <p v-if="exists">{{name}}</p>
+    <select 
+      @change="updateClient(client)" 
+      name="client" 
+      v-model="client.id" 
+      :disabled="clients.length === 0">
+      <option value="">Select a client</option>
+      <option 
+        v-for="client in clients" 
+        :key="client.id" 
+        :value="client.id">{{client.name}}</option>
+    </select>
+    <p v-if="exists">{{client.name}}</p>
     <p v-if="!exists">Client does not exists</p>
     <p v-if="!exists"><button v-on:click="showForm = true">Create one</button></p>
     <form action="" v-if="showForm" @submit="createClient">
@@ -23,10 +34,12 @@ export default class Client extends Vue {
   exists: boolean = false;
   showForm: boolean = false;
   errors: Array<string> = [];
-  name: string = '';
+  client: { id: number; name: string } = { id: 0, name: '' };
+  clients: {}[] = [];
 
   created() {
     this.getClient();
+    this.getClients();
   }
 
   getClient() {
@@ -37,8 +50,37 @@ export default class Client extends Vue {
       .then(data => {
         if (data.success && data.clients.length > 0) {
           this.exists = true;
-          this.name = data.clients[0].name;
+          this.client = data.clients[0];
         }
+      });
+  }
+
+  getClients() {
+    http('/api/clients', {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'GET'
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          this.clients = response.clients;
+        }
+      });
+  }
+
+  updateClient(client) {
+    const slug: string = this.$route.params.slug;
+
+    http(`/api/projects/${slug}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        clientId: this.client.id
+      })
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
       });
   }
 
@@ -48,7 +90,7 @@ export default class Client extends Vue {
     e.preventDefault();
     this.errors = [];
 
-    if (!this.name) {
+    if (!this.client) {
       this.errors.push('Name is required');
     }
 
@@ -57,13 +99,13 @@ export default class Client extends Vue {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: this.name
+          name: this.client.name
         })
       })
         .then(response => response.json())
         .then(response => {
           if (response.success === true) {
-            this.name = '';
+            this.client = { id: 0, name: '' };
           }
         });
     }
