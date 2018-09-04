@@ -4,6 +4,7 @@
     <ul>
       <li v-for="client in clients" :key="client.id">
         <span>{{client.name}}</span>
+        <span>{{client.street}}</span>
         <button>Delete</button>
       </li>
     </ul>

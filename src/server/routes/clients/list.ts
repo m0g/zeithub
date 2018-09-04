@@ -1,4 +1,4 @@
-import DB from './../../db';
+import DB from "./../../db";
 
 const db = new DB();
 
@@ -6,11 +6,11 @@ export default async (req, res) => {
   const userId = req.userId;
 
   const clients = await db.query(`
-    select id, name
-    from clients
-    where user_id = ${userId}
+    select c.name, a.street, a.city, a.postcode, a.country
+    from clients c 
+    left join addresses a on c.id = a.client_id
+    where c.user_id = ${userId}
   `);
- 
+
   res.json({ success: true, clients });
 };
-
