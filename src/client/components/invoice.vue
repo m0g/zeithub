@@ -10,12 +10,12 @@
       <div class="from">
         <p><b>{{me.firstName}} {{me.lastName}}</b></p>
         <p>{{address.street}}</p>
-        <p>{{address.postcode}} {{address.country}}</p>
+        <p>{{address.postcode}} {{address.city}}, {{address.country}}</p>
       </div>
       <div class="to">
         <p><b>{{client.name}}</b></p>
         <p>{{client.street}}</p>
-        <p>{{client.postcode}} {{client.country}}</p>
+        <p>{{client.postcode}} {{client.city}}, {{client.country}}</p>
       </div>
       <invoice-info :invoice="invoice" :me="me"></invoice-info>
       <activities-table 
