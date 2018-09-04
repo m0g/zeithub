@@ -13,7 +13,9 @@
         <p>{{address.postcode}} {{address.country}}</p>
       </div>
       <div class="to">
-        <p><b>{{me.firstName}} {{me.lastName}}</b></p>
+        <p><b>{{client.name}}</b></p>
+        <p>{{client.street}}</p>
+        <p>{{client.postcode}} {{client.country}}</p>
       </div>
       <invoice-info :invoice="invoice" :me="me"></invoice-info>
       <activities-table 
@@ -55,6 +57,7 @@ export default class Invoice extends Vue {
   pdfGenerated: boolean = false;
   totalMinutes: number = 0;
   editMode: boolean = false;
+  client: { id: number; name: string } = { id: 0, name: '' };
 
   created() {
     this.getInvoice();
@@ -89,6 +92,7 @@ export default class Invoice extends Vue {
           this.invoice = response.invoice;
           this.activities = response.activities;
           this.bankAccount = response.bankAccount;
+          this.getClient(); // TODO: this is also crap
         }
       });
   }
@@ -110,6 +114,19 @@ export default class Invoice extends Vue {
         console.log(data);
         if (data.success) {
           this.address = data.addresses[0];
+        }
+      });
+  }
+
+  getClient() {
+    // TODO: Fix this crap
+    const slug: string = this.activities[0].projectSlug;
+
+    http(`/api/projects/${slug}/clients`)
+      .then(data => data.json())
+      .then(data => {
+        if (data.success && data.clients.length > 0) {
+          this.client = data.clients[0];
         }
       });
   }

@@ -29,6 +29,9 @@ import http from '../http';
 import Component from 'vue-class-component';
 import FormErrors from './form-errors.vue';
 
+// TODO: the way the client is being retrieve is questionable
+// Either you identify it per ID or per name.
+// Ideally per id
 @Component({ components: { FormErrors } })
 export default class Client extends Vue {
   exists: boolean = false;

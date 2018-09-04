@@ -1,3 +1,4 @@
+// TODO: Refactor to typescript and split the file
 const express = require("express");
 const slugify = require("slug");
 
@@ -129,9 +130,10 @@ router.get("/:slug/clients", verifyToken, async (req, res) => {
   const userId = req.userId;
 
   const clients = await db.query(`
-    select c.id, c.name
+    select c.id, c.name, a.street, a.city, a.postcode, a.country
     from clients c
     join projects p on c.id = p.client_id
+    left join addresses a on c.id = a.client_id
     where c.user_id = ${userId}
     and p.slug = '${slug}'
   `);
@@ -139,6 +141,7 @@ router.get("/:slug/clients", verifyToken, async (req, res) => {
   res.json({ success: true, clients });
 });
 
+// TODO: this function is questionable
 router.post("/:slug/clients", verifyToken, async (req, res) => {
   const slug = req.params.slug;
   const userId = req.userId;
@@ -170,9 +173,10 @@ router.post("/:slug/clients", verifyToken, async (req, res) => {
   }
 
   const client = await db.queryOne(`
-    select id, name
-    from clients
-    where id = ${clientId}
+    select c.id, c.name, a.street, a.city, a.postcode, a.country
+    from clients c 
+    left join addresses a on c.id = a.client_id
+    where c.id = ${clientId}
   `);
 
   if (client) {
