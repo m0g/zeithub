@@ -3,6 +3,7 @@
     <fieldset>
       <legend>Actions</legend>
       <button @click="generatePDF">Generate PDF</button>
+      <button @click="downloadPDF">Download PDF</button>
       <router-link :to="{ name: 'EditInvoice', params: { id: invoice.id } }">
         Edit
       </router-link>
@@ -82,6 +83,20 @@ export default class Invoice extends Vue {
     });
   }
 
+  async downloadPDF() {
+    const jsPDF = await import('jspdf');
+    const html2pdf = await import('./../html2pdf');
+    const container = this.$refs.container;
+    const pdf = new jsPDF('p', 'pt', 'a4');
+
+    pdf.canvas.height = 72 * 11;
+    pdf.canvas.width = 72 * 8.5;
+
+    html2pdf.default(document.getElementById('invoice'), pdf, pdf => {
+      pdf.save('invoice.pdf');
+    });
+  }
+
   getInvoice() {
     http(`/api/invoices/${this.$route.params.id}`, {
       method: 'GET',
@@ -142,7 +157,7 @@ export default class Invoice extends Vue {
   padding: 0 10px;
   position: relative;
   font-size: 9pt;
-  font-family: sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 #invoice h1 {
