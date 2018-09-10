@@ -84,17 +84,19 @@ export default class Invoice extends Vue {
   }
 
   async downloadPDF() {
-    const jsPDF = await import('jspdf');
-    const html2pdf = await import('./../html2pdf');
-    const container = this.$refs.container;
-    const pdf = new jsPDF('p', 'pt', 'a4');
-
-    pdf.canvas.height = 72 * 11;
-    pdf.canvas.width = 72 * 8.5;
-
-    html2pdf.default(document.getElementById('invoice'), pdf, pdf => {
-      pdf.save('invoice.pdf');
-    });
+    http(`/api/invoices/${this.$route.params.id}/pdf`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(response => response.blob())
+      .then(blob => {
+        console.log(blob);
+        var file = new Blob([blob], { type: 'application/pdf' });
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(file);
+        link.download = 'myFileName.pdf';
+        link.click();
+      });
   }
 
   getInvoice() {

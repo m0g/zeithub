@@ -8,6 +8,17 @@
         placeholder="Invoice number" 
         v-model="invoice.number"></p>
       <p>
+        <select v-model="invoice.userAddressId">
+          <option value="" disabled selected>Select an address</option>
+          <option
+            v-for="ad in addresses" 
+            :key="ad.id"
+            :value="ad.id">
+              <b>{{ad.name}}</b> {{ad.street}}, {{ad.postcode}} {{ad.city}}, {{ad.country}}
+          </option>
+        </select>
+      </p>
+      <p>
         <label for="rate">Rate</label>
         <input type="number" name="rate" id="rate" v-model="invoice.rate">&euro;
       </p>
@@ -27,12 +38,24 @@ import * as M from './../../models';
 @Component({})
 export default class EditInvoice extends Vue {
   addresses: Array<Object> = [];
-  address: string = '';
-  invoiceNumber: number = 0;
   invoice: M.Invoice = new M.Invoice();
 
   created() {
     this.getInvoice();
+    this.getAddresses();
+  }
+
+  getAddresses() {
+    http('/api/addresses', {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'GET'
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          this.addresses = response.addresses;
+        }
+      });
   }
 
   getInvoice() {
