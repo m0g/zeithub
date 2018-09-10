@@ -2,7 +2,6 @@
   <div>
     <fieldset>
       <legend>Actions</legend>
-      <button @click="generatePDF">Generate PDF</button>
       <button @click="downloadPDF">Download PDF</button>
       <router-link :to="{ name: 'EditInvoice', params: { id: invoice.id } }">
         Edit
