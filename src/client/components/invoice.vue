@@ -38,7 +38,7 @@
 <script lang="ts">
 import http from './../http';
 import ActivitiesTable from './activities-table.vue';
-import InvoiceInfo from './invoice-info.vue';
+import InvoiceInfo from './../../lib/components/invoice-info';
 
 import * as M from './../../models';
 
