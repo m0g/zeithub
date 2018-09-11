@@ -1,9 +1,6 @@
 import * as Vue from "vue/dist/vue.common.js";
-import * as moment from "moment";
 
-Vue.filter("formatDate", (date, format = "MMMM Do YYYY, h:mm:ss a") =>
-  moment(date).format(format)
-);
+import "./../filters";
 
 export default Vue.component("invoice-info", {
   props: ["invoice", "me"],

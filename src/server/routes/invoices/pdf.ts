@@ -3,6 +3,7 @@ import * as Vue from "vue/dist/vue.common.js";
 import DB from "./../../db";
 import { Invoice, BankAccount, Activity } from "./../../../types";
 import InvoiceInfo from "../../../lib/components/invoice-info";
+import * as ActivitiesTable from "../../../lib/components/activities-table";
 
 const renderer = require("vue-server-renderer").createRenderer();
 const db = new DB();
@@ -60,9 +61,14 @@ export default async (req, res) => {
     group by a.name, p.name, p.slug
   `);
 
+  const totalMinutes = activities.reduce(
+    (acc: number, next: Activity) => acc + next.durationMinutes,
+    0
+  );
+
   const app = new Vue({
-    data: { invoice, bankAccount, activities, me },
-    components: { InvoiceInfo },
+    data: { invoice, bankAccount, activities, me, totalMinutes },
+    components: { InvoiceInfo, ActivitiesTable },
     template: `
       <section id="invoice" ref="container">
         <h1>{{invoice.name}}</h1>
@@ -70,11 +76,75 @@ export default async (req, res) => {
           <p><b>{{me.firstName}} {{me.lastName}}</b></p>
         </div>
         <invoice-info :invoice="invoice" :me="me"></invoice-info>
+        <activities-table 
+          :total-minutes="totalMinutes"
+          :activities="activities" 
+          :invoice="invoice"></activities-table>
+        <p>trolololo</p>
+        <style scoped>
+        #invoice {
+          margin: 0;
+          max-width: 560px;
+          height: 740px;
+          padding: 0 10px;
+          position: relative;
+          font-size: 9pt;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #invoice h1 {
+          margin-top: 0;
+          padding: 0;
+        }
+
+        #invoice .from {
+          float: left;
+          width: 50%;
+        }
+
+        #invoice .to {
+          float: right;
+          width: 50%;
+        }
+
+        #invoice .info {
+          width: 100%;
+        }
+
+        #invoice .activities {
+          width: 100%;
+          margin-top: 20px;
+        }
+
+        #invoice .activities,
+        #invoice .activities td,
+        #invoice .info,
+        #invoice .info td {
+          border: 1px solid black;
+        }
+
+        #invoice .activities td {
+          text-align: right;
+        }
+        #invoice .footer {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          border-top: 1px solid black;
+        }
+
+        iframe {
+          width: 100%;
+          height: 100%;
+        }
+        </style>
+
       </section>
     `
   });
 
   const html = await renderer.renderToString(app);
+  console.log(html);
 
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
@@ -85,5 +155,4 @@ export default async (req, res) => {
   const pdf = await page.pdf({ format: "A4" });
 
   res.set("Content-Type", "application/pdf").send(pdf);
-  // res.json({ success: true, pdf });
 };

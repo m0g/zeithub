@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import http from './../http';
-import ActivitiesTable from './activities-table.vue';
+import * as ActivitiesTable from './../../lib/components/activities-table';
 import InvoiceInfo from './../../lib/components/invoice-info';
 
 import * as M from './../../models';
@@ -109,6 +109,12 @@ export default class Invoice extends Vue {
           this.invoice = response.invoice;
           this.activities = response.activities;
           this.bankAccount = response.bankAccount;
+
+          this.totalMinutes = this.activities.reduce(
+            (acc: number, next: M.Activity) => acc + next.durationMinutes,
+            0
+          );
+
           this.getClient(); // TODO: this is also crap
         }
       });
