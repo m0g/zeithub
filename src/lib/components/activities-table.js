@@ -5,8 +5,8 @@ require("./../filters");
 
 module.exports = Vue.component("activities-table", {
   template: `
-    <table class="activities">
-      <tr>
+    <table class="activities" style="border-collapse: collapse; border: none">
+      <tr style="border-bottom: 1px solid black">
         <th>Project</th>
         <th>Task</th>
         <th>Time (in minutes)</th>
