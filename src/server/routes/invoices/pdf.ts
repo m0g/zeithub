@@ -142,7 +142,6 @@ export default async (req, res) => {
             height: 100%;
             padding: 0 10px;
             position: relative;
-            font-size: 9pt;
           }
 
           #invoice h1 {
@@ -151,20 +150,24 @@ export default async (req, res) => {
             border-bottom: 1px solid black;
             text-align: center;
             padding: 15px 0;
+            margin-bottom: 30px;
           }
 
           #invoice .from {
             float: left;
             width: 50%;
+            margin-bottom: 30px;
           }
 
           #invoice .to {
             float: right;
             width: 50%;
+            margin-bottom: 30px;
           }
 
           #invoice .info {
             width: 100%;
+            margin: 30px 0;
           }
 
           #invoice .activities {

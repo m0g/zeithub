@@ -13,46 +13,55 @@ module.exports = Vue.component("activities-table", {
         <th width="12%">Amount</th>
       </tr>
       <tr v-for="activity in activities" :key="activity.id">
-        <td>{{activity.projectName}}</td>
-        <td>{{activity.name}}</td>
-        <td>{{activity.durationMinutes | formatHours}}</td>
+        <td style="text-align: center">{{activity.projectName}}</td>
+        <td style="text-align: center">{{activity.name}}</td>
+        <td class="duration" style="text-align: center">
+          {{activity.durationMinutes | formatHours}}
+        </td>
         <td class="amount">
           {{activity.durationMinutes / 60 * invoice.rate | currencyPDF}}
           <img src="/euro.svg" width="6px" />
         </td>
       </tr>
-      <tr>
+      <tr style="border-top: 1px solid black">
         <th></th>
-        <td>Total time</td>
-        <td colspan="2">{{totalMinutes | formatHours}}</td>
+        <th></th>
+        <td><b>Total time</b></td>
+        <td colspan="2" style="text-align: right">
+          {{totalMinutes | formatHours}}&nbsp;
+        </td>
       </tr>
       <tr>
         <th></th>
-        <td>Sub total</td>
-        <td colspan="2">
+        <th></th>
+        <td><b>Sub total</b></td>
+        <td colspan="2" style="text-align: right">
           {{totalMinutes / 60 * invoice.rate | currencyPDF}}
           <img src="/euro.svg" width="6px" />
         </td>
       </tr>
       <tr>
         <th></th>
-        <td>Discount</td>
-        <td colspan="2">
+        <th></th>
+        <td><b>Discount</b></td>
+        <td colspan="2" style="text-align: right">
           {{invoice.discount | currencyPDF}}
           <img src="/euro.svg" width="6px" />
         </td>
       </tr>
       <tr>
         <th></th>
-        <td>Tax (VAT)</td>
-        <td colspan="2">
+        <th></th>
+        <td><b>Tax (VAT)</b></td>
+        <td colspan="2" style="text-align: right">
           {{invoice.tax | currencyPDF}}%
         </td>
       </tr>
       <tr>
         <th></th>
-        <td>Total</td>
-        <td colspan="2">
+        <th></th>
+        <td><b>Total</b></td>
+        <td colspan="2" style="text-align: right">
           {{computeTotal() | currencyPDF}}
           <img src="/euro.svg" width="6px" />
         </td>
