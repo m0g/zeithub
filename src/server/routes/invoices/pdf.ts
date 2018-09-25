@@ -48,6 +48,12 @@ export default async (req, res) => {
     where id = ${invoice.bankAccountId}
   `);
 
+  const address = await db.queryOne(`
+    select id, name, street, city, postcode, country
+    from addresses
+    where user_id = ${userId}
+  `);
+
   const activities: Array<Activity> = await db.query(`
     select
       a.name, 
@@ -61,19 +67,45 @@ export default async (req, res) => {
     group by a.name, p.name, p.slug
   `);
 
+  const slug: string = activities[0].projectSlug;
+
+  const client = await db.queryOne(`
+    select c.id, c.name, a.street, a.city, a.postcode, a.country
+    from clients c
+    join projects p on c.id = p.client_id
+    left join addresses a on c.id = a.client_id
+    where c.user_id = ${userId}
+    and p.slug = '${slug}'
+  `);
+
   const totalMinutes = activities.reduce(
     (acc: number, next: Activity) => acc + next.durationMinutes,
     0
   );
 
   const app = new Vue({
-    data: { invoice, bankAccount, activities, me, totalMinutes },
+    data: {
+      invoice,
+      bankAccount,
+      activities,
+      me,
+      totalMinutes,
+      address,
+      client
+    },
     components: { InvoiceInfo, ActivitiesTable },
     template: `
       <section id="invoice" ref="container">
         <h1>{{invoice.name}}</h1>
         <div class="from">
           <p><b>{{me.firstName}} {{me.lastName}}</b></p>
+          <p>{{address.street}}</p>
+          <p>{{address.postcode}} {{address.city}}, {{address.country}}</p>
+        </div>
+        <div class="to">
+          <p><b>{{client.name}}</b></p>
+          <p>{{client.street}}</p>
+          <p>{{client.postcode}} {{client.city}}, {{client.country}}</p>
         </div>
         <table class="info">
           <tr>
@@ -116,6 +148,9 @@ export default async (req, res) => {
           #invoice h1 {
             margin-top: 0;
             padding: 0;
+            border-bottom: 1px solid black;
+            text-align: center;
+            padding: 15px 0;
           }
 
           #invoice .from {
@@ -141,16 +176,22 @@ export default async (req, res) => {
           #invoice .activities td,
           #invoice .info,
           #invoice .info td {
+            border: none;
+          }
+
+          #invoice .activities, #invoice .info {
             border: 1px solid black;
           }
 
           #invoice .activities td {
             text-align: right;
           }
+
           #invoice .footer {
             position: absolute;
             bottom: 0;
             left: 0;
+            right: 0;
             border-top: 1px solid black;
           }
         </style>
