@@ -75,68 +75,84 @@ export default async (req, res) => {
         <div class="from">
           <p><b>{{me.firstName}} {{me.lastName}}</b></p>
         </div>
-        <invoice-info :invoice="invoice" :me="me"></invoice-info>
+        <table class="info">
+          <tr>
+            <td>Invoice number</td>
+            <td>{{invoice.number}}</td>
+          </tr>
+          <tr>
+            <td>Date</td>
+            <td>{{invoice.date | formatDate('DD/MM/YYYY')}}</td>
+          </tr>
+          <tr>
+            <td>Due date</td>
+            <td>{{invoice.dueDate | formatDate('DD/MM/YYYY')}}</td>
+          </tr>
+          <tr>
+            <td>Tax number</td>
+            <td>{{me.taxNumber}}</td>
+          </tr>
+        </table>
         <activities-table 
           :total-minutes="totalMinutes"
           :activities="activities" 
           :invoice="invoice"></activities-table>
-        <p>trolololo</p>
-        <style scoped>
-        #invoice {
-          margin: 0;
-          max-width: 560px;
-          height: 740px;
-          padding: 0 10px;
-          position: relative;
-          font-size: 9pt;
-          font-family: Arial, Helvetica, sans-serif;
-        }
+        <p v-if="invoice.memo">{{invoice.memo}}</p>
+        <div class="footer">
+          <p><b>{{bankAccount.name}}</b></p>
+          <p><b>IBAN:</b> {{bankAccount.iban}}</p>
+          <p><b>BIC:</b> {{bankAccount.bic}}</p>
+        </div>
+        <style type="text/css" rel="stylesheet" media="all">
+          #invoice {
+            margin: 0;
+            max-width: 100%;
+            height: 100%;
+            padding: 0 10px;
+            position: relative;
+            font-size: 9pt;
+          }
 
-        #invoice h1 {
-          margin-top: 0;
-          padding: 0;
-        }
+          #invoice h1 {
+            margin-top: 0;
+            padding: 0;
+          }
 
-        #invoice .from {
-          float: left;
-          width: 50%;
-        }
+          #invoice .from {
+            float: left;
+            width: 50%;
+          }
 
-        #invoice .to {
-          float: right;
-          width: 50%;
-        }
+          #invoice .to {
+            float: right;
+            width: 50%;
+          }
 
-        #invoice .info {
-          width: 100%;
-        }
+          #invoice .info {
+            width: 100%;
+          }
 
-        #invoice .activities {
-          width: 100%;
-          margin-top: 20px;
-        }
+          #invoice .activities {
+            width: 100%;
+            margin-top: 20px;
+          }
 
-        #invoice .activities,
-        #invoice .activities td,
-        #invoice .info,
-        #invoice .info td {
-          border: 1px solid black;
-        }
+          #invoice .activities,
+          #invoice .activities td,
+          #invoice .info,
+          #invoice .info td {
+            border: 1px solid black;
+          }
 
-        #invoice .activities td {
-          text-align: right;
-        }
-        #invoice .footer {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          border-top: 1px solid black;
-        }
-
-        iframe {
-          width: 100%;
-          height: 100%;
-        }
+          #invoice .activities td {
+            text-align: right;
+          }
+          #invoice .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid black;
+          }
         </style>
 
       </section>

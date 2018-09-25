@@ -24,7 +24,7 @@ module.exports = Vue.component("activities-table", {
       <tr>
         <th></th>
         <td>Total time</td>
-        <td colspan="2">{{totalMinutes | totalHours}}</td>
+        <td colspan="2">{{totalMinutes | formatHours}}</td>
       </tr>
       <tr>
         <th></th>
