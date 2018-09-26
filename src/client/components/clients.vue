@@ -8,7 +8,7 @@
         <button>Delete</button>
       </li>
     </ul>
-    <add-client></add-client>
+    <add-client :get-clients="getClients"></add-client>
   </fieldset>
 </template>
 

@@ -19,7 +19,7 @@ import http from '../http';
 import FormErrors from './form-errors.vue';
 
 const Props = Vue.extend({
-  props: { getAddresses: Function }
+  props: { getClients: Function }
 });
 
 @Component({
@@ -73,7 +73,15 @@ export default class AddClient extends Props {
       })
         .then(response => response.json())
         .then(response => {
-          this.getAddresses();
+          if (response.success) {
+            this.getClients();
+
+            this.name = '';
+            this.street = '';
+            this.city = '';
+            this.postcode = '';
+            this.country = '';
+          }
         });
     }
   }
