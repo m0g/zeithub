@@ -5,7 +5,7 @@
       <li v-for="client in clients" :key="client.id">
         <span>{{client.name}}</span>
         <span>{{client.street}}</span>
-        <button>Delete</button>
+        <button v-on:click="remove(client.id)">&#x2718;</button>
       </li>
     </ul>
     <add-client :get-clients="getClients"></add-client>
@@ -35,6 +35,19 @@ export default class Clients extends Vue {
       .then(response => {
         if (response.success) {
           this.clients = response.clients;
+        }
+      });
+  }
+
+  remove(id) {
+    http(`/api/clients/${id}`, {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'DELETE'
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          this.getClients();
         }
       });
   }
