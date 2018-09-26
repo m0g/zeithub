@@ -9,7 +9,7 @@ module.exports = Vue.component("activities-table", {
       <tr style="border-bottom: 1px solid black">
         <th>Project</th>
         <th>Task</th>
-        <th>Time (in minutes)</th>
+        <th>Time</th>
         <th width="12%">Amount</th>
       </tr>
       <tr v-for="activity in activities" :key="activity.id">
