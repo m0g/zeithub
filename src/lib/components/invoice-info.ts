@@ -8,7 +8,7 @@ export default Vue.component("invoice-info", {
     <table class="info">
       <tr>
         <td>Invoice number</td>
-        <td>{{invoice.number}}</td>
+        <td>{{invoice.number | invoiceNum}}</td>
       </tr>
       <tr>
         <td>Date</td>

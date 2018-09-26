@@ -110,7 +110,7 @@ export default async (req, res) => {
         <table class="info">
           <tr>
             <td>Invoice number</td>
-            <td>{{invoice.number}}</td>
+            <td>{{invoice.number | invoiceNum}}</td>
           </tr>
           <tr>
             <td>Date</td>
@@ -204,8 +204,6 @@ export default async (req, res) => {
   });
 
   const html = await renderer.renderToString(app);
-  console.log(html);
-
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
   });

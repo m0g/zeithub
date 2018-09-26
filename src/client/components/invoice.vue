@@ -70,7 +70,9 @@ export default class Invoice extends Vue {
   async downloadPDF() {
     const title = slug(this.invoice.name).toLowerCase();
     const fullName = `${this.me.firstName}-${this.me.lastName}`.toLowerCase();
-    const filename = `${this.invoice.number}-${title}-${fullName}.pdf`;
+    const filename = `${this.invoice.number
+      .toString()
+      .padStart(3, '0')}-${title}-${fullName}.pdf`;
 
     http(`/api/invoices/${this.$route.params.id}/pdf`, {
       method: 'GET',

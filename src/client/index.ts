@@ -33,6 +33,8 @@ Vue.filter('iban', value => {
   return pattern.replace(/#/g, () => value[i++]);
 });
 
+Vue.filter('invoiceNum', number => number.toString().padStart(3, '0'));
+
 new Vue({
   router,
   el: '#app',
