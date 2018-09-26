@@ -4,7 +4,7 @@
     <add-bank-account :get-bank-accounts="getBankAccounts"></add-bank-account>
     <ul>
       <li v-for="account in bankAccounts" :key="account.iban">
-        <b>{{account.name}}</b> {{account.owner}} {{account.iban}} {{account.bic}}
+        <b>{{account.name}}</b> {{account.owner}} {{account.iban | iban}} {{account.bic}}
         <button v-on:click="deleteAccount(account.iban)">&#x2718;</button>
       </li>
     </ul>

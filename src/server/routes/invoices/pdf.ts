@@ -132,7 +132,7 @@ export default async (req, res) => {
         <p v-if="invoice.memo">{{invoice.memo}}</p>
         <div class="footer">
           <p><b>{{bankAccount.name}}</b></p>
-          <p><b>IBAN:</b> {{bankAccount.iban}}</p>
+          <p><b>IBAN:</b> {{bankAccount.iban | iban}}</p>
           <p><b>BIC:</b> {{bankAccount.bic}}</p>
         </div>
         <style type="text/css" rel="stylesheet" media="all">
