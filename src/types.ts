@@ -21,3 +21,8 @@ export interface BankAccount {
   iban: string;
   bic: string;
 }
+
+export interface Me {
+  firstName: string;
+  lastName: string;
+}

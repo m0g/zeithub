@@ -23,3 +23,8 @@ export class BankAccount implements T.BankAccount {
   iban: string = "";
   bic: string = "";
 }
+
+export class Me implements T.Me {
+  firstName: string = "";
+  lastName: string = "";
+}

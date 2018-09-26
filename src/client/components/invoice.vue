@@ -54,7 +54,7 @@ import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 export default class Invoice extends Vue {
   invoice: M.Invoice = new M.Invoice();
   activities: Array<M.Activity> = [];
-  me: Object = {};
+  me: M.Me = new M.Me();
   bankAccount: M.BankAccount = new M.BankAccount();
   address: Object = {};
   pdfGenerated: boolean = false;
