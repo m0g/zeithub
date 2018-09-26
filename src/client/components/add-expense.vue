@@ -11,60 +11,62 @@
   </fieldset> 
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { IMaskDirective } from 'vue-imask';
 import http from './../http';
 import FormErrors from './form-errors.vue';
 
-export default {
-  props: ['getExpenses'],
+const Props = Vue.extend({
+  props: { getExpenses: Function }
+});
 
-  data() {
-    return {
-      name: '',
-      date: null,
-      amount: 0,
-      errors: []
-    };
-  },
+@Component({
+  components: { FormErrors }
+})
+export default class AddExpense extends Props {
+  errors: string[] = [];
+  name: string = '';
+  date: string = '';
+  amount: number = 0;
 
-  methods: {
-    sendForm(e) {
-      this.errors = [];
-      e.preventDefault();
+  sendForm(e) {
+    this.errors = [];
+    e.preventDefault();
 
-      if (!this.name) {
-        this.errors.push('Name is required');
-      }
+    if (!this.name) {
+      this.errors.push('Name is required');
+    }
 
-      if (!this.date) {
-        this.errors.push('Date is required');
-      }
+    if (!this.date) {
+      this.errors.push('Date is required');
+    }
 
-      if (!this.amount) {
-        this.errors.push('Amount is required');
-      }
+    if (!this.amount) {
+      this.errors.push('Amount is required');
+    }
 
-      if (this.errors.length === 0) {
-        http('/api/expenses', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: this.name,
-            date: this.date,
-            amount: this.amount
-          })
+    if (this.errors.length === 0) {
+      http('/api/expenses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: this.name,
+          date: this.date,
+          amount: this.amount
         })
-          .then(response => response.json())
-          .then(response => {
-            if (response.success === true) {
-              this.name = '';
-              this.amount = 0;
-              this.date = null;
-              this.getExpenses();
-            }
-          });
-      }
+      })
+        .then(response => response.json())
+        .then(response => {
+          if (response.success === true) {
+            this.name = '';
+            this.amount = 0;
+            this.date = '';
+            this.getExpenses();
+          }
+        });
     }
   }
-};
+}
 </script>
