@@ -3,8 +3,13 @@
     <form-errors :errors="errors"></form-errors>
     <input type="text" placeholder="Name" v-model="name"/>
     <input type="text" placeholder="Owner" v-model="owner"/>
-    <input type="text" placeholder="IBAN" v-model="iban"/>
-    <input type="text" placeholder="BIC" v-model="bic"/>
+    <input 
+      class="iban"
+      type="text" 
+      placeholder="IBAN" 
+      v-imask="ibanMask"
+      v-model="iban"/>
+    <input type="text" placeholder="BIC" v-model="bic" v-imask="bicMask" />
     <input type="submit" value="Add" />
   </form>
 </template>
@@ -12,6 +17,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { IMaskDirective } from 'vue-imask';
 
 import http from '../http';
 import FormErrors from './form-errors.vue';
@@ -21,7 +27,8 @@ const Props = Vue.extend({
 });
 
 @Component({
-  components: { FormErrors }
+  components: { FormErrors },
+  directives: { imask: IMaskDirective }
 })
 export default class AddBankAccount extends Props {
   errors: string[] = [];
@@ -29,6 +36,14 @@ export default class AddBankAccount extends Props {
   owner: string = '';
   iban: string = '';
   bic: string = '';
+
+  ibanMask: {} = {
+    mask: 'aa00 0000 0000 0000 0000 00'
+  };
+
+  bicMask: {} = {
+    mask: 'aaaaaaaaaaa'
+  };
 
   addBankAccount(e) {
     this.errors = [];
@@ -73,3 +88,9 @@ export default class AddBankAccount extends Props {
   }
 }
 </script>
+
+<style scoped>
+input.iban {
+  width: 185px;
+}
+</style>
