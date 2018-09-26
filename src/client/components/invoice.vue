@@ -66,22 +66,6 @@ export default class Invoice extends Vue {
     this.getAddress();
   }
 
-  async generatePDF() {
-    const jsPDF = await import('jspdf');
-    const html2pdf = await import('./../html2pdf');
-    const container = this.$refs.container;
-    const iframe = this.$refs.iframe as HTMLIFrameElement;
-    const pdf = new jsPDF('p', 'pt', 'a4');
-
-    pdf.canvas.height = 72 * 11;
-    pdf.canvas.width = 72 * 8.5;
-
-    html2pdf.default(document.getElementById('invoice'), pdf, pdf => {
-      this.pdfGenerated = true;
-      iframe.src = pdf.output('datauristring');
-    });
-  }
-
   async downloadPDF() {
     http(`/api/invoices/${this.$route.params.id}/pdf`, {
       method: 'GET',
