@@ -3,7 +3,7 @@ export interface Activity {
   durationMinutes: number;
   projectName: string;
   projectSlug: string;
-};
+}
 
 export interface Invoice {
   id: number;
@@ -12,11 +12,12 @@ export interface Invoice {
   discount: number;
   rate: number;
   bankAccountId: number;
-};
+  number: number;
+}
 
 export interface BankAccount {
   name: string;
   owner: string;
   iban: string;
   bic: string;
-};
+}

@@ -37,6 +37,7 @@
 
 <script lang="ts">
 import http from './../http';
+import * as slug from 'slug';
 import * as ActivitiesTable from './../../lib/components/activities-table';
 import InvoiceInfo from './../../lib/components/invoice-info';
 
@@ -67,6 +68,10 @@ export default class Invoice extends Vue {
   }
 
   async downloadPDF() {
+    const title = slug(this.invoice.name).toLowerCase();
+    const fullName = `${this.me.firstName}-${this.me.lastName}`.toLowerCase();
+    const filename = `${this.invoice.number}-${title}-${fullName}.pdf`;
+
     http(`/api/invoices/${this.$route.params.id}/pdf`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
@@ -77,7 +82,7 @@ export default class Invoice extends Vue {
         var file = new Blob([blob], { type: 'application/pdf' });
         var link = document.createElement('a');
         link.href = window.URL.createObjectURL(file);
-        link.download = 'myFileName.pdf';
+        link.download = filename;
         link.click();
       });
   }
