@@ -37,7 +37,6 @@
 
 <script lang="ts">
 import http from './../http';
-import * as slug from 'slug';
 import * as ActivitiesTable from './../../lib/components/activities-table';
 import InvoiceInfo from './../../lib/components/invoice-info';
 
@@ -68,6 +67,7 @@ export default class Invoice extends Vue {
   }
 
   async downloadPDF() {
+    const slug = await import('slug');
     const title = slug(this.invoice.name).toLowerCase();
     const fullName = `${this.me.firstName}-${this.me.lastName}`.toLowerCase();
     const filename = `${this.invoice.number
