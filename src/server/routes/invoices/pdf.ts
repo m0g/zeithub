@@ -51,7 +51,7 @@ export default async (req, res) => {
   const address = await db.queryOne(`
     select id, name, street, city, postcode, country
     from addresses
-    where user_id = ${userId}
+    where id = ${invoice.userAddressId}
   `);
 
   const activities: Array<Activity> = await db.query(`
