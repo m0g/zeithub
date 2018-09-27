@@ -1,6 +1,6 @@
 // TODO: Refactor to typescript and split the file
 const express = require("express");
-const slugify = require("slug");
+const slugify = require("slugify");
 
 const DB = require("./../db").default;
 const verifyToken = require("./../verify-token").default;

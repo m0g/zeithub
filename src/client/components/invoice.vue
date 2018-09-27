@@ -36,6 +36,7 @@
 </template>
 
 <script lang="ts">
+import slugify from 'slugify';
 import http from './../http';
 import * as ActivitiesTable from './../../lib/components/activities-table';
 import InvoiceInfo from './../../lib/components/invoice-info';
@@ -67,12 +68,11 @@ export default class Invoice extends Vue {
   }
 
   async downloadPDF() {
-    const slug = await import('slug');
-    const title = slug(this.invoice.name).toLowerCase();
-    const fullName = `${this.me.firstName}-${this.me.lastName}`.toLowerCase();
+    const title = slugify(this.invoice.name);
+    const fullName = `${this.me.firstName}-${this.me.lastName}`;
     const filename = `${this.invoice.number
       .toString()
-      .padStart(3, '0')}-${title}-${fullName}.pdf`;
+      .padStart(3, '0')}-${title}-${fullName}.pdf`.toLowerCase();
 
     const response = await http(`/api/invoices/${this.$route.params.id}/pdf`, {
       method: 'GET',
