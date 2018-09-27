@@ -28,31 +28,30 @@ export default class BankAccounts extends Vue {
     this.getBankAccounts();
   }
 
-  getBankAccounts() {
-    http('/api/bank-accounts', {
+  async getBankAccounts() {
+    const response = await http('/api/bank-accounts', {
       headers: { 'Content-Type': 'application/json' },
       method: 'GET'
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          console.log(response);
-          this.bankAccounts = response.bankAccounts;
-        }
-      });
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      this.bankAccounts = data.bankAccounts;
+    }
   }
 
-  deleteAccount(iban) {
-    http(`/api/bank-accounts/${iban}`, {
+  async deleteAccount(iban) {
+    const response = await http(`/api/bank-accounts/${iban}`, {
       headers: { 'Content-Type': 'application/json' },
       method: 'DELETE'
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          this.getBankAccounts();
-        }
-      });
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      this.getBankAccounts();
+    }
   }
 }
 </script>

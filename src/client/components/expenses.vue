@@ -27,7 +27,6 @@
 section {
   display: flex;
   flex-flow: row wrap;
-  min-height: 100%;
   height: 100%;
 }
 
@@ -71,16 +70,15 @@ export default {
   },
 
   methods: {
-    getExpenses() {
-      http('/api/expenses')
-        .then(data => data.json())
-        .then(data => {
-          if (data.success && data.expenses.length > 0) {
-            this.expenses = data.expenses;
-            this.turnover = this.getTurnover(data.expenses);
-            this.profit = this.getProfit(data.expenses);
-          }
-        });
+    async getExpenses() {
+      const response = await http('/api/expenses');
+      const data = await response.json();
+
+      if (data.success && data.expenses.length > 0) {
+        this.expenses = data.expenses;
+        this.turnover = this.getTurnover(data.expenses);
+        this.profit = this.getProfit(data.expenses);
+      }
     },
 
     getTurnover(expenses) {

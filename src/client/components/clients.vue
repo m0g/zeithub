@@ -26,30 +26,30 @@ export default class Clients extends Vue {
     this.getClients();
   }
 
-  getClients() {
-    http('/api/clients', {
+  async getClients() {
+    const response = await http('/api/clients', {
       headers: { 'Content-Type': 'application/json' },
       method: 'GET'
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          this.clients = response.clients;
-        }
-      });
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      this.clients = data.clients;
+    }
   }
 
-  remove(id) {
-    http(`/api/clients/${id}`, {
+  async remove(id) {
+    const response = await http(`/api/clients/${id}`, {
       headers: { 'Content-Type': 'application/json' },
       method: 'DELETE'
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          this.getClients();
-        }
-      });
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      this.getClients();
+    }
   }
 }
 </script>
