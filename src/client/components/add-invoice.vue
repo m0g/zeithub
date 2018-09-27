@@ -27,7 +27,7 @@
         :min="lastInvoiceNumber + 1" 
         v-model="invoiceNumber"></p>
       <p>
-        <select v-model="address">
+        <select v-model="userAddressId">
           <option value="" disabled selected>Select an address</option>
           <option
             v-for="ad in addresses" 
@@ -154,7 +154,7 @@ export default class AddInvoice extends Vue {
   iban: string = '';
   bankAccounts: Array<Object> = [];
   addresses: Array<Object> = [];
-  address: string = '';
+  userAddressId: string = '';
   invoiceNumber: number = 0;
   lastInvoiceNumber: number = 0;
 
@@ -265,7 +265,7 @@ export default class AddInvoice extends Vue {
     }
   }
 
-  createInvoice(e) {
+  async createInvoice(e) {
     e.preventDefault();
     this.errors = [];
 
@@ -293,7 +293,7 @@ export default class AddInvoice extends Vue {
       this.errors.push('Bank account is missing');
     }
 
-    if (!this.address) {
+    if (!this.userAddressId) {
       this.errors.push('Address is missing');
     }
 
@@ -313,25 +313,25 @@ export default class AddInvoice extends Vue {
         discount: this.discount,
         vat: this.vat,
         iban: this.iban,
-        address: this.address,
+        userAddressId: this.userAddressId,
         memo: this.memo,
         activities: this.activities
       };
 
-      http('/api/invoices/with-activities', {
+      const response = await http('/api/invoices/with-activities', {
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
         body: JSON.stringify(body)
-      })
-        .then(response => response.json())
-        .then(response => {
-          if (response.success && response.invoiceId) {
-            this.$router.push({
-              name: 'Invoice',
-              params: { id: response.invoiceId }
-            });
-          }
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.invoiceId) {
+        this.$router.push({
+          name: 'Invoice',
+          params: { id: data.invoiceId }
         });
+      }
     }
   }
 }

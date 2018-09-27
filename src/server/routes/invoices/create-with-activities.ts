@@ -43,7 +43,7 @@ export default async (req, res) => {
       .json({ success: false, message: "Missing due date" });
   }
 
-  if (!req.body.address) {
+  if (!req.body.userAddressId) {
     return res.status(403).json({ success: false, message: "Missing address" });
   }
 
@@ -67,7 +67,7 @@ export default async (req, res) => {
     memo,
     discount,
     vat,
-    address,
+    userAddressId,
     activities
   } = req.body;
 
@@ -137,7 +137,7 @@ export default async (req, res) => {
         vat,
         discount,
         project.id,
-        address,
+        userAddressId,
         bankAccount.id
       ]
     );

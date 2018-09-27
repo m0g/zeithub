@@ -29,7 +29,7 @@ export default async (req, res) => {
   }
 
   const userId = req.userId;
-  const { name, hourlyRate, projectSlug, iban } = req.body;
+  const { name, hourlyRate, projectSlug, iban, userAddressId } = req.body;
 
   const [year, month] = req.body.month.split("-");
 
@@ -78,11 +78,21 @@ export default async (req, res) => {
         number, 
         project_id, 
         rate,
-        bank_account_id
+        bank_account_id,
+        user_address_id
       )
-      values (?, curdate(), ?, ? , ?, ?, ?, ?)
+      values (?, curdate(), ?, ? , ?, ?, ?, ?, ?)
     `,
-    [userId, dueDate, name, number, project.id, hourlyRate, bankAccount.id]
+    [
+      userId,
+      dueDate,
+      name,
+      number,
+      project.id,
+      hourlyRate,
+      bankAccount.id,
+      userAddressId
+    ]
   );
 
   const activityInvoices = await db.execute(
