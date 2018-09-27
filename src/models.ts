@@ -15,6 +15,7 @@ export class Invoice implements T.Invoice {
   rate: number = 0;
   bankAccountId: number = 0;
   number: number = 0;
+  userAddressId: number = 0;
 }
 
 export class BankAccount implements T.BankAccount {

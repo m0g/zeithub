@@ -64,7 +64,6 @@ export default class Invoice extends Vue {
   created() {
     this.getInvoice();
     this.getMe();
-    this.getAddress();
   }
 
   async downloadPDF() {
@@ -91,60 +90,47 @@ export default class Invoice extends Vue {
     document.body.removeChild(link);
   }
 
-  getInvoice() {
-    http(`/api/invoices/${this.$route.params.id}`, {
+  async getInvoice() {
+    const response = await http(`/api/invoices/${this.$route.params.id}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          this.invoice = response.invoice;
-          this.activities = response.activities;
-          this.bankAccount = response.bankAccount;
+    });
 
-          this.totalMinutes = this.activities.reduce(
-            (acc: number, next: M.Activity) => acc + next.durationMinutes,
-            0
-          );
+    const data = await response.json();
 
-          this.getClient(); // TODO: this is also crap
-        }
-      });
+    if (data.success) {
+      this.invoice = data.invoice;
+      this.activities = data.activities;
+      this.bankAccount = data.bankAccount;
+      this.address = data.address;
+
+      this.totalMinutes = this.activities.reduce(
+        (acc: number, next: M.Activity) => acc + next.durationMinutes,
+        0
+      );
+
+      this.getClient(); // TODO: this is also crap
+    }
   }
 
-  getMe() {
-    http('/api/me')
-      .then(data => data.json())
-      .then(data => {
-        if (data.success) {
-          this.me = data.me;
-        }
-      });
+  async getMe() {
+    const response = await http('/api/me');
+    const data = await response.json();
+
+    if (data.success) {
+      this.me = data.me;
+    }
   }
 
-  getAddress() {
-    http('/api/addresses')
-      .then(data => data.json())
-      .then(data => {
-        console.log(data);
-        if (data.success) {
-          this.address = data.addresses[0];
-        }
-      });
-  }
-
-  getClient() {
+  async getClient() {
     // TODO: Fix this crap
     const slug: string = this.activities[0].projectSlug;
+    const response = await http(`/api/projects/${slug}/clients`);
+    const data = await response.json();
 
-    http(`/api/projects/${slug}/clients`)
-      .then(data => data.json())
-      .then(data => {
-        if (data.success && data.clients.length > 0) {
-          this.client = data.clients[0];
-        }
-      });
+    if (data.success && data.clients.length > 0) {
+      this.client = data.clients[0];
+    }
   }
 }
 </script>

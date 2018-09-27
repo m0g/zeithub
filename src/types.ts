@@ -13,6 +13,7 @@ export interface Invoice {
   rate: number;
   bankAccountId: number;
   number: number;
+  userAddressId: number;
 }
 
 export interface BankAccount {

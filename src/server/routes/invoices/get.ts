@@ -1,5 +1,5 @@
-import DB from './../../db';
-import { Invoice, BankAccount, Activity } from './../../../types';
+import DB from "./../../db";
+import { Invoice, BankAccount, Activity } from "./../../../types";
 
 const db = new DB();
 
@@ -7,7 +7,7 @@ export default async (req, res) => {
   const id = req.params.id;
   const userId = req.userId;
 
-  const invoice:Invoice = await db.queryOne(`
+  const invoice: Invoice = await db.queryOne(`
     select 
       id, 
       number, 
@@ -24,13 +24,13 @@ export default async (req, res) => {
     where id = ${id} and user_id = ${userId}
   `);
 
-  const bankAccount:BankAccount = await db.queryOne(`
+  const bankAccount: BankAccount = await db.queryOne(`
     select name, owner, iban, bic
     from bank_accounts
     where id = ${invoice.bankAccountId}
   `);
 
-  const activities:Array<Activity> = await db.query(`
+  const activities: Array<Activity> = await db.query(`
     select
       a.name, 
       sum(a.duration_minutes) as 'durationMinutes',
@@ -43,5 +43,11 @@ export default async (req, res) => {
     group by a.name, p.name, p.slug
   `);
 
-  res.json({ success: true, invoice, activities, bankAccount });
+  const address = await db.queryOne(`
+    select id, name, street, city, postcode, country
+    from addresses
+    where id = ${invoice.userAddressId}
+  `);
+
+  res.json({ success: true, invoice, activities, bankAccount, address });
 };
