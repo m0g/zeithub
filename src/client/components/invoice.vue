@@ -85,7 +85,10 @@ export default class Invoice extends Vue {
 
     link.href = window.URL.createObjectURL(file);
     link.download = filename;
+
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
   }
 
   getInvoice() {
