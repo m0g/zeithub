@@ -74,19 +74,18 @@ export default class Invoice extends Vue {
       .toString()
       .padStart(3, '0')}-${title}-${fullName}.pdf`;
 
-    http(`/api/invoices/${this.$route.params.id}/pdf`, {
+    const response = await http(`/api/invoices/${this.$route.params.id}/pdf`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
-    })
-      .then(response => response.blob())
-      .then(blob => {
-        console.log(blob);
-        var file = new Blob([blob], { type: 'application/pdf' });
-        var link = document.createElement('a');
-        link.href = window.URL.createObjectURL(file);
-        link.download = filename;
-        link.click();
-      });
+    });
+
+    const blob = await response.blob();
+    const file = new Blob([blob], { type: 'application/pdf' });
+    const link = document.createElement('a');
+
+    link.href = window.URL.createObjectURL(file);
+    link.download = filename;
+    link.click();
   }
 
   getInvoice() {
