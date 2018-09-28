@@ -33,7 +33,7 @@ import FormErrors from './form-errors.vue';
 // Either you identify it per ID or per name.
 // Ideally per id
 @Component({ components: { FormErrors } })
-export default class Client extends Vue {
+export default class ProjectClient extends Vue {
   exists: boolean = false;
   showForm: boolean = false;
   errors: Array<string> = [];
