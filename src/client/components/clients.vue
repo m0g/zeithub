@@ -2,11 +2,11 @@
   <fieldset>
     <legend>Clients</legend>
     <ul>
-      <li v-for="client in clients" :key="client.id">
-        <span>{{client.name}}</span>
-        <span>{{client.street}}</span>
-        <button v-on:click="remove(client.id)">&#x2718;</button>
-      </li>
+      <client 
+        :client="client" 
+        :get-clients="getClients" 
+        v-for="client in clients" 
+        :key="client.id"></client>
     </ul>
     <add-client :get-clients="getClients"></add-client>
   </fieldset>
@@ -17,8 +17,14 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
 import AddClient from './add-client.vue';
+import Client from './client.vue';
 
-@Component({ components: { AddClient } })
+@Component({
+  components: {
+    AddClient,
+    Client
+  }
+})
 export default class Clients extends Vue {
   clients: {}[] = [];
 
@@ -36,19 +42,6 @@ export default class Clients extends Vue {
 
     if (data.success) {
       this.clients = data.clients;
-    }
-  }
-
-  async remove(id) {
-    const response = await http(`/api/clients/${id}`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'DELETE'
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      this.getClients();
     }
   }
 }
