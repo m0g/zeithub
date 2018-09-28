@@ -1,9 +1,21 @@
 <template>
   <li>
-    <span>{{client.name}}</span>
-    <span>{{client.street}}</span>
-    <button @click="editMode = !editMode">&#9998;</button>
-    <button v-on:click="remove()">&#x2718;</button>
+    <div v-if="!editMode">
+      <span>{{client.name}}</span>
+      <span>{{client.street}}</span>
+      <button @click="editMode = !editMode">&#9998;</button>
+      <button v-on:click="remove()">&#x2718;</button>
+    </div>
+    <form v-if="editMode" @submit="save" method="POST">
+      <form-errors :errors="errors"></form-errors>
+      <input type="text" placeholder="Name" v-model="edit.name"/>
+      <input type="text" placeholder="Street" v-model="edit.street"/>
+      <input type="text" placeholder="City" v-model="edit.city"/>
+      <input type="text" placeholder="Postcode" v-model="edit.postcode"/>
+      <input type="text" placeholder="Country" v-model="edit.country"/>
+      <input type="submit" value="Save" />
+  </form>
+    </form>
   </li>
 </template>
 
@@ -11,17 +23,37 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
-
-import * as T from './../../types';
-
-console.log('types', T);
+import FormErrors from './form-errors.vue';
 
 const Props = Vue.extend({
   props: ['client', 'getClients']
 });
 
-@Component({})
+@Component({ components: { FormErrors } })
 export default class Client extends Props {
+  editMode: boolean = false;
+  errors: string[] = [];
+
+  edit: {} = Object.assign({}, this.client);
+
+  async save(e) {
+    this.errors = [];
+    e.preventDefault();
+
+    const response = await http(`/api/clients/${this.client.id}`, {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'PUT',
+      body: JSON.stringify(this.edit)
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      this.editMode = false;
+      this.getClients();
+    }
+  }
+
   async remove() {
     const response = await http(`/api/clients/${this.client.id}`, {
       headers: { 'Content-Type': 'application/json' },
