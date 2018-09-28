@@ -19,8 +19,7 @@ module.exports = Vue.component("activities-table", {
           {{activity.durationMinutes | formatHours}}
         </td>
         <td class="amount">
-          {{activity.durationMinutes / 60 * invoice.rate | currencyPDF}}
-          <img src="/euro.svg" width="6px" />
+          {{activity.durationMinutes / 60 * invoice.rate | currency}}
         </td>
       </tr>
       <tr style="border-top: 1px solid black">
@@ -36,8 +35,7 @@ module.exports = Vue.component("activities-table", {
         <th></th>
         <td><b>Sub total</b></td>
         <td colspan="2" style="text-align: right">
-          {{totalMinutes / 60 * invoice.rate | currencyPDF}}
-          <img src="/euro.svg" width="6px" />
+          {{totalMinutes / 60 * invoice.rate | currency}}
         </td>
       </tr>
       <tr>
@@ -45,8 +43,7 @@ module.exports = Vue.component("activities-table", {
         <th></th>
         <td><b>Discount</b></td>
         <td colspan="2" style="text-align: right">
-          {{invoice.discount | currencyPDF}}
-          <img src="/euro.svg" width="6px" />
+          {{invoice.discount | currency}}
         </td>
       </tr>
       <tr>
@@ -54,7 +51,7 @@ module.exports = Vue.component("activities-table", {
         <th></th>
         <td><b>Tax (VAT)</b></td>
         <td colspan="2" style="text-align: right">
-          {{invoice.tax | currencyPDF}}%
+          {{invoice.tax | percentage}}
         </td>
       </tr>
       <tr>
@@ -62,8 +59,7 @@ module.exports = Vue.component("activities-table", {
         <th></th>
         <td><b>Total</b></td>
         <td colspan="2" style="text-align: right">
-          {{computeTotal() | currencyPDF}}
-          <img src="/euro.svg" width="6px" />
+          {{computeTotal() | currency}}
         </td>
       </tr>
     </table>

@@ -7,7 +7,7 @@ Vue.filter("formatDate", (date, format = "MMMM Do YYYY, h:mm:ss a") =>
 
 Vue.filter("currency", amount => `${parseFloat(amount).toFixed(2)}€`);
 
-Vue.filter("currencyPDF", amount => `${parseFloat(amount).toFixed(2)}`);
+Vue.filter("percentage", amount => `${parseFloat(amount).toFixed(2)}%`);
 
 Vue.filter("formatHours", minutes =>
   moment()
