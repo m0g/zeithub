@@ -1,33 +1,38 @@
 <template>
   <section>
     <h1>Expenses</h1>
-    <aside>
-    <add-expense :get-expenses="getExpenses"></add-expense> 
-    <fieldset>
-      <legend>€</legend>
-      <p><b>Turnover:</b> {{turnover | currency}}</p>
-      <p><b>Profit:</b> {{profit | currency}}</p>
-    </fieldset>
-    </aside>
-    <fieldset class="expenses">
-      <legend>List of expenses</legend>
-      <table>
-        <tr><th>Name</th><th>Date</th><th>Amount</th></tr>
-        <tr v-for="expense in expenses" :key="expense.id">
-          <td>{{expense.name}}</td>
-          <td class="align-center">{{expense.date | formatDate('DD/MM/YYYY')}}</td>
-          <td class="align-right">{{expense.amount | currency}}</td>
-        </tr>
-      </table>
-    </fieldset>
+    <div class="container">
+      <aside>
+        <add-expense :get-expenses="getExpenses"></add-expense> 
+        <fieldset>
+          <legend>€</legend>
+          <p><b>Turnover:</b> {{turnover | currency}}</p>
+          <p><b>Profit:</b> {{profit | currency}}</p>
+        </fieldset>
+      </aside>
+      <fieldset class="expenses">
+        <legend>List of expenses</legend>
+        <table>
+          <tr><th>Name</th><th>Date</th><th>Amount</th></tr>
+          <tr v-for="expense in expenses" :key="expense.id">
+            <td>{{expense.name}}</td>
+            <td class="align-center">{{expense.date | formatDate('DD/MM/YYYY')}}</td>
+            <td class="align-right">{{expense.amount | currency}}</td>
+          </tr>
+        </table>
+      </fieldset>
+    </div>
   </section>
 </template>
 
 <style scoped>
 section {
+  height: 100%;
+}
+
+div.container {
   display: flex;
   flex-flow: row wrap;
-  height: 100%;
 }
 
 section h1 {
