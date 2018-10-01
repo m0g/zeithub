@@ -3,6 +3,7 @@
     <h1>Expenses</h1>
     <div class="container">
       <aside>
+        <year-filter :get-expenses="getExpenses"></year-filter>
         <add-expense :get-expenses="getExpenses"></add-expense> 
         <fieldset>
           <legend>€</legend>
@@ -64,6 +65,7 @@ section table {
 <script>
 import http from './../http';
 import AddExpense from './add-expense';
+import YearFilter from './year-filter';
 
 export default {
   data() {
@@ -75,14 +77,19 @@ export default {
   },
 
   methods: {
-    async getExpenses() {
-      const response = await http('/api/expenses');
+    async getExpenses(query = {}) {
+      const newQuery = Object.assign({}, this.$route.query, query);
+      const response = await http('/api/expenses', { query: newQuery });
       const data = await response.json();
 
       if (data.success && data.expenses.length > 0) {
         this.expenses = data.expenses;
         this.turnover = this.getTurnover(data.expenses);
         this.profit = this.getProfit(data.expenses);
+
+        if (Object.keys(query).length > 0) {
+          this.$router.push({ query });
+        }
       }
     },
 
@@ -100,6 +107,6 @@ export default {
     }
   },
 
-  components: { AddExpense }
+  components: { AddExpense, YearFilter }
 };
 </script>

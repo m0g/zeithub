@@ -12,12 +12,12 @@ import bankAccounts from "./routes/bank-accounts";
 import addresses from "./routes/addresses";
 import clients from "./routes/clients";
 import invoices from "./routes/invoices";
+import expenses from "./routes/expenses";
 
 const hamsterRouter = require("./routes/hamster");
 const projectsRouter = require("./routes/projects");
 const signRouter = require("./routes/sign");
 const activitiesRouter = require("./routes/activities");
-const expensesRouter = require("./routes/expenses");
 const meRouter = require("./routes/me");
 
 const app = express();
@@ -46,7 +46,7 @@ app.use("/api/hamster", hamsterRouter);
 app.use("/api/projects", projectsRouter);
 app.use("/api/sign", signRouter);
 app.use("/api/activities", activitiesRouter);
-app.use("/api/expenses", expensesRouter);
+app.use("/api/expenses", expenses);
 app.use("/api/me", meRouter);
 app.use("/api/invoices", invoices);
 app.use("/api/bank-accounts", bankAccounts);

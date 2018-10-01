@@ -3,16 +3,13 @@ import DB from "./../../db";
 const db = new DB();
 
 export default async (req, res) => {
-  let expenses;
-  const year = req.query.year || "";
+  let years;
 
   try {
-    expenses = await db.query(`
-      select id, name, date, amount
+    years = await db.query(`
+      select distinct year(date) as year
       from expenses
       where user_id = ${req.userId}
-      ${year && "and year(date) = " + year}
-      order by date desc
     `);
   } catch (error) {
     return res.status(500).json({
@@ -22,8 +19,11 @@ export default async (req, res) => {
     });
   }
 
-  if (expenses) {
-    return res.json({ success: true, expenses });
+  if (years) {
+    return res.json({
+      success: true,
+      years: years.map(y => y.year)
+    });
   }
 
   return res
