@@ -1,17 +1,21 @@
-const webpack = require('webpack');
-const merge = require('webpack-merge');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const common = require('./webpack.common.js');
+const webpack = require("webpack");
+const merge = require("webpack-merge");
+const MinifyPlugin = require("babel-minify-webpack-plugin");
+const common = require("./webpack.common.js");
 
 module.exports = merge(common, {
   output: {
-    publicPath: '/dist/'
+    publicPath: "/dist/"
   },
-  mode: 'production',
+  mode: "production",
   plugins: [
-    new UglifyJSPlugin(),
+    new MinifyPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false
+    }),
     new webpack.DefinePlugin({
-      'process.env': {
+      "process.env": {
         NODE_ENV: '"production"'
       }
     })
