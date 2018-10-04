@@ -13,7 +13,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-
 import http from '../http';
 import FormErrors from './form-errors.vue';
 

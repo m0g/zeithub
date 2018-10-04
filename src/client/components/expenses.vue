@@ -62,51 +62,52 @@ section table {
 }
 </style>
 
-<script>
-import http from './../http';
-import AddExpense from './add-expense';
-import YearFilter from './year-filter';
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import http from '../http';
+import AddExpense from './add-expense.vue';
+import YearFilter from './year-filter.vue';
 
-export default {
-  data() {
-    return { expenses: [], turnover: 0, profit: 0 };
-  },
+@Component({
+  components: { AddExpense, YearFilter }
+})
+export default class Expenses extends Vue {
+  expenses: [] = [];
+  turnover: number = 0;
+  profit: number = 0;
 
   created() {
     this.getExpenses();
-  },
+  }
 
-  methods: {
-    async getExpenses(query = {}) {
-      const newQuery = Object.assign({}, this.$route.query, query);
-      const response = await http('/api/expenses', { query: newQuery });
-      const data = await response.json();
+  async getExpenses(query = {}) {
+    const newQuery = Object.assign({}, this.$route.query, query);
+    const response = await http('/api/expenses', { query: newQuery });
+    const data = await response.json();
 
-      if (data.success && data.expenses.length > 0) {
-        this.expenses = data.expenses;
-        this.turnover = this.getTurnover(data.expenses);
-        this.profit = this.getProfit(data.expenses);
+    if (data.success && data.expenses.length > 0) {
+      this.expenses = data.expenses;
+      this.turnover = this.getTurnover(data.expenses);
+      this.profit = this.getProfit(data.expenses);
 
-        if (Object.keys(query).length > 0) {
-          this.$router.push({ query });
-        }
+      if (Object.keys(query).length > 0) {
+        this.$router.push({ query });
       }
-    },
-
-    getTurnover(expenses) {
-      return expenses
-        .map(expense => parseFloat(expense.amount))
-        .filter(amount => amount > 0)
-        .reduce((acc, amount) => acc + amount);
-    },
-
-    getProfit(expenses) {
-      return expenses
-        .map(expense => parseFloat(expense.amount))
-        .reduce((acc, amount) => acc + amount);
     }
-  },
+  }
 
-  components: { AddExpense, YearFilter }
-};
+  getTurnover(expenses) {
+    return expenses
+      .map(expense => parseFloat(expense.amount))
+      .filter(amount => amount > 0)
+      .reduce((acc, amount) => acc + amount);
+  }
+
+  getProfit(expenses) {
+    return expenses
+      .map(expense => parseFloat(expense.amount))
+      .reduce((acc, amount) => acc + amount);
+  }
+}
 </script>

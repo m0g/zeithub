@@ -8,39 +8,38 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
 import http from '../http';
 import PersonalInfo from './personal-info.vue';
 import ChangePassword from './change-password.vue';
 import BankAccounts from './bank-accounts.vue';
 import Addresses from './addresses.vue';
 
-export default {
+@Component({
   components: {
     PersonalInfo,
     ChangePassword,
     BankAccounts,
     Addresses
-  },
-
-  data() {
-    return { me: {} };
-  },
+  }
+})
+export default class Me extends Vue {
+  me: {} = {};
 
   created() {
     this.getMe();
-  },
-
-  methods: {
-    getMe() {
-      http('/api/me')
-        .then(data => data.json())
-        .then(data => {
-          if (data.success) {
-            this.me = data.me;
-          }
-        });
-    }
   }
-};
+
+  getMe() {
+    http('/api/me')
+      .then(data => data.json())
+      .then(data => {
+        if (data.success) {
+          this.me = data.me;
+        }
+      });
+  }
+}
 </script>

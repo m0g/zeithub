@@ -12,8 +12,14 @@
   </li>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+
+const Props = Vue.extend({
   props: ['activity']
-};
+});
+
+@Component({})
+export default class Activity extends Props {}
 </script>

@@ -10,29 +10,28 @@
   </fieldset>
 </template>
 
-<script>
-import http from './../http';
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import http from '../http';
 
-export default {
-  data() {
-    return { success: false };
-  },
+@Component({})
+export default class Hamster extends Vue {
+  success: Boolean = false;
 
-  methods: {
-    handleFileUpload(e) {
-      const data = new FormData();
+  handleFileUpload(e) {
+    const data = new FormData();
 
-      data.append('xml', e.target.files[0]);
+    data.append('xml', e.target.files[0]);
 
-      http('/api/hamster', {
-        method: 'POST',
-        body: data
-      })
-        .then(response => response.json())
-        .then(response => {
-          this.success = response.success;
-        });
-    }
+    http('/api/hamster', {
+      method: 'POST',
+      body: data
+    })
+      .then(response => response.json())
+      .then(response => {
+        this.success = response.success;
+      });
   }
-};
+}
 </script>

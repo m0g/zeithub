@@ -2,12 +2,7 @@
 <fieldset>
   <legend>Create project</legend>
   <form @submit="sendForm" method="post">
-    <p v-if="errors.length">
-      <b>Please correct the following error(s):</b>
-      <ul>
-        <li v-for="error in errors" :key="error">{{ error }}</li>
-      </ul>
-    </p>
+    <form-errors :errors="errors"></form-errors>
     <p>
       <input
         type="text"
@@ -19,41 +14,41 @@
 </fieldset>
 </template>
 
-<script>
-import http from './../http';
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import http from '../http';
+import FormErrors from './form-errors.vue';
 
-export default {
-  data() {
-    return {
-      name: '',
-      errors: []
-    };
-  },
+@Component({
+  components: { FormErrors }
+})
+export default class CreateProject extends Vue {
+  errors: string[] = [];
+  name: string = '';
 
-  methods: {
-    sendForm(e) {
-      this.errors = [];
-      e.preventDefault();
+  sendForm(e) {
+    this.errors = [];
+    e.preventDefault();
 
-      if (!this.name) {
-        this.errors.push('Name is required');
-      }
+    if (!this.name) {
+      this.errors.push('Name is required');
+    }
 
-      if (this.errors.length === 0) {
-        http('/api/projects', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: this.name })
-        })
-          .then(response => response.json())
-          .then(response => {
-            console.log(response);
-            if (response.success === true) {
-              this.$router.push(`/projects`);
-            }
-          });
-      }
+    if (this.errors.length === 0) {
+      http('/api/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: this.name })
+      })
+        .then(response => response.json())
+        .then(response => {
+          console.log(response);
+          if (response.success === true) {
+            this.$router.push(`/projects`);
+          }
+        });
     }
   }
-};
+}
 </script>

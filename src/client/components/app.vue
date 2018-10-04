@@ -15,14 +15,16 @@
     <router-view id="router-view"></router-view>
   </div>
 </template>
-<script>
+
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
 import { isLoggedIn, signOut } from './../auth';
 import http from './../http';
 
-export default {
-  data() {
-    return { isLoggedIn: isLoggedIn() };
-  },
+@Component({})
+export default class App extends Vue {
+  isLoggedIn: Boolean = isLoggedIn();
 
   created() {
     http('/api/me')
@@ -34,8 +36,10 @@ export default {
         }
       });
   }
-};
+}
 </script>
+
+
 <style>
 html,
 body,

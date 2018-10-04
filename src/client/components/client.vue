@@ -14,7 +14,6 @@
       <input type="text" placeholder="Postcode" v-model="edit.postcode"/>
       <input type="text" placeholder="Country" v-model="edit.country"/>
       <input type="submit" value="Save" />
-  </form>
     </form>
   </li>
 </template>

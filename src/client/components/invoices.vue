@@ -12,13 +12,14 @@
   </fieldset>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import http from '../http';
+import Component from 'vue-class-component';
 
-export default {
-  data() {
-    return { invoices: [] };
-  },
+@Component({})
+export default class Invoices extends Vue {
+  invoices: [] = [];
 
   created() {
     http('/api/invoices', {
@@ -32,5 +33,5 @@ export default {
         }
       });
   }
-};
+}
 </script>

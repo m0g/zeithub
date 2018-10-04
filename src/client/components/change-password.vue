@@ -14,57 +14,54 @@
   </fieldset>
 </template>
 
-<script>
-import FormErrors from './form-errors.vue';
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
 import http from '../http';
+import FormErrors from './form-errors.vue';
 
-export default {
-  components: { FormErrors },
+@Component({
+  components: { FormErrors }
+})
+export default class ChangePassword extends Vue {
+  errors: string[] = [];
+  currentPassword: string = '';
+  password: string = '';
+  passwordRepeat: string = '';
 
-  data() {
-    return {
-      errors: [],
-      currentPassword: '',
-      password: '',
-      passwordRepeat: ''
-    };
-  },
+  changePassword(e) {
+    this.errors = [];
+    e.preventDefault();
 
-  methods: {
-    changePassword(e) {
-      this.errors = [];
-      e.preventDefault();
+    if (!this.currentPassword) {
+      this.errors.push('Current password is missing');
+    }
 
-      if (!this.currentPassword) {
-        this.errors.push('Current password is missing');
-      }
+    if (!this.password || !this.passwordRepeat) {
+      this.errors.push('New password is required');
+    } else if (this.password !== this.passwordRepeat) {
+      this.errors.push("New Passwords don't match");
+    }
 
-      if (!this.password || !this.passwordRepeat) {
-        this.errors.push('New password is required');
-      } else if (this.password !== this.passwordRepeat) {
-        this.errors.push("New Passwords don't match");
-      }
+    if (this.errors.length === 0) {
+      const body = {
+        currentPassword: this.currentPassword,
+        password: this.password
+      };
 
-      if (this.errors.length === 0) {
-        const body = {
-          currentPassword: this.currentPassword,
-          password: this.password
-        };
-
-        http('/api/me/passwd', {
-          method: 'PUT',
-          body: JSON.stringify(body)
-        })
-          .then(response => response.json())
-          .then(response => {
-            if (response.success) {
-              this.currentPassword = '';
-              this.password = '';
-              this.passwordRepeat = '';
-            }
-          });
-      }
+      http('/api/me/passwd', {
+        method: 'PUT',
+        body: JSON.stringify(body)
+      })
+        .then(response => response.json())
+        .then(response => {
+          if (response.success) {
+            this.currentPassword = '';
+            this.password = '';
+            this.passwordRepeat = '';
+          }
+        });
     }
   }
-};
+}
 </script>

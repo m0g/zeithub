@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2017"
+    "target": "es2017",
+    "resolveJsonModule": true
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules"]
