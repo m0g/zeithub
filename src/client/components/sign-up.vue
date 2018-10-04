@@ -2,12 +2,7 @@
   <fieldset>
     <legend>Sign up</legend>
     <form @submit="signUp" method="post">
-      <p v-if="errors.length">
-        <b>Please correct the following error(s):</b>
-        <ul>
-          <li v-for="error in errors" :key="error">{{ error }}</li>
-        </ul>
-      </p>
+      <form-errors :errors="errors"></form-errors>
       <p>
         <input
           type="text"
@@ -41,58 +36,61 @@
     </a>
   </fieldset>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      email: '',
-      username: '',
-      password: '',
-      passwordRepeat: '',
-      errors: []
-    };
-  },
 
-  methods: {
-    signUp(e) {
-      this.errors = [];
-      e.preventDefault();
+<script lang="ts">
+import Vue from 'vue';
+import http from '../http';
+import Component from 'vue-class-component';
+import FormErrors from './form-errors.vue';
 
-      if (!this.username) {
-        this.errors.push('Username is required');
-      }
+@Component({
+  components: { FormErrors }
+})
+export default class SignUp extends Vue {
+  errors: string[] = [];
+  email: string = '';
+  username: string = '';
+  password: string = '';
+  passwordRepeat: string = '';
 
-      if (!this.email) {
-        this.errors.push('Email is required');
-      }
+  async signUp(e) {
+    this.errors = [];
+    e.preventDefault();
 
-      if (!this.password || !this.passwordRepeat) {
-        this.errors.push('Password is required');
-      } else if (this.password !== this.passwordRepeat) {
-        this.errors.push("Passwords don't match");
-      }
+    if (!this.username) {
+      this.errors.push('Username is required');
+    }
 
-      if (this.errors.length === 0) {
-        const user = {
-          username: this.username,
-          password: this.password,
-          email: this.email
-        };
+    if (!this.email) {
+      this.errors.push('Email is required');
+    }
 
-        fetch('/api/sign/up', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(user)
-        })
-          .then(response => response.json())
-          .then(response => {
-            if (response.success === true) {
-              localStorage.setItem('token', response.token);
-              window.location.href = '/';
-            }
-          });
+    if (!this.password || !this.passwordRepeat) {
+      this.errors.push('Password is required');
+    } else if (this.password !== this.passwordRepeat) {
+      this.errors.push("Passwords don't match");
+    }
+
+    if (this.errors.length === 0) {
+      const user = {
+        username: this.username,
+        password: this.password,
+        email: this.email
+      };
+
+      const response = await http('/api/sign/up', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
+      });
+
+      const data = await response.json();
+
+      if (data.success === true) {
+        localStorage.setItem('token', data.token);
+        window.location.href = '/';
       }
     }
   }
-};
+}
 </script>

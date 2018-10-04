@@ -28,53 +28,52 @@
   </fieldset>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
 import FormErrors from './form-errors.vue';
 import http from './../http';
 import { diff } from './../../utils';
 
-export default {
-  components: { FormErrors },
-  props: ['me', 'getMe'],
+const Props = Vue.extend({
+  props: ['me', 'getMe']
+});
 
-  data() {
-    return {
-      editMode: false,
-      user: {},
-      pass: {},
-      errors: []
-    };
-  },
+@Component({
+  components: { FormErrors }
+})
+export default class PersonalInfo extends Props {
+  errors: string[] = [];
+  editMode: Boolean = false;
+  user: {} = {};
+  pass: {} = {};
 
   updated() {
     if (Object.keys(this.user).length === 0) {
       this.user = Object.assign({}, this.me);
     }
-  },
+  }
 
-  methods: {
-    save(e) {
-      this.errors = [];
-      e.preventDefault();
+  save(e) {
+    this.errors = [];
+    e.preventDefault();
 
-      if (this.errors.length === 0) {
-        const body = diff(this.me, this.user);
+    if (this.errors.length === 0) {
+      const body = diff(this.me, this.user);
 
-        http('/api/me', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        })
-          .then(response => response.json())
-          .then(response => {
-            console.log(response);
-            if (response.success) {
-              this.getMe();
-              this.editMode = false;
-            }
-          });
-      }
+      http('/api/me', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+        .then(response => response.json())
+        .then(response => {
+          if (response.success) {
+            this.getMe();
+            this.editMode = false;
+          }
+        });
     }
   }
-};
+}
 </script>

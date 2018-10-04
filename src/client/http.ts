@@ -1,4 +1,16 @@
-export default (uri, options = {}) => {
+interface Options {
+  headers: {};
+  query: string;
+  search: URLSearchParams;
+}
+
+const defaultOptions = {
+  headers: {},
+  query: '',
+  search: new URLSearchParams()
+};
+
+export default (uri, options: Options = defaultOptions) => {
   const urlString = uri.match(/^http/) ? uri : `${location.origin}${uri}`;
   const token = localStorage.getItem('token');
   const url = new URL(urlString);

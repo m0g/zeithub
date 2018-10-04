@@ -10,19 +10,26 @@
   </fieldset>
 </template>
 
-<script>
-export default {
-  props: ['getProject'],
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { Route } from 'vue-router';
 
-  data() {
-    return { month: this.$route.query.month || '' };
-  },
+interface WithRoute {
+  $route: Route;
+}
 
-  methods: {
-    filterByMonth(e) {
-      console.log(this.month, e.target.value);
-      this.getProject({ month: this.month });
-    }
+const Props = Vue.extend({
+  props: ['getProject']
+});
+
+@Component({})
+export default class ProjectFilters extends Props {
+  month: string = this.$route.query.month || '';
+
+  filterByMonth(e) {
+    console.log(this.month, e.target.value);
+    this.getProject({ month: this.month });
   }
-};
+}
 </script>

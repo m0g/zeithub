@@ -11,13 +11,14 @@
   </div>
 </template>
 
-<script>
-import http from './../http';
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import http from '../http';
 
-export default {
-  data() {
-    return { projects: [] };
-  },
+Component({});
+export default class Projects extends Vue {
+  projects: [] = [];
 
   created() {
     http('/api/projects')
@@ -26,5 +27,5 @@ export default {
         this.projects = projects;
       });
   }
-};
+}
 </script>

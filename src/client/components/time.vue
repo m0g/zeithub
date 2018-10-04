@@ -21,44 +21,43 @@
   </section>
 </template>
 
-<script>
-import moment from 'moment';
-import http from './../http';
-
+<script lang="ts">
+import Vue from 'vue';
+import http from '../http';
+import Component from 'vue-class-component';
+import * as moment from 'moment';
 import Activity from './activity.vue';
 import Hamster from './hamster.vue';
 
-export default {
-  components: { Activity, Hamster },
-
-  data() {
-    return { activityGroups: {} };
-  },
+@Component({
+  components: { Activity, Hamster }
+})
+export default class Time extends Vue {
+  activityGroups: {} = {};
 
   created() {
     http('/api/activities')
       .then(response => response.json())
       .then(this.groupByDate);
-  },
-
-  methods: {
-    groupByDate(activities) {
-      let activityGroups = {};
-      activities.forEach(activity => {
-        const date = moment(activity.startTime).format('dddd, Do MMMM YYYY');
-
-        if (!activityGroups[date]) {
-          activityGroups[date] = [];
-        }
-
-        activityGroups[date].push(activity);
-      });
-
-      this.activityGroups = activityGroups;
-    }
   }
-};
+
+  groupByDate(activities) {
+    let activityGroups = {};
+    activities.forEach(activity => {
+      const date = moment(activity.startTime).format('dddd, Do MMMM YYYY');
+
+      if (!activityGroups[date]) {
+        activityGroups[date] = [];
+      }
+
+      activityGroups[date].push(activity);
+    });
+
+    this.activityGroups = activityGroups;
+  }
+}
 </script>
+
 
 <style scoped>
 section {
