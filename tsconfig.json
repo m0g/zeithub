@@ -4,7 +4,7 @@
     "strict": true,
     "noImplicitAny": false,
     "noImplicitReturns": true,
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "skipLibCheck": true,
     "emitDecoratorMetadata": true,

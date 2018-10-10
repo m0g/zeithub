@@ -1,19 +1,15 @@
 interface Options {
-  headers: {};
-  query: string;
-  search: URLSearchParams;
+  headers?: {};
+  query?: {};
+  method?: string;
+  body?: string;
+  search?: URLSearchParams;
 }
 
-const defaultOptions = {
-  headers: {},
-  query: '',
-  search: new URLSearchParams()
-};
-
-export default (uri, options: Options = defaultOptions) => {
+export default (uri, options: Options = {}) => {
   const urlString = uri.match(/^http/) ? uri : `${location.origin}${uri}`;
   const token = localStorage.getItem('token');
-  const url = new URL(urlString);
+  const url: URL = new URL(urlString);
 
   if (!options.headers) {
     options.headers = {};
@@ -24,8 +20,8 @@ export default (uri, options: Options = defaultOptions) => {
   }
 
   if (options.query) {
-    url.search = new URLSearchParams(options.query);
+    url.search = new URLSearchParams(options.query).toString();
   }
 
-  return fetch(url, options);
+  return fetch(url.toString(), options);
 };

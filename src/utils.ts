@@ -1,4 +1,4 @@
-const diff = (original, copy) => {
+export const diff = (original, copy) => {
   let diffObj = {};
 
   Object.keys(original).forEach(key => {
@@ -10,10 +10,10 @@ const diff = (original, copy) => {
   return diffObj;
 };
 
-const camelToSnake = string => {
-  return string.replace(/\.?([A-Z]+)/g, (x,y) => {
-    return '_' + y.toLowerCase();
-  }).replace(/^_/, '');
+export const camelToSnake = string => {
+  return string
+    .replace(/\.?([A-Z]+)/g, (x, y) => {
+      return "_" + y.toLowerCase();
+    })
+    .replace(/^_/, "");
 };
-
-module.exports = { diff, camelToSnake };

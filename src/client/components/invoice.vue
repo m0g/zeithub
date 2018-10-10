@@ -38,8 +38,8 @@
 <script lang="ts">
 import slugify from 'slugify';
 import http from './../http';
-import * as ActivitiesTable from './../../lib/components/activities-table';
-import InvoiceInfo from './../../lib/components/invoice-info';
+import ActivitiesTable from './activities-table.vue';
+import InvoiceInfo from './invoice-info.vue';
 
 import * as M from './../../models';
 

@@ -46,7 +46,7 @@ import ProjectClient from './project-client.vue';
   }
 })
 export default class Project extends Vue {
-  project: [] = [];
+  project: {}[] = [];
   activityGroups: {}[] = [];
   stats: {} = {};
 
@@ -78,7 +78,7 @@ export default class Project extends Vue {
     return { durationMinutes };
   }
 
-  groupByDate(activities): [] {
+  groupByDate(activities): {}[] {
     let activityGroups: {}[] = [];
 
     activities.forEach(activity => {

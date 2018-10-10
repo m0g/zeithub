@@ -27,3 +27,9 @@ export interface Me {
   firstName: string;
   lastName: string;
 }
+
+export interface Client {
+  id: number;
+  name: string;
+  street: string;
+}
