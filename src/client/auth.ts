@@ -27,3 +27,5 @@ export function isLoggedIn() {
 export function signOut() {
   return localStorage.removeItem('token');
 }
+
+// export default {}

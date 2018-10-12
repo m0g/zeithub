@@ -21,7 +21,7 @@ import { requireAuth, requireUnauth } from './auth';
 
 Vue.use(VueRouter);
 
-export default new VueRouter({
+const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/', name: 'Home', component: Home },
@@ -111,3 +111,5 @@ export default new VueRouter({
     }
   ]
 });
+
+export default router;

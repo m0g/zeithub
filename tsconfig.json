@@ -4,13 +4,14 @@
     "strict": true,
     "noImplicitAny": false,
     "noImplicitReturns": true,
-    "module": "es2015",
+    "module": "ESNext",
     "moduleResolution": "node",
     "skipLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es2017",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "esModuleInterop": false
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules"]

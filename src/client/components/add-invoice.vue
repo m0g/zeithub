@@ -136,7 +136,7 @@ import { Activity } from './../../types';
 @Component({ components: { FormErrors } })
 export default class AddInvoice extends Vue {
   project: string = '';
-  projects: Array<Object> = [];
+  projects: {}[] = [];
   client: string = '';
   clients: Array<Object> = [];
   activities: Array<Activity> = [];
