@@ -12,7 +12,7 @@
     "ts-node": "ts-node -O '{\"module\":\"commonjs\"}' ./src/server/index.ts",
     "dev": "nodemon",
     "precommit": "pretty-quick --staged",
-    "tsc": "tsc --outDir build/",
+    "tsc": "tsc --module \"commonjs\" --outDir build/",
     "posttsc": "cpx 'src/**/*.js' build/",
     "lint": "eslint src/",
     "pretest": "db-migrate up --config config/database.json -e test",
