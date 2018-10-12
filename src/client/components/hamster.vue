@@ -1,13 +1,13 @@
 <template>
-  <fieldset>
-    <legend>Hamster upload</legend>
-    <h1>Upload your hamster XML here</h1>
+  <div>
+    <h3>Hamster upload</h3>
+    <h4>Upload your hamster XML here</h4>
     <input
       type="file"
       name="xml"
       @change="handleFileUpload" />
     <p v-if="success">Upload complete!</p>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">

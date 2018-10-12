@@ -85,12 +85,18 @@ section {
 section aside {
   flex: 1;
   border-right: 1px dotted black;
+}
+
+section aside div {
+  border-bottom: 1px dotted black;
   padding: 10px;
 }
 
 .expenses {
   flex: 3;
   padding: 10px;
+  overflow-y: auto;
+  max-height: 100%;
 }
 
 section table {

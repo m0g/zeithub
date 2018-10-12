@@ -1,11 +1,10 @@
 <template>
   <section>
-    <h1>Time Tracking</h1>
     <aside>
       <hamster></hamster>
     </aside>
-    <fieldset class="time-tracking">
-      <legend>Activities</legend>
+    <div class="time-tracking">
+      <h3>Activities</h3>
       <ul>
         <li v-for="activities, date in activityGroups" :key="date">
           <p><b>{{date}}</b></p>
@@ -17,7 +16,7 @@
           </ul>
         </li>
       </ul>
-    </fieldset>
+    </div>
   </section>
 </template>
 
@@ -63,20 +62,23 @@ export default class Time extends Vue {
 section {
   display: flex;
   flex-flow: row wrap;
-  min-height: 100%;
-  height: 100%;
-}
-
-section h1 {
-  flex: 1 100%;
-  margin: 0 0 10px;
+  height: calc(100% - 39px);
 }
 
 section aside {
   flex: 1;
+  border-right: 1px dotted black;
 }
 
-section fieldset.time-tracking {
+section aside div {
+  border-bottom: 1px dotted black;
+  padding: 10px;
+}
+
+section .time-tracking {
   flex: 3;
+  padding: 10px;
+  overflow-y: auto;
+  max-height: 100%;
 }
 </style>
