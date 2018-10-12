@@ -1,6 +1,6 @@
 <template>
-  <fieldset>
-    <legend>Filter per year</legend>
+  <div>
+    <h3>Filter per year</h3>
     <label for="year">Filter by year</label>
     <select name="" id="" v-model="year" @change="handleChange">
       <option value="">Select a year</option>
@@ -9,7 +9,7 @@
         :key="year" 
         :value="year">{{year}}</option>
     </select>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">

@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node ./build/server/index.js",
-    "ts-node": "ts-node -O '{\"module\":\"commonjs\", \"esModuleInterop\":false}' ./src/server/index.ts",
+    "ts-node": "ts-node -O '{\"module\":\"commonjs\"}' ./src/server/index.ts",
     "dev": "nodemon",
     "precommit": "pretty-quick --staged",
     "tsc": "tsc --outDir build/",

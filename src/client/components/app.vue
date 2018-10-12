@@ -56,20 +56,27 @@ body,
 }
 
 header {
-  margin-bottom: 10px;
+  margin-bottom: 0;
   padding: 10px 15px;
-  background: #333;
+  border-bottom: 1px dotted black;
 }
 
 header a {
-  color: #eee;
-  text-decoration: none;
+  color: black;
   margin: 0 5px;
 }
 
+.router-link-exact-active {
+  color: white;
+  background: black;
+}
+
 #router-view {
-  margin: 10px;
+  margin: 0;
   padding: 0;
-  height: calc(100% - 58px);
+}
+
+h3 {
+  margin-top: 0;
 }
 </style>

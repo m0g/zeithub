@@ -1,66 +1,27 @@
 <template>
   <section>
-    <h1>Expenses</h1>
-    <div class="container">
-      <aside>
-        <year-filter :get-expenses="getExpenses"></year-filter>
-        <add-expense :get-expenses="getExpenses"></add-expense> 
-        <fieldset>
-          <legend>€</legend>
-          <p><b>Turnover:</b> {{turnover | currency}}</p>
-          <p><b>Profit:</b> {{profit | currency}}</p>
-        </fieldset>
-      </aside>
-      <fieldset class="expenses">
-        <legend>List of expenses</legend>
-        <table>
-          <tr><th>Name</th><th>Date</th><th>Amount</th></tr>
-          <tr v-for="expense in expenses" :key="expense.id">
-            <td>{{expense.name}}</td>
-            <td class="align-center">{{expense.date | formatDate('DD/MM/YYYY')}}</td>
-            <td class="align-right">{{expense.amount | currency}}</td>
-          </tr>
-        </table>
-      </fieldset>
+    <aside>
+      <year-filter :get-expenses="getExpenses"></year-filter>
+      <add-expense :get-expenses="getExpenses"></add-expense> 
+      <div>
+        <h3>€</h3>
+        <p><b>Turnover:</b> {{turnover | currency}}</p>
+        <p><b>Profit:</b> {{profit | currency}}</p>
+      </div>
+    </aside>
+    <div class="expenses">
+      <h3>List of expenses</h3>
+      <table>
+        <tr><th>Name</th><th>Date</th><th>Amount</th></tr>
+        <tr v-for="expense in expenses" :key="expense.id">
+          <td>{{expense.name}}</td>
+          <td class="align-center">{{expense.date | formatDate('DD/MM/YYYY')}}</td>
+          <td class="align-right">{{expense.amount | currency}}</td>
+        </tr>
+      </table>
     </div>
   </section>
 </template>
-
-<style scoped>
-section {
-  height: 100%;
-}
-
-div.container {
-  display: flex;
-  flex-flow: row wrap;
-}
-
-section h1 {
-  flex: 1 100%;
-  margin: 0 0 10px;
-}
-
-section aside {
-  flex: 1;
-}
-
-section fieldset.expenses {
-  flex: 3;
-}
-
-section table {
-  width: 100%;
-}
-
-.align-center {
-  text-align: center;
-}
-
-.align-right {
-  text-align: right;
-}
-</style>
 
 <script lang="ts">
 import Vue from 'vue';
@@ -73,7 +34,7 @@ import YearFilter from './year-filter.vue';
   components: { AddExpense, YearFilter }
 })
 export default class Expenses extends Vue {
-  expenses: [] = [];
+  expenses: {}[] = [];
   turnover: number = 0;
   profit: number = 0;
 
@@ -111,3 +72,36 @@ export default class Expenses extends Vue {
   }
 }
 </script>
+
+<style scoped>
+section {
+  display: flex;
+  flex-flow: row wrap;
+  flex: 1 100%;
+  margin: 0 0 10px;
+  height: calc(100% - 39px);
+}
+
+section aside {
+  flex: 1;
+  border-right: 1px dotted black;
+  padding: 10px;
+}
+
+.expenses {
+  flex: 3;
+  padding: 10px;
+}
+
+section table {
+  width: 100%;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.align-right {
+  text-align: right;
+}
+</style>

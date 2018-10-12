@@ -1,6 +1,6 @@
 <template>
-  <fieldset>
-    <legend>Add expense</legend>
+  <div>
+    <h3>Add expense</h3>
     <form method="POST" @submit="sendForm">
       <form-errors :errors="errors"></form-errors>
       <input type="text" placeholder="Label" v-model="name" />
@@ -8,7 +8,7 @@
       <input type="number" placeholder="Amount in Euro" v-model="amount" step=".01" />
       <input type="submit" value="Add" />
     </form>
-  </fieldset> 
+  </div> 
 </template>
 
 <script lang="ts">
