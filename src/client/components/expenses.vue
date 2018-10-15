@@ -13,11 +13,10 @@
       <h3>List of expenses</h3>
       <table>
         <tr><th>Name</th><th>Date</th><th>Amount</th></tr>
-        <tr v-for="expense in expenses" :key="expense.id">
-          <td>{{expense.name}}</td>
-          <td class="align-center">{{expense.date | formatDate('DD/MM/YYYY')}}</td>
-          <td class="align-right">{{expense.amount | currency}}</td>
-        </tr>
+        <expense 
+          :expense="expense" 
+          v-for="expense in expenses" 
+          :key="expense.id"></expense>
       </table>
     </div>
   </section>
@@ -29,9 +28,10 @@ import Component from 'vue-class-component';
 import http from '../http';
 import AddExpense from './add-expense.vue';
 import YearFilter from './year-filter.vue';
+import Expense from './expense.vue';
 
 @Component({
-  components: { AddExpense, YearFilter }
+  components: { AddExpense, YearFilter, Expense }
 })
 export default class Expenses extends Vue {
   expenses: {}[] = [];
