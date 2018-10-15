@@ -12,9 +12,10 @@
     <div class="expenses">
       <h3>List of expenses</h3>
       <table>
-        <tr><th>Name</th><th>Date</th><th>Amount</th></tr>
+        <tr><th>Name</th><th>Date</th><th>Amount</th><th>Actions</th></tr>
         <expense 
           :expense="expense" 
+          :get-expenses="getExpenses"
           v-for="expense in expenses" 
           :key="expense.id"></expense>
       </table>
