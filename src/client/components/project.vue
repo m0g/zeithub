@@ -13,7 +13,7 @@
     <fieldset class="time-tracking">
       <legend>Time tracking</legend>
       <ul>
-        <li v-for="activities, date in activityGroups" :key="date">
+        <li v-for="(activities, date) in activityGroups" :key="date">
           <p><b>{{date}}</b></p>
           <ul>
             <activity 
@@ -36,6 +36,11 @@ import Activity from './activity.vue';
 import ProjectFilters from './project-filters.vue';
 import GenerateInvoice from './generate-invoice.vue';
 import ProjectClient from './project-client.vue';
+import { Route } from 'vue-router';
+
+interface WithRoute {
+  $route: Route;
+}
 
 @Component({
   components: {
@@ -45,29 +50,33 @@ import ProjectClient from './project-client.vue';
     ProjectClient
   }
 })
-export default class Project extends Vue {
+export default class Project extends Vue implements WithRoute {
   project: {}[] = [];
-  activityGroups: {}[] = [];
+  activityGroups: {} = {};
   stats: {} = {};
 
   created() {
     this.getProject();
   }
 
-  getProject(query = {}) {
+  async getProject(query = {}) {
     const newQuery = Object.assign({}, this.$route.query, query);
 
-    http(`/api/projects/${this.$route.params.slug}`, { query: newQuery })
-      .then(data => data.json())
-      .then(data => {
-        this.project = data.project;
-        this.activityGroups = this.groupByDate(data.activities);
-        this.stats = this.getStats(data.activities);
+    const response = await http(`/api/projects/${this.$route.params.slug}`, {
+      query: newQuery
+    });
 
-        if (Object.keys(query).length > 0) {
-          this.$router.push({ query });
-        }
-      });
+    const data = await response.json();
+
+    if (data.success) {
+      this.project = data.project;
+      this.activityGroups = this.groupByDate(data.activities);
+      this.stats = this.getStats(data.activities);
+
+      if (Object.keys(query).length > 0) {
+        this.$router.push({ query });
+      }
+    }
   }
 
   getStats(activities) {
@@ -78,8 +87,8 @@ export default class Project extends Vue {
     return { durationMinutes };
   }
 
-  groupByDate(activities): {}[] {
-    let activityGroups: {}[] = [];
+  groupByDate(activities): {} {
+    let activityGroups: {} = {};
 
     activities.forEach(activity => {
       const date = moment(activity.startTime).format('dddd, Do MMMM YYYY');

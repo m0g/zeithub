@@ -6,7 +6,7 @@
     <div class="time-tracking">
       <h3>Activities</h3>
       <ul>
-        <li v-for="activities, date in activityGroups" :key="date">
+        <li v-for="(activities, date) in activityGroups" :key="date">
           <p><b>{{date}}</b></p>
           <ul>
             <activity 

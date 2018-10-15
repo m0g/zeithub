@@ -29,9 +29,3 @@ export default class Projects extends Vue {
   }
 }
 </script>
-
-<style scoped>
-a {
-  color: black;
-}
-</style>

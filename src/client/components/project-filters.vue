@@ -24,8 +24,12 @@ const Props = Vue.extend({
 });
 
 @Component({})
-export default class ProjectFilters extends Props {
-  month: string = this.$route.query.month || '';
+export default class ProjectFilters extends Props implements WithRoute {
+  month: string = '';
+
+  created() {
+    this.month = this.$route.query.month;
+  }
 
   filterByMonth(e) {
     console.log(this.month, e.target.value);

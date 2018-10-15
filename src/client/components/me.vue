@@ -1,6 +1,5 @@
 <template>
   <section>
-    <h1>Me</h1>
     <personal-info :me="me" :get-me="getMe"></personal-info>
     <addresses></addresses>
     <bank-accounts></bank-accounts>

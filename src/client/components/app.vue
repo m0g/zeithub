@@ -79,4 +79,8 @@ header a {
 h3 {
   margin-top: 0;
 }
+
+a {
+  color: black;
+}
 </style>

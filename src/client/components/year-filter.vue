@@ -28,7 +28,7 @@ const Props = Vue.extend({
 
 @Component({})
 export default class YearFilter extends Props implements WithRoute {
-  years: [] = [];
+  years: string[] = [];
   year: number = 0;
 
   created() {
