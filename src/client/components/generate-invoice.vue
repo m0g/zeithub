@@ -16,17 +16,10 @@
           </option>
         </select>
       </p>
-      <p>
-        <select v-model="iban">
-          <option value="" disabled selected>Select a bank account</option>
-          <option
-            v-for="account in bankAccounts" 
-            :key="account.iban"
-            :value="account.iban">
-              {{account.name}} {{account.owner}} {{account.iban}} {{account.bic}}
-          </option>
-        </select>
-      </p>
+      <select-bank-account 
+        v-bind:value="iban"
+        v-on:iban="iban = $event"
+      ></select-bank-account>
       <p><input type="submit" value="Generate Invoice" /></p>
     </form>
   </fieldset>
@@ -37,9 +30,10 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
 import FormErrors from './form-errors.vue';
+import SelectBankAccount from './select-bank-account.vue';
 
 @Component({
-  components: { FormErrors }
+  components: { FormErrors, SelectBankAccount }
 })
 export default class GenerateInvoice extends Vue {
   errors: string[] = [];

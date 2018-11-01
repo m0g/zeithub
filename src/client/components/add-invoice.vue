@@ -37,17 +37,10 @@
           </option>
         </select>
       </p>
-      <p>
-        <select v-model="iban">
-          <option value="" disabled selected>Select a bank account</option>
-          <option
-            v-for="account in bankAccounts" 
-            :key="account.iban"
-            :value="account.iban">
-              {{account.name}} {{account.owner}} {{account.iban}} {{account.bic}}
-          </option>
-        </select>
-      </p>
+      <select-bank-account 
+        v-bind:value="iban"
+        v-on:iban="iban = $event"
+      ></select-bank-account>
       <p>
         <label for="rate">Rate</label>
         <input type="number" name="rate" id="rate" v-model="rate">&euro;
@@ -132,8 +125,9 @@ import FormErrors from './form-errors.vue';
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 import { Activity } from './../../types';
+import SelectBankAccount from './select-bank-account.vue';
 
-@Component({ components: { FormErrors } })
+@Component({ components: { FormErrors, SelectBankAccount } })
 export default class AddInvoice extends Vue {
   project: string = '';
   projects: {}[] = [];
@@ -152,7 +146,7 @@ export default class AddInvoice extends Vue {
   memo: string = '';
   name: string = '';
   iban: string = '';
-  bankAccounts: Array<Object> = [];
+  // bankAccounts: Array<Object> = [];
   addresses: Array<Object> = [];
   userAddressId: string = '';
   invoiceNumber: number = 0;
@@ -160,7 +154,7 @@ export default class AddInvoice extends Vue {
 
   created() {
     this.getProjects();
-    this.getBankAccounts();
+    // this.getBankAccounts();
     this.getAddresses();
     this.getLastInvoiceNumber();
   }
@@ -184,18 +178,18 @@ export default class AddInvoice extends Vue {
       });
   }
 
-  getBankAccounts() {
-    http('/api/bank-accounts', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          this.bankAccounts = response.bankAccounts;
-        }
-      });
-  }
+  // getBankAccounts() {
+  //   http('/api/bank-accounts', {
+  //     headers: { 'Content-Type': 'application/json' },
+  //     method: 'GET'
+  //   })
+  //     .then(response => response.json())
+  //     .then(response => {
+  //       if (response.success) {
+  //         this.bankAccounts = response.bankAccounts;
+  //       }
+  //     });
+  // }
 
   getAddresses() {
     http('/api/addresses', {
