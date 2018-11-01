@@ -6,6 +6,17 @@
       <p><input type="text" placeholder="Title" v-model="name"></p>
       <p><input type="number" placeholder="Hourly rate" v-model="hourlyRate" /></p>
       <p>
+        <select v-model="userAddressId">
+          <option value="" disabled selected>Select an address</option>
+          <option
+            v-for="ad in addresses" 
+            :key="ad.id"
+            :value="ad.id">
+              <b>{{ad.name}}</b> {{ad.street}}, {{ad.postcode}} {{ad.city}}, {{ad.country}}
+          </option>
+        </select>
+      </p>
+      <p>
         <select v-model="iban">
           <option value="" disabled selected>Select a bank account</option>
           <option
@@ -34,27 +45,43 @@ export default class GenerateInvoice extends Vue {
   errors: string[] = [];
   name: string = '';
   hourlyRate: number = 0;
-  bankAccounts: [] = [];
+  bankAccounts: Array<Object> = [];
+  addresses: Array<Object> = [];
   iban: string = '';
+  userAddressId: string = '';
 
   created() {
     this.getBankAccounts();
+    this.getAddresses();
   }
 
-  getBankAccounts() {
-    http('/api/bank-accounts', {
+  async getBankAccounts() {
+    const response = await http('/api/bank-accounts', {
       headers: { 'Content-Type': 'application/json' },
       method: 'GET'
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          this.bankAccounts = response.bankAccounts;
-        }
-      });
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      this.bankAccounts = data.bankAccounts;
+    }
   }
 
-  generate(e) {
+  async getAddresses() {
+    const response = await http('/api/addresses', {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'GET'
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      this.addresses = data.addresses;
+    }
+  }
+
+  async generate(e) {
     this.errors = [];
     e.preventDefault();
 
@@ -70,6 +97,10 @@ export default class GenerateInvoice extends Vue {
       this.errors.push('You need to select a bank account');
     }
 
+    if (!this.userAddressId) {
+      this.errors.push('Address is missing');
+    }
+
     if (!this.$route.query.month) {
       this.errors.push('You need to select a month in the filter area');
     }
@@ -80,18 +111,24 @@ export default class GenerateInvoice extends Vue {
         hourlyRate: this.hourlyRate,
         projectSlug: this.$route.params.slug,
         month: this.$route.query.month,
-        iban: this.iban
+        iban: this.iban,
+        userAddressId: this.userAddressId
       };
 
-      http('/api/invoices', {
+      const response = await http('/api/invoices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
-      })
-        .then(response => response.json())
-        .then(response => {
-          console.log(response);
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.invoiceId) {
+        this.$router.push({
+          name: 'Invoice',
+          params: { id: data.invoiceId }
         });
+      }
     }
   }
 }
