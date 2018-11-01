@@ -22,5 +22,24 @@ export default async (req, res) => {
     });
   }
 
+  // Remove stray addresses
+  try {
+    await db.execute(
+      `
+      delete addresses 
+      FROM addresses
+      left outer join clients c on c.id = addresses.client_id 
+      where addresses.user_id is null
+      and c.id is null 
+    `,
+      []
+    );
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error on delete",
+      error
+    });
+  }
   return res.json({ success: true });
 };
