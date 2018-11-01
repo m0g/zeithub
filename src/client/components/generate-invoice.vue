@@ -5,17 +5,10 @@
       <form-errors :errors="errors"></form-errors>
       <p><input type="text" placeholder="Title" v-model="name"></p>
       <p><input type="number" placeholder="Hourly rate" v-model="hourlyRate" /></p>
-      <p>
-        <select v-model="userAddressId">
-          <option value="" disabled selected>Select an address</option>
-          <option
-            v-for="ad in addresses" 
-            :key="ad.id"
-            :value="ad.id">
-              <b>{{ad.name}}</b> {{ad.street}}, {{ad.postcode}} {{ad.city}}, {{ad.country}}
-          </option>
-        </select>
-      </p>
+      <select-address
+        v-bind:value="userAddressId"
+        v-on:userAddressId="userAddressId = $event"
+      ></select-address>
       <select-bank-account 
         v-bind:value="iban"
         v-on:iban="iban = $event"
@@ -31,49 +24,17 @@ import Component from 'vue-class-component';
 import http from '../http';
 import FormErrors from './form-errors.vue';
 import SelectBankAccount from './select-bank-account.vue';
+import SelectAddress from './select-address.vue';
 
 @Component({
-  components: { FormErrors, SelectBankAccount }
+  components: { FormErrors, SelectBankAccount, SelectAddress }
 })
 export default class GenerateInvoice extends Vue {
   errors: string[] = [];
   name: string = '';
   hourlyRate: number = 0;
-  bankAccounts: Array<Object> = [];
-  addresses: Array<Object> = [];
   iban: string = '';
   userAddressId: string = '';
-
-  created() {
-    this.getBankAccounts();
-    this.getAddresses();
-  }
-
-  async getBankAccounts() {
-    const response = await http('/api/bank-accounts', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      this.bankAccounts = data.bankAccounts;
-    }
-  }
-
-  async getAddresses() {
-    const response = await http('/api/addresses', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      this.addresses = data.addresses;
-    }
-  }
 
   async generate(e) {
     this.errors = [];

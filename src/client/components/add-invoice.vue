@@ -26,17 +26,10 @@
         placeholder="Invoice number" 
         :min="lastInvoiceNumber + 1" 
         v-model="invoiceNumber"></p>
-      <p>
-        <select v-model="userAddressId">
-          <option value="" disabled selected>Select an address</option>
-          <option
-            v-for="ad in addresses" 
-            :key="ad.id"
-            :value="ad.id">
-              <b>{{ad.name}}</b> {{ad.street}}, {{ad.postcode}} {{ad.city}}, {{ad.country}}
-          </option>
-        </select>
-      </p>
+      <select-address
+        v-bind:value="userAddressId"
+        v-on:userAddressId="userAddressId = $event"
+      ></select-address>
       <select-bank-account 
         v-bind:value="iban"
         v-on:iban="iban = $event"
@@ -126,8 +119,9 @@ import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 import { Activity } from './../../types';
 import SelectBankAccount from './select-bank-account.vue';
+import SelectAddress from './select-address.vue';
 
-@Component({ components: { FormErrors, SelectBankAccount } })
+@Component({ components: { FormErrors, SelectBankAccount, SelectAddress } })
 export default class AddInvoice extends Vue {
   project: string = '';
   projects: {}[] = [];
@@ -146,16 +140,12 @@ export default class AddInvoice extends Vue {
   memo: string = '';
   name: string = '';
   iban: string = '';
-  // bankAccounts: Array<Object> = [];
-  addresses: Array<Object> = [];
   userAddressId: string = '';
   invoiceNumber: number = 0;
   lastInvoiceNumber: number = 0;
 
   created() {
     this.getProjects();
-    // this.getBankAccounts();
-    this.getAddresses();
     this.getLastInvoiceNumber();
   }
 
@@ -174,32 +164,6 @@ export default class AddInvoice extends Vue {
           });
 
           this.invoiceNumber = this.lastInvoiceNumber + 1;
-        }
-      });
-  }
-
-  // getBankAccounts() {
-  //   http('/api/bank-accounts', {
-  //     headers: { 'Content-Type': 'application/json' },
-  //     method: 'GET'
-  //   })
-  //     .then(response => response.json())
-  //     .then(response => {
-  //       if (response.success) {
-  //         this.bankAccounts = response.bankAccounts;
-  //       }
-  //     });
-  // }
-
-  getAddresses() {
-    http('/api/addresses', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          this.addresses = response.addresses;
         }
       });
   }
