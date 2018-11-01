@@ -2,7 +2,7 @@ interface Options {
   headers?: {};
   query?: {};
   method?: string;
-  body?: string;
+  body?: any; // Can either be a string or a binary
   search?: URLSearchParams;
 }
 

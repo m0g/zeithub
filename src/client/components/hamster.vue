@@ -26,7 +26,7 @@ export default class Hamster extends Vue {
 
     http('/api/hamster', {
       method: 'POST',
-      body: data.toString()
+      body: data
     })
       .then(response => response.json())
       .then(response => {
