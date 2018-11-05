@@ -20,11 +20,13 @@ export default async (req, res) => {
       i.discount,
       i.user_address_id as 'userAddressId',
       i.bank_account_id as 'bankAccountId',
+      c.code as 'currencyCode',
       c.sign as 'currencySign',
-      c.name as 'currencyName'
+      c.name as 'currencyName',
+      c.leading as 'currencyLeading'
     from invoices i
       join currencies c on i.currency_code = c.code
-    where id = ${id} and user_id = ${userId}
+    where i.id = ${id} and i.user_id = ${userId}
   `);
 
   const bankAccount: BankAccount = await db.queryOne(`

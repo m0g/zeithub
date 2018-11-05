@@ -4,7 +4,7 @@
       <th>Project</th>
       <th>Task</th>
       <th>Time</th>
-      <th width="12%">Amount</th>
+      <th width="16%">Amount ({{invoice.currencyCode}})</th>
     </tr>
     <tr v-for="activity in activities" :key="activity.id">
       <td style="text-align: center">{{activity.projectName}}</td>
@@ -12,8 +12,8 @@
       <td class="duration" style="text-align: center">
         {{activity.durationMinutes | formatHours}}
       </td>
-      <td class="amount">
-        {{activity.durationMinutes / 60 * invoice.rate | currency}}
+      <td class="amount" style="text-align: right">
+        {{activity.durationMinutes / 60 * invoice.rate | currency(invoice)}}
       </td>
     </tr>
     <tr style="border-top: 1px solid black">
@@ -29,7 +29,7 @@
       <th></th>
       <td><b>Sub total</b></td>
       <td colspan="2" style="text-align: right">
-        {{totalMinutes / 60 * invoice.rate | currency}}
+        {{totalMinutes / 60 * invoice.rate | currency(invoice)}}
       </td>
     </tr>
     <tr>
@@ -37,7 +37,7 @@
       <th></th>
       <td><b>Discount</b></td>
       <td colspan="2" style="text-align: right">
-        {{invoice.discount | currency}}
+        {{invoice.discount | currency(invoice)}}
       </td>
     </tr>
     <tr>
@@ -51,9 +51,9 @@
     <tr>
       <th></th>
       <th></th>
-      <td><b>Total</b></td>
+      <td><b>Total ({{invoice.currencyCode}})</b></td>
       <td colspan="2" style="text-align: right">
-        {{computeTotal() | currency}}
+        {{computeTotal() | currency(invoice)}}
       </td>
     </tr>
   </table>

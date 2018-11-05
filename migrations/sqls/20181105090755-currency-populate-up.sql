@@ -1,4 +1,4 @@
-INSERT INTO `currencies` (`code`, `name`, `sign`)
-VALUES ('EUR', 'Euro', '€'),
-('CAD', 'Canadian dollar', '$'),
-('USD', 'US dollar', '$');
+INSERT INTO `currencies` (`code`, `name`, `sign`, `leading`)
+VALUES ('EUR', 'Euro', '€', 0),
+('CAD', 'Canadian dollar', '$', 1),
+('USD', 'US dollar', '$', 1);
