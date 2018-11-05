@@ -13,6 +13,7 @@ import addresses from "./routes/addresses";
 import clients from "./routes/clients";
 import invoices from "./routes/invoices";
 import expenses from "./routes/expenses";
+import currencies from "./routes/currencies";
 
 const hamsterRouter = require("./routes/hamster");
 const projectsRouter = require("./routes/projects");
@@ -52,6 +53,7 @@ app.use("/api/invoices", invoices);
 app.use("/api/bank-accounts", bankAccounts);
 app.use("/api/addresses", addresses);
 app.use("/api/clients", clients);
+app.use("/api/currencies", currencies);
 
 app.use(express.static("public"));
 app.use(fallback("index.html", { root: "public" }));

@@ -13,6 +13,10 @@
         v-bind:value="iban"
         v-on:iban="iban = $event"
       ></select-bank-account>
+      <select-currency
+        v-bind:value="currency"
+        v-on:currency="currency = $event"
+      ></select-currency>
       <p><input type="submit" value="Generate Invoice" /></p>
     </form>
   </fieldset>
@@ -25,9 +29,10 @@ import http from '../http';
 import FormErrors from './form-errors.vue';
 import SelectBankAccount from './select-bank-account.vue';
 import SelectAddress from './select-address.vue';
+import SelectCurrency from './select-currency.vue';
 
 @Component({
-  components: { FormErrors, SelectBankAccount, SelectAddress }
+  components: { FormErrors, SelectBankAccount, SelectAddress, SelectCurrency }
 })
 export default class GenerateInvoice extends Vue {
   errors: string[] = [];
@@ -35,6 +40,7 @@ export default class GenerateInvoice extends Vue {
   hourlyRate: number = 0;
   iban: string = '';
   userAddressId: string = '';
+  currency: string = '';
 
   async generate(e) {
     this.errors = [];
