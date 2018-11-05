@@ -1,0 +1,1 @@
+alter table `invoices` drop column `currency_code`;
