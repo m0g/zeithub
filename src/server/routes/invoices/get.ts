@@ -9,18 +9,21 @@ export default async (req, res) => {
 
   const invoice: Invoice = await db.queryOne(`
     select 
-      id, 
-      number, 
-      name, 
-      memo,
-      date, 
-      due_date as 'dueDate', 
-      rate, 
-      tax,
-      discount,
-      user_address_id as 'userAddressId',
-      bank_account_id as 'bankAccountId'
-    from invoices
+      i.id, 
+      i.number, 
+      i.name, 
+      i.memo,
+      i.date, 
+      i.due_date as 'dueDate', 
+      i.rate, 
+      i.tax,
+      i.discount,
+      i.user_address_id as 'userAddressId',
+      i.bank_account_id as 'bankAccountId',
+      c.sign as 'currencySign',
+      c.name as 'currencyName'
+    from invoices i
+      join currencies c on i.currency_code = c.code
     where id = ${id} and user_id = ${userId}
   `);
 

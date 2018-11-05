@@ -62,6 +62,10 @@ export default class GenerateInvoice extends Vue {
       this.errors.push('Address is missing');
     }
 
+    if (!this.currency) {
+      this.errors.push('Currency is missing');
+    }
+
     if (!this.$route.query.month) {
       this.errors.push('You need to select a month in the filter area');
     }
@@ -73,7 +77,8 @@ export default class GenerateInvoice extends Vue {
         projectSlug: this.$route.params.slug,
         month: this.$route.query.month,
         iban: this.iban,
-        userAddressId: this.userAddressId
+        userAddressId: this.userAddressId,
+        currency: this.currency
       };
 
       const response = await http('/api/invoices', {

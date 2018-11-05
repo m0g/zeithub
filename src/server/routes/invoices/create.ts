@@ -34,8 +34,21 @@ export default async (req, res) => {
       .json({ success: false, message: "Missing user's address" });
   }
 
+  if (!req.body.currency) {
+    return res
+      .status(403)
+      .json({ success: false, message: "Missing currency" });
+  }
+
   const userId = req.userId;
-  const { name, hourlyRate, projectSlug, iban, userAddressId } = req.body;
+  const {
+    name,
+    hourlyRate,
+    projectSlug,
+    iban,
+    userAddressId,
+    currency
+  } = req.body;
 
   const [year, month] = req.body.month.split("-");
 
@@ -86,9 +99,10 @@ export default async (req, res) => {
           project_id, 
           rate,
           bank_account_id,
-          user_address_id
+          user_address_id,
+          currency_code
         )
-        values (?, curdate(), ?, ? , ?, ?, ?, ?, ?)
+        values (?, curdate(), ?, ? , ?, ?, ?, ?, ?, ?)
       `,
       [
         userId,
@@ -98,7 +112,8 @@ export default async (req, res) => {
         project.id,
         hourlyRate,
         bankAccount.id,
-        userAddressId
+        userAddressId,
+        currency
       ]
     );
 
