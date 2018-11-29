@@ -9,13 +9,17 @@ Vue.filter('formatDate', (date, format = 'MMMM Do YYYY, h:mm:ss a') =>
   moment(date).format(format)
 );
 
-Vue.filter('currency', (amount, invoice) => {
-  if (invoice.currencyLeading) {
-    return `${invoice.currencySign}${parseFloat(amount).toFixed(2)}`;
-  }
+Vue.filter(
+  'currency',
+  (amount, currency = { currencySign: '€', currencyLeading: false }) => {
+    console.log(JSON.stringify(currency));
+    if (currency.currencyLeading) {
+      return `${currency.currencySign}${parseFloat(amount).toFixed(2)}`;
+    }
 
-  return `${parseFloat(amount).toFixed(2)}${invoice.currencySign}`;
-});
+    return `${parseFloat(amount).toFixed(2)}${currency.currencySign}`;
+  }
+);
 
 Vue.filter('percentage', amount => `${parseFloat(amount).toFixed(2)}%`);
 

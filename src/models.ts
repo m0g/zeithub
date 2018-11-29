@@ -16,6 +16,8 @@ export class Invoice implements T.Invoice {
   bankAccountId: number = 0;
   number: number = 0;
   userAddressId: number = 0;
+  currencySign: string = "";
+  currencyLeading: boolean = false;
 }
 
 export class BankAccount implements T.BankAccount {
