@@ -80,7 +80,7 @@ section {
   flex-flow: row wrap;
   flex: 1 100%;
   margin: 0 0 10px;
-  height: calc(100% - 39px);
+  height: calc(100% - 58px);
 }
 
 section aside {
