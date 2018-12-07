@@ -8,6 +8,7 @@
         <p><b>Turnover:</b> {{turnover | currency}}</p>
         <p><b>Profit:</b> {{profit | currency}}</p>
       </div>
+      <download-csv :expenses="expenses"></download-csv>
     </aside>
     <div class="expenses">
       <h3>List of expenses</h3>
@@ -30,9 +31,10 @@ import http from '../http';
 import AddExpense from './add-expense.vue';
 import YearFilter from './year-filter.vue';
 import Expense from './expense.vue';
+import DownloadCsv from './download-csv.vue';
 
 @Component({
-  components: { AddExpense, YearFilter, Expense }
+  components: { AddExpense, YearFilter, Expense, DownloadCsv }
 })
 export default class Expenses extends Vue {
   expenses: {}[] = [];
