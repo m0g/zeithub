@@ -39,7 +39,6 @@ export default class App extends Vue {
 }
 </script>
 
-
 <style>
 html,
 body,
@@ -82,5 +81,11 @@ h3 {
 
 a {
   color: black;
+}
+
+@media only screen and (max-width: 480px) {
+  /* header a:not(#app-name) {
+    display: none;
+  } */
 }
 </style>

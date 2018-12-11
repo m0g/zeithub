@@ -1,18 +1,19 @@
 <template>
   <section>
-    <aside>
-      <hamster></hamster>
-    </aside>
+    <aside><hamster></hamster></aside>
     <div class="time-tracking">
       <h3>Activities</h3>
       <ul>
         <li v-for="(activities, date) in activityGroups" :key="date">
-          <p><b>{{date}}</b></p>
+          <p>
+            <b>{{ date }}</b>
+          </p>
           <ul>
-            <activity 
-              v-for="activity in activities" 
-              :key="activity.id" 
-              :activity="activity"></activity>
+            <activity
+              v-for="activity in activities"
+              :key="activity.id"
+              :activity="activity"
+            ></activity>
           </ul>
         </li>
       </ul>
@@ -57,12 +58,11 @@ export default class Time extends Vue {
 }
 </script>
 
-
 <style scoped>
 section {
   display: flex;
   flex-flow: row wrap;
-  height: calc(100% - 39px);
+  height: calc(100% - 59px);
 }
 
 section aside {
