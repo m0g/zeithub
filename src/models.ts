@@ -3,6 +3,7 @@ import * as T from "./types";
 export class Activity implements T.Activity {
   name: string = "";
   durationMinutes: number = 0;
+  durationDays: number = 0;
   projectName: string = "";
   projectSlug: string = "";
 }

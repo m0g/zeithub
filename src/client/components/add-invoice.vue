@@ -51,8 +51,8 @@
       <p>
         <label for="rate">Rate type</label>
         <select v-model="dailyRate">
-          <option value="0">Hourly</option>
-          <option value="1">Daily</option>
+          <option :value="false">Hourly</option>
+          <option :value="true">Daily</option>
         </select>
       </p>
       <p>
@@ -70,8 +70,8 @@
         <tr>
           <th>Project</th>
           <th>Description</th>
-          <th>Duration in min</th>
-          <th>Hourly rate</th>
+          <th>Duration in {{ dailyRate ? 'days (8 hours / day)' : 'min' }}</th>
+          <th>{{ dailyRate ? 'Daily' : 'Hourly' }} rate</th>
           <th>Amount</th>
           <th>Actions</th>
         </tr>
@@ -86,14 +86,27 @@
           </td>
           <td>
             <input
+              v-if="!dailyRate"
               type="number"
               placeholder="Duration"
               v-model="activity.durationMinutes"
               @keyup="computeTotal"
             />
+            <input
+              v-if="dailyRate"
+              type="number"
+              placeholder="Duration"
+              v-model="activity.durationDays"
+              @keyup="computeTotal"
+            />
           </td>
           <td>{{ rate }}&euro;</td>
-          <td>{{ ((activity.durationMinutes / 60) * rate) | currency }}</td>
+          <td v-if="!dailyRate">
+            {{ ((activity.durationMinutes / 60) * rate) | currency }}
+          </td>
+          <td v-if="dailyRate">
+            {{ (activity.durationDays * rate) | currency }}
+          </td>
           <td>
             <button @click="activities.splice(index, 1)">&#x2718;</button>
           </td>
@@ -148,14 +161,15 @@
 <script lang="ts">
 import http from './../http';
 import FormErrors from './form-errors.vue';
-
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 import { Activity } from './../../types';
 import SelectBankAccount from './select-bank-account.vue';
 import SelectAddress from './select-address.vue';
 
-@Component({ components: { FormErrors, SelectBankAccount, SelectAddress } })
+@Component({
+  components: { FormErrors, SelectBankAccount, SelectAddress }
+})
 export default class AddInvoice extends Vue {
   project: string = '';
   projects: {}[] = [];
@@ -234,18 +248,33 @@ export default class AddInvoice extends Vue {
     this.activities.push({
       name: '',
       durationMinutes: 0,
+      durationDays: 0,
       projectName: '',
       projectSlug: this.project
     });
   }
 
   computeTotal() {
-    this.subTotal = this.activities.reduce(
-      (acc: number, activity: Activity) => {
-        return acc + (activity.durationMinutes / 60) * this.rate;
-      },
-      0
-    );
+    if (!this.dailyRate) {
+      this.subTotal = this.activities.reduce(
+        (acc: number, activity: Activity) => {
+          return acc + (activity.durationMinutes / 60) * this.rate;
+        },
+        0
+      );
+    } else {
+      this.subTotal = this.activities.reduce(
+        (acc: number, activity: Activity) => {
+          return acc + activity.durationDays * this.rate;
+        },
+        0
+      );
+
+      this.activities = this.activities.map(a => {
+        a.durationMinutes = a.durationDays * (8 * 60);
+        return a;
+      });
+    }
 
     this.total = this.subTotal;
 

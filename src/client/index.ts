@@ -12,7 +12,6 @@ Vue.filter('formatDate', (date, format = 'MMMM Do YYYY, h:mm:ss a') =>
 Vue.filter(
   'currency',
   (amount, currency = { currencySign: '€', currencyLeading: false }) => {
-    console.log(JSON.stringify(currency));
     if (currency.currencyLeading) {
       return `${currency.currencySign}${parseFloat(amount).toFixed(2)}`;
     }

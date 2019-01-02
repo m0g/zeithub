@@ -1,6 +1,7 @@
 export interface Activity {
   name: string;
   durationMinutes: number;
+  durationDays: number;
   projectName: string;
   projectSlug: string;
 }

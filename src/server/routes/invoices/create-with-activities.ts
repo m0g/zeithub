@@ -154,7 +154,6 @@ export default async (req, res) => {
     return res.status(500).json({ success: false, error });
   }
 
-  console.log("invoice id", invoiceId);
   for (let activity of activities) {
     try {
       await db.execute(
