@@ -5,46 +5,63 @@
       <legend>Project & Client</legend>
       <select name="project" id="" v-model="project" @change="getClients">
         <option value="">Select a project</option>
-        <option 
-          v-for="project in projects" 
-          :key="project.slug" 
-          :value="project.slug">{{project.name}}</option>
+        <option
+          v-for="project in projects"
+          :key="project.slug"
+          :value="project.slug"
+          >{{ project.name }}</option
+        >
       </select>
-      <select name="client" id="" v-model="client" :disabled="clients.length === 0">
+      <select
+        name="client"
+        id=""
+        v-model="client"
+        :disabled="clients.length === 0"
+      >
         <option value="">Select a client</option>
-        <option 
-          v-for="client in clients" 
-          :key="client.id" 
-          :value="client.id">{{client.name}}</option>
+        <option v-for="client in clients" :key="client.id" :value="client.id">{{
+          client.name
+        }}</option>
       </select>
     </fieldset>
     <fieldset>
       <legend>Billing</legend>
-      <p><input type="text" placeholder="Title" v-model="name"></p>
-      <p><input 
-        type="number" 
-        placeholder="Invoice number" 
-        :min="lastInvoiceNumber + 1" 
-        v-model="invoiceNumber"></p>
+      <p><input type="text" placeholder="Title" v-model="name" /></p>
+      <p>
+        <input
+          type="number"
+          placeholder="Invoice number"
+          :min="lastInvoiceNumber + 1"
+          v-model="invoiceNumber"
+        />
+      </p>
+
       <select-address
         v-bind:value="userAddressId"
         v-on:userAddressId="userAddressId = $event"
       ></select-address>
-      <select-bank-account 
+      <select-bank-account
         v-bind:value="iban"
         v-on:iban="iban = $event"
       ></select-bank-account>
       <p>
         <label for="rate">Rate</label>
-        <input type="number" name="rate" id="rate" v-model="rate">&euro;
+        <input type="number" name="rate" id="rate" v-model="rate" />&euro;
+      </p>
+      <p>
+        <label for="rate">Rate type</label>
+        <select v-model="dailyRate">
+          <option value="0">Hourly</option>
+          <option value="1">Daily</option>
+        </select>
       </p>
       <p>
         <label for="date">Date</label>
-        <input type="date" name="date" id="date" v-model="date">
+        <input type="date" name="date" id="date" v-model="date" />
       </p>
       <p>
         <label for="due-date">Due date</label>
-        <input type="date" name="due-date" id="due-date" v-model="dueDate">
+        <input type="date" name="due-date" id="due-date" v-model="dueDate" />
       </p>
     </fieldset>
     <fieldset>
@@ -59,44 +76,61 @@
           <th>Actions</th>
         </tr>
         <tr v-for="(activity, index) in activities" :key="index">
-          <td>{{project}}</td>
+          <td>{{ project }}</td>
           <td>
-            <input type="text" placeholder="Description" v-model="activity.name" />
+            <input
+              type="text"
+              placeholder="Description"
+              v-model="activity.name"
+            />
           </td>
           <td>
-            <input 
+            <input
               type="number"
-              placeholder="Duration" 
-              v-model="activity.durationMinutes" 
-              @keyup="computeTotal" />
+              placeholder="Duration"
+              v-model="activity.durationMinutes"
+              @keyup="computeTotal"
+            />
           </td>
+          <td>{{ rate }}&euro;</td>
+          <td>{{ ((activity.durationMinutes / 60) * rate) | currency }}</td>
           <td>
-            {{rate}}&euro;
+            <button @click="activities.splice(index, 1)">&#x2718;</button>
           </td>
-          <td>{{activity.durationMinutes / 60 * rate | currency}}</td>
-          <td><button @click="activities.splice(index, 1)">&#x2718;</button></td>
         </tr>
         <tr>
           <td><button @click="appendActivity">Add another activity</button></td>
         </tr>
         <tr>
           <th colspan="3">Sub total</th>
-          <td>{{subTotal | currency}}</td>
+          <td>{{ subTotal | currency }}</td>
         </tr>
         <tr>
           <th colspan="3">Discount</th>
           <td>
-            <input type="number" name="discount" v-model="discount" @keyup="computeTotal" />
+            <input
+              type="number"
+              name="discount"
+              v-model="discount"
+              @keyup="computeTotal"
+            />
             &euro;
           </td>
         </tr>
         <tr>
           <th colspan="3">Tax</th>
-          <td><input type="number" name="tax" v-model="vat" @keyup="computeTotal" />%</td>
+          <td>
+            <input
+              type="number"
+              name="tax"
+              v-model="vat"
+              @keyup="computeTotal"
+            />%
+          </td>
         </tr>
         <tr>
           <th colspan="3">Total</th>
-          <td>{{total | currency}}</td>
+          <td>{{ total | currency }}</td>
         </tr>
       </table>
     </fieldset>
@@ -134,6 +168,7 @@ export default class AddInvoice extends Vue {
   subTotal: number = 0;
   total: number = 0;
   rate: number = 0;
+  dailyRate: boolean = false;
   errors: Array<string> = [];
   date: string = '';
   dueDate: string = '';
@@ -251,6 +286,10 @@ export default class AddInvoice extends Vue {
       this.errors.push('Bank account is missing');
     }
 
+    if (!this.rate) {
+      this.errors.push('Rate is missing');
+    }
+
     if (!this.userAddressId) {
       this.errors.push('Address is missing');
     }
@@ -268,6 +307,7 @@ export default class AddInvoice extends Vue {
         date: this.date,
         dueDate: this.dueDate,
         rate: this.rate,
+        dailyRate: this.dailyRate,
         discount: this.discount,
         vat: this.vat,
         iban: this.iban,

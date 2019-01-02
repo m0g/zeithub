@@ -33,6 +33,12 @@ export default async (req, res) => {
     return res.status(403).json({ success: false, message: "Missing rate" });
   }
 
+  if (!req.body.dailyRate) {
+    return res
+      .status(403)
+      .json({ success: false, message: "Missing daily rate" });
+  }
+
   if (!req.body.date) {
     return res.status(403).json({ success: false, message: "Missing date" });
   }
@@ -64,6 +70,7 @@ export default async (req, res) => {
     dueDate,
     number,
     rate,
+    dailyRate,
     memo,
     discount,
     vat,
@@ -118,13 +125,14 @@ export default async (req, res) => {
           memo,
           number, 
           rate,
+          rate_daily,
           tax,
           discount,
           project_id, 
           user_address_id,
           bank_account_id
         )
-        values (?,?,?,?,?,?,?,?,?,?,?,?)
+        values (?,?,?,?,?,?,?,?,?,?,?,?,?)
       `,
       [
         userId,
@@ -134,6 +142,7 @@ export default async (req, res) => {
         memo,
         number,
         rate,
+        dailyRate,
         vat,
         discount,
         project.id,

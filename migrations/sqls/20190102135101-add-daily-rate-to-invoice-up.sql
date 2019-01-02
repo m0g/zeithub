@@ -1,0 +1,2 @@
+ALTER TABLE `invoices` 
+ADD COLUMN `rate_daily` TINYINT NOT NULL DEFAULT 0 AFTER `rate`;
