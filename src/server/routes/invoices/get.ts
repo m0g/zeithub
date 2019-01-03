@@ -16,6 +16,7 @@ export default async (req, res) => {
       i.date, 
       i.due_date as 'dueDate', 
       i.rate, 
+      i.rate_daily as dailyRate,
       i.tax,
       i.discount,
       i.user_address_id as 'userAddressId',
