@@ -1,29 +1,7 @@
 <template>
   <form method="POST" @submit="createInvoice">
     <form-errors :errors="errors"></form-errors>
-    <fieldset>
-      <legend>Project & Client</legend>
-      <select name="project" id="" v-model="project" @change="getClients">
-        <option value="">Select a project</option>
-        <option
-          v-for="project in projects"
-          :key="project.slug"
-          :value="project.slug"
-          >{{ project.name }}</option
-        >
-      </select>
-      <select
-        name="client"
-        id=""
-        v-model="client"
-        :disabled="clients.length === 0"
-      >
-        <option value="">Select a client</option>
-        <option v-for="client in clients" :key="client.id" :value="client.id">{{
-          client.name
-        }}</option>
-      </select>
-    </fieldset>
+    <project-and-client v-model="projectAndClient"></project-and-client>
     <fieldset>
       <legend>Billing</legend>
       <p><input type="text" placeholder="Title" v-model="name" /></p>
@@ -166,15 +144,16 @@ import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import { Activity } from './../../types';
 import SelectBankAccount from './select-bank-account.vue';
 import SelectAddress from './select-address.vue';
+import ProjectAndClient from './project-and-client.vue';
 
 @Component({
-  components: { FormErrors, SelectBankAccount, SelectAddress }
+  components: { FormErrors, SelectBankAccount, SelectAddress, ProjectAndClient }
 })
 export default class AddInvoice extends Vue {
-  project: string = '';
-  projects: {}[] = [];
-  client: string = '';
-  clients: Array<Object> = [];
+  projectAndClient: { project: string; client: number } = {
+    project: '',
+    client: 0
+  };
   activities: Array<Activity> = [];
   invoice: Object = {};
   discount: number = 0;
@@ -194,7 +173,6 @@ export default class AddInvoice extends Vue {
   lastInvoiceNumber: number = 0;
 
   created() {
-    this.getProjects();
     this.getLastInvoiceNumber();
   }
 
@@ -217,31 +195,6 @@ export default class AddInvoice extends Vue {
       });
   }
 
-  getProjects() {
-    http('/api/projects')
-      .then(data => data.json())
-      .then(projects => {
-        this.projects = projects;
-      });
-  }
-
-  getClients(e) {
-    const slug = e.target.value;
-
-    if (slug) {
-      http(`/api/projects/${slug}/clients`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(response => response.json())
-        .then(response => {
-          if (response.success && response.clients.length > 0) {
-            this.clients = response.clients;
-          }
-        });
-    }
-  }
-
   appendActivity(e) {
     e.preventDefault();
 
@@ -250,7 +203,7 @@ export default class AddInvoice extends Vue {
       durationMinutes: 0,
       durationDays: 0,
       projectName: '',
-      projectSlug: this.project
+      projectSlug: this.projectAndClient.project
     });
   }
 
@@ -291,11 +244,11 @@ export default class AddInvoice extends Vue {
     e.preventDefault();
     this.errors = [];
 
-    if (!this.client) {
+    if (!this.projectAndClient.client) {
       this.errors.push('Client is missing');
     }
 
-    if (!this.project) {
+    if (!this.projectAndClient.project) {
       this.errors.push('Project is missing');
     }
 
@@ -329,8 +282,8 @@ export default class AddInvoice extends Vue {
 
     if (this.errors.length === 0) {
       const body = {
-        client: this.client,
-        projectSlug: this.project,
+        client: this.projectAndClient.client,
+        projectSlug: this.projectAndClient.project,
         name: this.name,
         number: this.invoiceNumber,
         date: this.date,
