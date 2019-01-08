@@ -32,6 +32,7 @@
     "dotenv": "6.2.0",
     "express": "4.16.4",
     "express-history-api-fallback": "^2.2.1",
+    "helmet": "^3.15.0",
     "http-errors": "1.7.1",
     "jsonwebtoken": "8.4.0",
     "moment": "2.23.0",

@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 import * as express from "express";
+import * as helmet from "helmet";
 import * as cookieParser from "cookie-parser";
 import * as logger from "morgan";
 import * as fallback from "express-history-api-fallback";
@@ -41,6 +42,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(helmet());
 
 app.use("/dist", express.static("dist"));
 app.use("/api/hamster", hamsterRouter);
