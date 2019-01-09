@@ -1,15 +1,26 @@
 <template>
   <section>
     <router-link to="/invoices/new">Create new invoice</router-link>
-    <ul>
-      <li v-for="invoice in invoices" :key="invoice.number">
-        <router-link :to="{ name: 'Invoice', params: { id: invoice.id } }">
-          {{ invoice.name }}
-        </router-link>
-        <span>{{ getTotal(invoice) | currency(invoice) }}</span>
-        <button v-on:click="remove(invoice)">&#x2718;</button>
-      </li>
-    </ul>
+    <table>
+      <tr class="title">
+        <th>Name</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
+      <tr v-for="invoice in invoices" :key="invoice.number">
+        <td>
+          <router-link :to="{ name: 'Invoice', params: { id: invoice.id } }">
+            {{ invoice.name }}
+          </router-link>
+        </td>
+        <td class="align-center">
+          {{ getTotal(invoice) | currency(invoice) }}
+        </td>
+        <td class="align-center">
+          <button v-on:click="remove(invoice)">&#x2718;</button>
+        </td>
+      </tr>
+    </table>
   </section>
 </template>
 
@@ -73,3 +84,19 @@ export default class Invoices extends Vue {
   }
 }
 </script>
+
+<style scoped>
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr.title {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+td.align-center {
+  text-align: center;
+}
+</style>
