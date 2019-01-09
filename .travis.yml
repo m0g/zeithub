@@ -3,6 +3,5 @@ services:
   - mysql
 node_js: "11"
 env:
-  - DB_USER: "travis"
-  - DB_PASSWD: ""
-  - DB_NAME_TEST: "zeithub_test"
+  - DB_USER=travis
+  - DB_NAME_TEST=zeithub_test
