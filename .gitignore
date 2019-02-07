@@ -1,3 +1,4 @@
+db-data/
 node_modules/
 .vagrant
 .env
