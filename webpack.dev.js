@@ -11,7 +11,8 @@ module.exports = merge(common, {
   },
   plugins: [
     new BundleAnalyzerPlugin({
-      analyzerHost: "0.0.0.0"
+      analyzerHost: "0.0.0.0",
+      openAnalyzer: false
     })
   ]
 });

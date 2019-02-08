@@ -32,6 +32,12 @@ const router = new VueRouter({
       component: Projects
     },
     {
+      path: '/projects/new',
+      name: 'CreateProject',
+      beforeEnter: requireAuth,
+      component: CreateProject
+    },
+    {
       path: '/projects/:slug',
       name: 'Project',
       beforeEnter: requireAuth,
@@ -55,12 +61,6 @@ const router = new VueRouter({
       name: 'SignUp',
       beforeEnter: requireUnauth,
       component: SignUp
-    },
-    {
-      path: '/projects/new',
-      name: 'CreateProject',
-      beforeEnter: requireAuth,
-      component: CreateProject
     },
     {
       path: '/time',

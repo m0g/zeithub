@@ -71,15 +71,17 @@ export default class Invoices extends Vue {
   }
 
   async remove({ id }) {
-    const response = await http(`/api/invoices/${id}`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'DELETE'
-    });
+    if (window.confirm('Do you really want to delete this invoice?')) {
+      const response = await http(`/api/invoices/${id}`, {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'DELETE'
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      this.getInvoices();
+      if (data.success) {
+        this.getInvoices();
+      }
     }
   }
 }
