@@ -1,18 +1,17 @@
 <template>
   <li>
     <div v-if="!editMode">
-      <span>{{client.name}}</span>
-      <span>{{client.street}}</span>
+      <span>{{ client.name }}</span> <span>{{ client.street }}</span>
       <button @click="editMode = !editMode">&#9998;</button>
       <button v-on:click="remove()">&#x2718;</button>
     </div>
     <form v-if="editMode" @submit="save" method="POST">
       <form-errors :errors="errors"></form-errors>
-      <input type="text" placeholder="Name" v-model="edit.name"/>
-      <input type="text" placeholder="Street" v-model="edit.street"/>
-      <input type="text" placeholder="City" v-model="edit.city"/>
-      <input type="text" placeholder="Postcode" v-model="edit.postcode"/>
-      <input type="text" placeholder="Country" v-model="edit.country"/>
+      <input type="text" placeholder="Name" v-model="edit.name" />
+      <input type="text" placeholder="Street" v-model="edit.street" />
+      <input type="text" placeholder="City" v-model="edit.city" />
+      <input type="text" placeholder="Postcode" v-model="edit.postcode" />
+      <input type="text" placeholder="Country" v-model="edit.country" />
       <input type="submit" value="Save" />
     </form>
   </li>
@@ -54,15 +53,17 @@ export default class Client extends Props {
   }
 
   async remove() {
-    const response = await http(`/api/clients/${this.client.id}`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'DELETE'
-    });
+    if (window.confirm('Do you really want to delete this client?')) {
+      const response = await http(`/api/clients/${this.client.id}`, {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'DELETE'
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      this.getClients();
+      if (data.success) {
+        this.getClients();
+      }
     }
   }
 }
