@@ -8,7 +8,11 @@ export default async (req, res) => {
 
   try {
     expenses = await db.query(`
-      select id, name, date, amount
+      select 
+        id, 
+        name, 
+        date_format(date, '%Y-%m-%d') as "date", 
+        amount
       from expenses
       where user_id = ${req.userId}
       ${year && "and year(date) = " + year}
