@@ -1,0 +1,21 @@
+{
+  "name": "Zeithub",
+  "description": "Open source time tracking, invoicing & expenses management for freelancers ",
+  "repository": "https://github.com/m0g/zeithub",
+  "logo": "https://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "static"],
+  "addons": [
+    {
+      "plan": "cleardb:ignite",
+      "as": "CLEARDB_DATABASE"
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/jontewks/puppeteer-heroku-buildpack"
+    },
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
