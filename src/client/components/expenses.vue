@@ -2,23 +2,29 @@
   <section>
     <aside>
       <year-filter :get-expenses="getExpenses"></year-filter>
-      <add-expense :get-expenses="getExpenses"></add-expense> 
+      <add-expense :get-expenses="getExpenses"></add-expense>
       <div>
         <h3>€</h3>
-        <p><b>Turnover:</b> {{turnover | currency}}</p>
-        <p><b>Profit:</b> {{profit | currency}}</p>
+        <p><b>Turnover:</b> {{ turnover | currency }}</p>
+        <p><b>Profit:</b> {{ profit | currency }}</p>
       </div>
       <download-csv :expenses="expenses"></download-csv>
     </aside>
     <div class="expenses">
       <h3>List of expenses</h3>
       <table>
-        <tr><th>Name</th><th>Date</th><th>Amount</th><th>Actions</th></tr>
-        <expense 
-          :expense="expense" 
+        <tr>
+          <th>Name</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Actions</th>
+        </tr>
+        <expense
+          :expense="expense"
           :get-expenses="getExpenses"
-          v-for="expense in expenses" 
-          :key="expense.id"></expense>
+          v-for="expense in expenses"
+          :key="expense.id"
+        ></expense>
       </table>
     </div>
   </section>
@@ -82,7 +88,7 @@ section {
   flex-flow: row wrap;
   flex: 1 100%;
   margin: 0 0 10px;
-  height: calc(100% - 58px);
+  height: calc(100% - 60px);
 }
 
 section aside {
