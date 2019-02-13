@@ -4,10 +4,9 @@
     <label for="year">Filter by year</label>
     <select name="" id="" v-model="year" @change="handleChange">
       <option value="">Select a year</option>
-      <option 
-        v-for="year in years" 
-        :key="year" 
-        :value="year">{{year}}</option>
+      <option v-for="year in years" :key="year" :value="year">{{
+        year
+      }}</option>
     </select>
   </div>
 </template>
@@ -23,7 +22,7 @@ interface WithRoute {
 }
 
 const Props = Vue.extend({
-  props: { getExpenses: Function }
+  props: ['getExpenses', 'selectedYear']
 });
 
 @Component({})
@@ -32,8 +31,8 @@ export default class YearFilter extends Props implements WithRoute {
   year: number = 0;
 
   created() {
-    if (this.$route.query.year) {
-      this.year = parseInt(this.$route.query.year);
+    if (this.selectedYear) {
+      this.year = parseInt(this.selectedYear);
     }
 
     this.getYears();

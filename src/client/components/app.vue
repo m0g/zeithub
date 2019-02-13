@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <router-link id="app-name" to="/">Konta</router-link>
+      <router-link id="app-name" to="/">Zeithub</router-link>
       <router-link to="/time" v-if="isLoggedIn">Time Tracking</router-link>
       <router-link to="/projects" v-if="isLoggedIn">Projects</router-link>
       <router-link to="/clients" v-if="isLoggedIn">Clients</router-link>

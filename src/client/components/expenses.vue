@@ -1,7 +1,10 @@
 <template>
   <section>
     <aside>
-      <year-filter :get-expenses="getExpenses"></year-filter>
+      <year-filter
+        :get-expenses="getExpenses"
+        :selected-year="year"
+      ></year-filter>
       <add-expense :get-expenses="getExpenses"></add-expense>
       <div>
         <h3>€</h3>
@@ -46,14 +49,16 @@ export default class Expenses extends Vue {
   expenses: {}[] = [];
   turnover: number = 0;
   profit: number = 0;
+  year: number = 0;
 
   created() {
-    this.getExpenses();
+    this.year = this.$route.query.year || new Date().getFullYear();
+    this.getExpenses({ year: this.year });
   }
 
   async getExpenses(query = {}) {
-    const newQuery = Object.assign({}, this.$route.query, query);
-    const response = await http('/api/expenses', { query: newQuery });
+    // const newQuery = Object.assign({}, this.$route.query, query);
+    const response = await http('/api/expenses', { query });
     const data = await response.json();
 
     if (data.success && data.expenses.length > 0) {
