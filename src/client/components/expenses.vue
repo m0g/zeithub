@@ -71,13 +71,13 @@ export default class Expenses extends Vue {
     return expenses
       .map(expense => parseFloat(expense.amount))
       .filter(amount => amount > 0)
-      .reduce((acc, amount) => acc + amount);
+      .reduce((acc, amount) => acc + amount, 0);
   }
 
   getProfit(expenses) {
     return expenses
       .map(expense => parseFloat(expense.amount))
-      .reduce((acc, amount) => acc + amount);
+      .reduce((acc, amount) => acc + amount, 0);
   }
 }
 </script>
