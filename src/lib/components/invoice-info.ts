@@ -22,6 +22,10 @@ export default Vue.component("invoice-info", {
         <td>Tax number</td>
         <td>{{me.taxNumber}}</td>
       </tr>
+      <tr>
+        <td>VAT number</td>
+        <td>{{me.vatNumber}}</td>
+      </tr>
     </table>
   `
 });

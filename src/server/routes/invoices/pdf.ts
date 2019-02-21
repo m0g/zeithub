@@ -19,6 +19,7 @@ export default async (req, res) => {
       first_name as 'firstName', 
       last_name as 'lastName', 
       tax_number as 'taxNumber',
+      vat_number as 'vatNumber',
       tel, 
       website
     from users
@@ -113,24 +114,7 @@ export default async (req, res) => {
           <p>{{client.street}}</p>
           <p>{{client.postcode}} {{client.city}}, {{client.country}}</p>
         </div>
-        <table class="info">
-          <tr>
-            <td>Invoice number</td>
-            <td>{{invoice.number | invoiceNum}}</td>
-          </tr>
-          <tr>
-            <td>Date</td>
-            <td>{{invoice.date | formatDate('DD/MM/YYYY')}}</td>
-          </tr>
-          <tr>
-            <td>Due date</td>
-            <td>{{invoice.dueDate | formatDate('DD/MM/YYYY')}}</td>
-          </tr>
-          <tr>
-            <td>Tax number</td>
-            <td>{{me.taxNumber}}</td>
-          </tr>
-        </table>
+        <invoice-info :invoice="invoice" :me="me"></invoice-info>
         <activities-table 
           :total-minutes="totalMinutes"
           :activities="activities" 
