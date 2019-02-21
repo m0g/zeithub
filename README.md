@@ -16,3 +16,9 @@ To run locally:
 `npm run dev`
 
 The app is now available at http://localhost:3000
+
+## How to create a new migration
+
+```bash
+npx db-migrate create --config config/database.json my-fancy-migration --sql-file
+```

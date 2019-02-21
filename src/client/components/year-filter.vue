@@ -15,18 +15,13 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
-import { Route } from 'vue-router';
-
-interface WithRoute {
-  $route: Route;
-}
 
 const Props = Vue.extend({
   props: ['getExpenses', 'selectedYear']
 });
 
 @Component({})
-export default class YearFilter extends Props implements WithRoute {
+export default class YearFilter extends Props {
   years: string[] = [];
   year: number = 0;
 

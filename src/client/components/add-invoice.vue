@@ -23,7 +23,7 @@
         v-on:iban="iban = $event"
       ></select-bank-account>
       <p>
-        <label for="rate">Rate</label>
+        <label for="rate">Rate (without tax)</label>
         <input type="number" name="rate" id="rate" v-model="rate" />&euro;
       </p>
       <p>
