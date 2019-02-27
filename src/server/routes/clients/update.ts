@@ -5,14 +5,22 @@ const db = new DB();
 export default async (req, res) => {
   const userId = req.userId;
   const id = req.params.id;
-  const { name, street, city, postcode, country } = req.body;
+  const {
+    name,
+    street,
+    city,
+    postcode,
+    country,
+    taxNumber,
+    vatNumber
+  } = req.body;
 
   try {
     await db.execute(
       `update clients
-      set name = ?
+      set name = ?, tax_number = ?, vat_number = ?
       where id = ? and user_id = ?`,
-      [name, id, userId]
+      [name, taxNumber, vatNumber, id, userId]
     );
   } catch (error) {
     return res.status(500).json({ success: false, error });

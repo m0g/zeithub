@@ -27,13 +27,21 @@ export default async (req, res) => {
     return res.status(403).json({ success: false, message: "Missing country" });
   }
 
-  const { name, street, postcode, city, country } = req.body;
+  const {
+    name,
+    street,
+    postcode,
+    city,
+    country,
+    taxNumber,
+    vatNumber
+  } = req.body;
   let clientId, addressId;
 
   try {
     clientId = await db.execute(
-      `insert into clients (name, user_id) values (?, ?)`,
-      [name, userId]
+      `insert into clients (name, user_id, tax_number, vat_number) values (?, ?, ?, ?)`,
+      [name, userId, taxNumber, vatNumber]
     );
   } catch (error) {
     return res.status(500).json({ success: false, error });
