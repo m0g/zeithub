@@ -2,11 +2,13 @@
   <form method="POST" @submit="addAddress">
     <h2>Add client</h2>
     <form-errors :errors="errors"></form-errors>
-    <input type="text" placeholder="Name" v-model="name"/>
-    <input type="text" placeholder="Street" v-model="street"/>
-    <input type="text" placeholder="City" v-model="city"/>
-    <input type="text" placeholder="Postcode" v-model="postcode"/>
-    <input type="text" placeholder="Country" v-model="country"/>
+    <input type="text" placeholder="Name" v-model="name" />
+    <input type="text" placeholder="Tax Number" v-model="taxNumber" />
+    <input type="text" placeholder="VAT Number" v-model="vatNumber" />
+    <input type="text" placeholder="Street" v-model="street" />
+    <input type="text" placeholder="City" v-model="city" />
+    <input type="text" placeholder="Postcode" v-model="postcode" />
+    <input type="text" placeholder="Country" v-model="country" />
     <input type="submit" value="Add" />
   </form>
 </template>
@@ -28,6 +30,8 @@ const Props = Vue.extend({
 export default class AddClient extends Props {
   errors: string[] = [];
   name: string = '';
+  taxNumber: string = '';
+  vatNumber: string = '';
   street: string = '';
   city: string = '';
   postcode: string = '';
@@ -60,6 +64,8 @@ export default class AddClient extends Props {
     if (this.errors.length === 0) {
       const body = {
         name: this.name,
+        taxNumber: this.taxNumber,
+        vatNumber: this.vatNumber,
         street: this.street,
         city: this.city,
         postcode: this.postcode,
