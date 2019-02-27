@@ -1,11 +1,11 @@
-import * as puppeteer from "puppeteer";
-import * as Vue from "vue/dist/vue.common.js";
-import DB from "./../../db";
-import { Invoice, BankAccount, Activity } from "./../../../types";
-import InvoiceInfo from "../../../lib/components/invoice-info";
-import * as ActivitiesTable from "../../../lib/components/activities-table";
+import * as puppeteer from 'puppeteer';
+import * as Vue from 'vue/dist/vue.common.js';
+import DB from './../../db';
+import { Invoice, BankAccount, Activity } from './../../../types';
+import InvoiceInfo from '../../../lib/components/invoice-info';
+import * as ActivitiesTable from '../../../lib/components/activities-table';
 
-const renderer = require("vue-server-renderer").createRenderer();
+const renderer = require('vue-server-renderer').createRenderer();
 const db = new DB();
 
 export default async (req, res) => {
@@ -77,7 +77,15 @@ export default async (req, res) => {
   const slug: string = activities[0].projectSlug;
 
   const client = await db.queryOne(`
-    select c.id, c.name, a.street, a.city, a.postcode, a.country
+    select 
+      c.id, 
+      c.name, 
+      c.tax_number as "taxNumber",
+      c.vat_number as "vatNumber",
+      a.street, 
+      a.city, 
+      a.postcode, 
+      a.country
     from clients c
     join projects p on c.id = p.client_id
     left join addresses a on c.id = a.client_id
@@ -108,11 +116,27 @@ export default async (req, res) => {
           <p><b>{{me.firstName}} {{me.lastName}}</b></p>
           <p>{{address.street}}</p>
           <p>{{address.postcode}} {{address.city}}, {{address.country}}</p>
+          <p v-if="me.taxNumber">
+            <b>Steuernummer: </b>
+            <span>{{ me.taxNumber }}</span>
+          </p>
+          <p v-if="me.vatNumber">
+            <b>VAT number: </b>
+            <span>{{ me.vatNumber }}</span>
+          </p>
         </div>
         <div class="to">
           <p><b>{{client.name}}</b></p>
           <p>{{client.street}}</p>
           <p>{{client.postcode}} {{client.city}}, {{client.country}}</p>
+          <p v-if="client.taxNumber">
+            <b>Steuernummer: </b>
+            <span>{{ client.taxNumber }}</span>
+          </p>
+          <p v-if="client.vatNumber">
+            <b>VAT number: </b>
+            <span>{{ client.vatNumber }}</span>
+          </p>
         </div>
         <invoice-info :invoice="invoice" :me="me"></invoice-info>
         <activities-table 
@@ -195,12 +219,12 @@ export default async (req, res) => {
 
   const html = await renderer.renderToString(app);
   const browser = await puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   const page = await browser.newPage();
 
   await page.setContent(html);
-  const pdf = await page.pdf({ format: "A4" });
+  const pdf = await page.pdf({ format: 'A4' });
 
-  res.set("Content-Type", "application/pdf").send(pdf);
+  res.set('Content-Type', 'application/pdf').send(pdf);
 };

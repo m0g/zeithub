@@ -8,27 +8,50 @@
       </router-link>
     </fieldset>
     <section id="invoice" ref="container">
-      <h1>{{invoice.name}}</h1>
+      <h1>{{ invoice.name }}</h1>
       <div class="from">
-        <p><b>{{me.firstName}} {{me.lastName}}</b></p>
-        <p>{{address.street}}</p>
-        <p>{{address.postcode}} {{address.city}}, {{address.country}}</p>
+        <p>
+          <b>{{ me.firstName }} {{ me.lastName }}</b>
+        </p>
+        <p>{{ address.street }}</p>
+        <p>{{ address.postcode }} {{ address.city }}, {{ address.country }}</p>
+        <p v-if="me.taxNumber">
+          <b>Steuernummer: </b>
+          <span>{{ me.taxNumber }}</span>
+        </p>
+        <p v-if="me.vatNumber">
+          <b>VAT number: </b>
+          <span>{{ me.vatNumber }}</span>
+        </p>
       </div>
       <div class="to">
-        <p><b>{{client.name}}</b></p>
-        <p>{{client.street}}</p>
-        <p>{{client.postcode}} {{client.city}}, {{client.country}}</p>
+        <p>
+          <b>{{ client.name }}</b>
+        </p>
+        <p>{{ client.street }}</p>
+        <p>{{ client.postcode }} {{ client.city }}, {{ client.country }}</p>
+        <p v-if="client.taxNumber">
+          <b>Steuernummer: </b>
+          <span>{{ client.taxNumber }}</span>
+        </p>
+        <p v-if="client.vatNumber">
+          <b>VAT number: </b>
+          <span>{{ client.vatNumber }}</span>
+        </p>
       </div>
       <invoice-info :invoice="invoice" :me="me"></invoice-info>
-      <activities-table 
+      <activities-table
         :total-minutes="totalMinutes"
-        :activities="activities" 
-        :invoice="invoice"></activities-table>
-      <p v-if="invoice.memo">{{invoice.memo}}</p>
+        :activities="activities"
+        :invoice="invoice"
+      ></activities-table>
+      <p v-if="invoice.memo">{{ invoice.memo }}</p>
       <div class="footer">
-        <p><b>{{bankAccount.name}}</b></p>
-        <p><b>IBAN:</b> {{bankAccount.iban | iban}}</p>
-        <p><b>BIC:</b> {{bankAccount.bic}}</p>
+        <p>
+          <b>{{ bankAccount.name }}</b>
+        </p>
+        <p><b>IBAN:</b> {{ bankAccount.iban | iban }}</p>
+        <p><b>BIC:</b> {{ bankAccount.bic }}</p>
       </div>
     </section>
     <iframe src="" ref="iframe" frameborder="0" v-show="pdfGenerated"></iframe>
