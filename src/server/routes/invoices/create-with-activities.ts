@@ -1,62 +1,68 @@
-import DB from "./../../db";
+import DB from './../../db';
 
 const db = new DB();
 
 export default async (req, res) => {
   if (!req.body.name) {
-    return res.status(403).json({ success: false, message: "Missing name" });
+    return res.status(403).json({ success: false, message: 'Missing name' });
   }
 
   if (!req.body.rate) {
     return res
       .status(403)
-      .json({ success: false, message: "Missing hourly rate" });
+      .json({ success: false, message: 'Missing hourly rate' });
   }
 
   if (!req.body.number) {
     return res
       .status(403)
-      .json({ success: false, message: "Missing invoice number" });
+      .json({ success: false, message: 'Missing invoice number' });
   }
 
   if (!req.body.projectSlug) {
-    return res.status(403).json({ success: false, message: "Missing project" });
+    return res.status(403).json({ success: false, message: 'Missing project' });
   }
 
   if (!req.body.iban) {
     return res
       .status(403)
-      .json({ success: false, message: "Missing bank account" });
+      .json({ success: false, message: 'Missing bank account' });
   }
 
   if (!req.body.rate) {
-    return res.status(403).json({ success: false, message: "Missing rate" });
+    return res.status(403).json({ success: false, message: 'Missing rate' });
   }
 
   if (!req.body.dailyRate) {
     return res
       .status(403)
-      .json({ success: false, message: "Missing daily rate" });
+      .json({ success: false, message: 'Missing daily rate' });
   }
 
   if (!req.body.date) {
-    return res.status(403).json({ success: false, message: "Missing date" });
+    return res.status(403).json({ success: false, message: 'Missing date' });
   }
 
   if (!req.body.dueDate) {
     return res
       .status(403)
-      .json({ success: false, message: "Missing due date" });
+      .json({ success: false, message: 'Missing due date' });
   }
 
   if (!req.body.userAddressId) {
-    return res.status(403).json({ success: false, message: "Missing address" });
+    return res.status(403).json({ success: false, message: 'Missing address' });
   }
 
   if (!req.body.activities || req.body.activities.length === 0) {
     return res
       .status(403)
-      .json({ success: false, message: "Missing activities" });
+      .json({ success: false, message: 'Missing activities' });
+  }
+
+  if (!req.body.currency) {
+    return res
+      .status(403)
+      .json({ success: false, message: 'Missing currency' });
   }
 
   const userId = req.userId;
@@ -74,6 +80,7 @@ export default async (req, res) => {
     memo,
     discount,
     vat,
+    currency,
     userAddressId,
     activities
   } = req.body;
@@ -87,7 +94,7 @@ export default async (req, res) => {
   if (isNumberExisting) {
     return res
       .status(500)
-      .json({ success: false, message: "Invoice number already existing" });
+      .json({ success: false, message: 'Invoice number already existing' });
   }
 
   const project = await db.queryOne(`
@@ -99,7 +106,7 @@ export default async (req, res) => {
   if (!project) {
     return res
       .status(500)
-      .json({ success: false, message: "Project does not exists" });
+      .json({ success: false, message: 'Project does not exists' });
   }
 
   const bankAccount = await db.queryOne(`
@@ -111,7 +118,7 @@ export default async (req, res) => {
   if (!bankAccount) {
     return res
       .status(500)
-      .json({ success: false, message: "Bank account does not exists" });
+      .json({ success: false, message: 'Bank account does not exists' });
   }
 
   try {
@@ -130,9 +137,10 @@ export default async (req, res) => {
           discount,
           project_id, 
           user_address_id,
-          bank_account_id
+          bank_account_id,
+          currency_code
         )
-        values (?,?,?,?,?,?,?,?,?,?,?,?,?)
+        values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       `,
       [
         userId,
@@ -147,7 +155,8 @@ export default async (req, res) => {
         discount,
         project.id,
         userAddressId,
-        bankAccount.id
+        bankAccount.id,
+        currency
       ]
     );
   } catch (error) {

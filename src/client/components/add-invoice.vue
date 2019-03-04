@@ -13,7 +13,6 @@
           v-model="invoiceNumber"
         />
       </p>
-
       <select-address
         v-bind:value="userAddressId"
         v-on:userAddressId="userAddressId = $event"
@@ -22,6 +21,10 @@
         v-bind:value="iban"
         v-on:iban="iban = $event"
       ></select-bank-account>
+      <select-currency
+        v-bind:value="currency"
+        v-on:currency="currency = $event"
+      ></select-currency>
       <p>
         <label for="rate">Rate (without tax)</label>
         <input type="number" name="rate" id="rate" v-model="rate" />&euro;
@@ -145,9 +148,16 @@ import { Activity } from './../../types';
 import SelectBankAccount from './select-bank-account.vue';
 import SelectAddress from './select-address.vue';
 import ProjectAndClient from './project-and-client.vue';
+import SelectCurrency from './select-currency.vue';
 
 @Component({
-  components: { FormErrors, SelectBankAccount, SelectAddress, ProjectAndClient }
+  components: {
+    FormErrors,
+    SelectBankAccount,
+    SelectAddress,
+    ProjectAndClient,
+    SelectCurrency
+  }
 })
 export default class AddInvoice extends Vue {
   projectAndClient: { project: string; client: number } = {
@@ -171,6 +181,7 @@ export default class AddInvoice extends Vue {
   userAddressId: string = '';
   invoiceNumber: number = 0;
   lastInvoiceNumber: number = 0;
+  currency: string = '';
 
   created() {
     this.getLastInvoiceNumber();
@@ -280,6 +291,10 @@ export default class AddInvoice extends Vue {
       this.errors.push('You should at least add one activity');
     }
 
+    if (!this.currency) {
+      this.errors.push('Currency is missing');
+    }
+
     if (this.errors.length === 0) {
       const body = {
         client: this.projectAndClient.client,
@@ -295,6 +310,7 @@ export default class AddInvoice extends Vue {
         iban: this.iban,
         userAddressId: this.userAddressId,
         memo: this.memo,
+        currency: this.currency,
         activities: this.activities
       };
 
