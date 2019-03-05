@@ -57,7 +57,7 @@ export default class PersonalInfo extends Props {
   pass: {} = {};
 
   vatMask: {} = {
-    mask: 'aa 00000000'
+    mask: 'aa 000000000'
   };
 
   updated() {
