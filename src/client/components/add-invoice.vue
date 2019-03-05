@@ -103,6 +103,12 @@
         <tr>
           <td><button @click="appendActivity">Add another activity</button></td>
         </tr>
+      </table>
+    </fieldset>
+    <bill-expenses></bill-expenses>
+    <fieldset>
+      <legend>Totals</legend>
+      <table>
         <tr>
           <th colspan="3">Sub total</th>
           <td>{{ subTotal | currency }}</td>
@@ -138,7 +144,6 @@
         </tr>
       </table>
     </fieldset>
-    <bill-expenses></bill-expenses>
     <fieldset>
       <legend>Memo</legend>
       <textarea name="memo" id="" cols="40" rows="10" v-model="memo"></textarea>
