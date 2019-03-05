@@ -138,31 +138,7 @@
         </tr>
       </table>
     </fieldset>
-    <fieldset>
-      <legend>Bill expenses</legend>
-      <table>
-        <tr>
-          <th>Description</th>
-          <th>Rate</th>
-          <th>Qty</th>
-          <th>Amount</th>
-          <th>Actions</th>
-        </tr>
-        <tr v-for="(expense, index) in expenses" :key="index">
-          <td></td>
-        </tr>
-      </table>
-
-      <div>
-        <select v-model="expenseId">
-          <option value="0"></option>
-          <option v-for="be in billableExpenses" :key="be.id" :value="be.id"
-            >{{ be.name }} {{ be.date }} {{ be.amount }}</option
-          >
-        </select>
-        <button @click="appendExpense">Add an expense</button>
-      </div>
-    </fieldset>
+    <bill-expenses></bill-expenses>
     <fieldset>
       <legend>Memo</legend>
       <textarea name="memo" id="" cols="40" rows="10" v-model="memo"></textarea>
@@ -184,6 +160,7 @@ import SelectBankAccount from './select-bank-account.vue';
 import SelectAddress from './select-address.vue';
 import ProjectAndClient from './project-and-client.vue';
 import SelectCurrency from './select-currency.vue';
+import BillExpenses from './bill-expenses.vue';
 
 @Component({
   components: {
@@ -191,7 +168,8 @@ import SelectCurrency from './select-currency.vue';
     SelectBankAccount,
     SelectAddress,
     ProjectAndClient,
-    SelectCurrency
+    SelectCurrency,
+    BillExpenses
   }
 })
 export default class AddInvoice extends Vue {
@@ -217,13 +195,9 @@ export default class AddInvoice extends Vue {
   invoiceNumber: number = 0;
   lastInvoiceNumber: number = 0;
   currency: string = '';
-  expenses: Array<{}> = [];
-  billableExpenses: Array<{}> = [];
-  expenseId: number = 0;
 
   created() {
     this.getLastInvoiceNumber();
-    this.getExpenses();
   }
 
   getLastInvoiceNumber() {
@@ -245,17 +219,6 @@ export default class AddInvoice extends Vue {
       });
   }
 
-  async getExpenses() {
-    const response = await http('/api/expenses', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
-    });
-
-    const data = await response.json();
-
-    this.billableExpenses = data.expenses;
-  }
-
   appendActivity(e) {
     e.preventDefault();
 
@@ -266,13 +229,6 @@ export default class AddInvoice extends Vue {
       projectName: '',
       projectSlug: this.projectAndClient.project
     });
-  }
-
-  appendExpense(e) {
-    e.preventDefault();
-
-    this.expenses.push(this.expenseId);
-    this.expenseId = 0;
   }
 
   computeTotal() {
