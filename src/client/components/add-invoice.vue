@@ -27,7 +27,13 @@
       ></select-currency>
       <p>
         <label for="rate">Rate (without tax)</label>
-        <input type="number" name="rate" id="rate" v-model="rate" />&euro;
+        <input
+          type="number"
+          name="rate"
+          id="rate"
+          v-model="rate"
+          step="0.01"
+        />&euro;
       </p>
       <p>
         <label for="rate">Rate type</label>
@@ -71,12 +77,14 @@
               type="number"
               placeholder="Duration"
               v-model="activity.durationMinutes"
+              step="0.01"
               @keyup="computeTotal"
             />
             <input
               v-if="dailyRate"
               type="number"
               placeholder="Duration"
+              step="0.01"
               v-model="activity.durationDays"
               @keyup="computeTotal"
             />
@@ -106,6 +114,7 @@
               type="number"
               name="discount"
               v-model="discount"
+              step="0.01"
               @keyup="computeTotal"
             />
             &euro;
@@ -118,6 +127,7 @@
               type="number"
               name="tax"
               v-model="vat"
+              step="0.01"
               @keyup="computeTotal"
             />%
           </td>
