@@ -4,13 +4,12 @@
     <table>
       <tr>
         <th>Description</th>
-        <th>Rate</th>
-        <th>Qty</th>
         <th>Amount</th>
         <th>Actions</th>
       </tr>
-      <tr v-for="(expense, index) in expenses" :key="index">
-        <td></td>
+      <tr v-for="expense in getExpensesFromIds()" :key="expense.id">
+        <td>{{ expense.name }}</td>
+        <td>{{ expense.amount }}</td>
       </tr>
     </table>
 
@@ -18,8 +17,8 @@
       <select v-model="expenseId">
         <option value="0"></option>
         <option v-for="be in billableExpenses" :key="be.id" :value="be.id">
-          {{ be.name }} {{ be.date }} {{ be.amount }}</option
-        >
+          {{ be.name }} {{ be.date }} {{ be.amount }}
+        </option>
       </select>
       <button @click="appendExpense">Add an expense</button>
     </div>
@@ -32,8 +31,8 @@ import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 @Component({})
 export default class BillExpenses extends Vue {
-  expenses: Array<{}> = [];
   billableExpenses: Array<{}> = [];
+  expenseIds: Array<number> = [];
   expenseId: number = 0;
 
   created() {
@@ -51,10 +50,22 @@ export default class BillExpenses extends Vue {
     this.billableExpenses = data.expenses;
   }
 
+  getExpensesFromIds() {
+    let expenses: Array<{}> = [];
+
+    for (let expense of this.billableExpenses) {
+      if (this.expenseIds.indexOf(expense.id) !== -1) {
+        expenses.push(expense);
+      }
+    }
+
+    return expenses;
+  }
+
   appendExpense(e) {
     e.preventDefault();
 
-    this.expenses.push(this.expenseId);
+    this.expenseIds.push(this.expenseId);
     this.expenseId = 0;
   }
 }
