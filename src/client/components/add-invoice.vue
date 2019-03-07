@@ -105,7 +105,13 @@
         </tr>
       </table>
     </fieldset>
-    <bill-expenses></bill-expenses>
+    <bill-expenses
+      :expensesAmount="expensesAmount"
+      v-on:expensesAmount="
+        expensesAmount = $event;
+        computeTotal();
+      "
+    ></bill-expenses>
     <fieldset>
       <legend>Totals</legend>
       <table>
@@ -200,6 +206,7 @@ export default class AddInvoice extends Vue {
   invoiceNumber: number = 0;
   lastInvoiceNumber: number = 0;
   currency: string = '';
+  expensesAmount: number = 0;
 
   created() {
     this.getLastInvoiceNumber();
@@ -237,6 +244,8 @@ export default class AddInvoice extends Vue {
   }
 
   computeTotal() {
+    console.log('expenses', this.expensesAmount);
+
     if (!this.dailyRate) {
       this.subTotal = this.activities.reduce(
         (acc: number, activity: Activity) => {
@@ -257,6 +266,9 @@ export default class AddInvoice extends Vue {
         return a;
       });
     }
+
+    // Expenses amount is represented without the VAT
+    this.subTotal += this.expensesAmount - this.expensesAmount * 0.19;
 
     this.total = this.subTotal;
 
