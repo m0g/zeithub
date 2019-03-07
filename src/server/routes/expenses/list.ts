@@ -1,10 +1,11 @@
-import DB from "./../../db";
+import DB from './../../db';
 
 const db = new DB();
 
 export default async (req, res) => {
   let expenses;
-  const year = req.query.year || "";
+  const year = req.query.year || '';
+  const negative = req.query.negative ? true : false;
 
   try {
     expenses = await db.query(`
@@ -15,13 +16,14 @@ export default async (req, res) => {
         amount
       from expenses
       where user_id = ${req.userId}
-      ${year && "and year(date) = " + year}
+      ${year && ' and year(date) = ' + year}
+      ${negative ? ' and amount < 0 ' : ''}
       order by date desc
     `);
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Error on select",
+      message: 'Error on select',
       error
     });
   }
@@ -32,5 +34,5 @@ export default async (req, res) => {
 
   return res
     .status(500)
-    .json({ success: false, message: "Expenses not found" });
+    .json({ success: false, message: 'Expenses not found' });
 };

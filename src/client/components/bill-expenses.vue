@@ -40,7 +40,7 @@ export default class BillExpenses extends Vue {
   }
 
   async getExpenses() {
-    const response = await http('/api/expenses', {
+    const response = await http('/api/expenses?negative=1', {
       headers: { 'Content-Type': 'application/json' },
       method: 'GET'
     });
