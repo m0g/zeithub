@@ -111,6 +111,10 @@
         expensesAmount = $event;
         computeTotal();
       "
+      v-on:expenseIds="
+        expenseIds = $event;
+        computeTotal();
+      "
     ></bill-expenses>
     <fieldset>
       <legend>Totals</legend>
@@ -207,6 +211,7 @@ export default class AddInvoice extends Vue {
   lastInvoiceNumber: number = 0;
   currency: string = '';
   expensesAmount: number = 0;
+  expenseIds: number[] = [];
 
   created() {
     this.getLastInvoiceNumber();
@@ -244,8 +249,6 @@ export default class AddInvoice extends Vue {
   }
 
   computeTotal() {
-    console.log('expenses', this.expensesAmount);
-
     if (!this.dailyRate) {
       this.subTotal = this.activities.reduce(
         (acc: number, activity: Activity) => {
@@ -341,7 +344,8 @@ export default class AddInvoice extends Vue {
         userAddressId: this.userAddressId,
         memo: this.memo,
         currency: this.currency,
-        activities: this.activities
+        activities: this.activities,
+        expenseIds: this.expenseIds
       };
 
       const response = await http('/api/invoices/with-activities', {

@@ -1,5 +1,5 @@
-import DB from "./../../db";
-import { Invoice, BankAccount, Activity } from "./../../../types";
+import DB from './../../db';
+import { Invoice, BankAccount, Activity } from './../../../types';
 
 const db = new DB();
 
@@ -55,5 +55,19 @@ export default async (req, res) => {
     where id = ${invoice.userAddressId}
   `);
 
-  res.json({ success: true, invoice, activities, bankAccount, address });
+  const expenses = await db.query(`
+    SELECT id, name, date, amount, user_id, invoice_id
+    FROM expenses
+    where user_id = ${req.userId}
+    and invoice_id = ${invoice.id}
+  `);
+
+  res.json({
+    success: true,
+    invoice,
+    activities,
+    bankAccount,
+    address,
+    expenses
+  });
 };

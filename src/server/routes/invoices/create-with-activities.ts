@@ -82,7 +82,8 @@ export default async (req, res) => {
     vat,
     currency,
     userAddressId,
-    activities
+    activities,
+    expenseIds
   } = req.body;
 
   const isNumberExisting = await db.queryOne(`
@@ -187,6 +188,23 @@ export default async (req, res) => {
       );
     } catch (error) {
       return res.status(500).json({ success: false, error });
+    }
+  }
+
+  if (expenseIds.length > 0) {
+    for (let expenseId of expenseIds) {
+      try {
+        await db.execute(
+          `
+            update expenses
+            set invoice_id = ?
+            where id = ?
+          `,
+          [invoiceId, expenseId]
+        );
+      } catch (error) {
+        return res.status(500).json({ success: false, error });
+      }
     }
   }
 

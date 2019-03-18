@@ -87,6 +87,7 @@ export default class BillExpenses extends Props {
     }
 
     this.$emit('expensesAmount', total);
+    this.$emit('expenseIds', this.expenseIds);
   }
 }
 </script>

@@ -83,6 +83,7 @@ export default class Invoice extends Vue {
   pdfGenerated: boolean = false;
   totalMinutes: number = 0;
   client: { id: number; name: string } = { id: 0, name: '' };
+  expenses: M.Expense[] = [];
 
   created() {
     this.getInvoice();
@@ -126,6 +127,7 @@ export default class Invoice extends Vue {
       this.activities = data.activities;
       this.bankAccount = data.bankAccount;
       this.address = data.address;
+      this.expenses = data.expenses;
 
       this.totalMinutes = this.activities.reduce(
         (acc: number, next: M.Activity) => acc + next.durationMinutes,
