@@ -65,7 +65,7 @@
           </td>
         </tr>
         <tr>
-          <td><button @click="appendActivity">Add another activity</button></td>
+          <td><button @click="appendItem">Add another item</button></td>
         </tr>
         <tr>
           <th colspan="3">Sub total</th>
@@ -118,7 +118,7 @@ import http from './../http';
 import FormErrors from './form-errors.vue';
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
-import { Activity } from './../../types';
+import { Item } from './../../types';
 import SelectBankAccount from './select-bank-account.vue';
 import SelectAddress from './select-address.vue';
 import ProjectAndClient from './project-and-client.vue';
@@ -138,7 +138,7 @@ export default class AddInvoice extends Vue {
     project: '',
     client: 0
   };
-  items: Array<{}> = [];
+  items: Item[] = [];
   invoice: Object = {};
   discount: number = 0;
   vat: number = 0;
@@ -178,7 +178,7 @@ export default class AddInvoice extends Vue {
       });
   }
 
-  appendActivity(e) {
+  appendItem(e) {
     e.preventDefault();
 
     this.items.push({
@@ -189,7 +189,7 @@ export default class AddInvoice extends Vue {
   }
 
   computeTotal() {
-    this.subTotal = this.items.reduce((acc: number, item: {}) => {
+    this.subTotal = this.items.reduce((acc: number, item: Item) => {
       return acc + item.unitPrice * item.qty;
     }, 0);
 
@@ -232,16 +232,12 @@ export default class AddInvoice extends Vue {
       this.errors.push('Bank account is missing');
     }
 
-    if (!this.rate) {
-      this.errors.push('Rate is missing');
-    }
-
     if (!this.userAddressId) {
       this.errors.push('Address is missing');
     }
 
-    if (this.activities.length === 0) {
-      this.errors.push('You should at least add one activity');
+    if (this.items.length === 0) {
+      this.errors.push('You should at least add one item');
     }
 
     if (!this.currency) {
@@ -262,7 +258,7 @@ export default class AddInvoice extends Vue {
         userAddressId: this.userAddressId,
         memo: this.memo,
         currency: this.currency,
-        activities: this.activities
+        items: this.items
       };
 
       const response = await http('/api/invoices/with-items', {

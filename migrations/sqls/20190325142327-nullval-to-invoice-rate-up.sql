@@ -1,0 +1,3 @@
+ALTER TABLE `invoices`
+MODIFY rate INT(11) DEFAULT NULL,
+MODIFY rate_daily tinyint(4) DEFAULT NULL
