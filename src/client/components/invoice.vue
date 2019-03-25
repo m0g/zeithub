@@ -43,6 +43,7 @@
       <activities-table
         :total-minutes="totalMinutes"
         :activities="activities"
+        :expenses="expenses"
         :invoice="invoice"
       ></activities-table>
       <p v-if="invoice.memo">{{ invoice.memo }}</p>
@@ -127,7 +128,11 @@ export default class Invoice extends Vue {
       this.activities = data.activities;
       this.bankAccount = data.bankAccount;
       this.address = data.address;
-      this.expenses = data.expenses;
+
+      this.expenses = data.expenses.map(expense => {
+        expense.amount = expense.amount * -1;
+        return expense;
+      });
 
       this.totalMinutes = this.activities.reduce(
         (acc: number, next: M.Activity) => acc + next.durationMinutes,

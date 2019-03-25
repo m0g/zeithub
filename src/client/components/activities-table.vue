@@ -29,6 +29,24 @@
     </tr>
     <tr style="border-top: 1px solid black">
       <th></th>
+      <th>Expense</th>
+      <th>Qty</th>
+      <th width="16%">Amount ({{ invoice.currencyCode }})</th>
+    </tr>
+    <tr
+      style="border-top: 1px solid black"
+      v-for="expense in expenses"
+      :key="expense.id"
+    >
+      <td></td>
+      <td style="text-align: center">{{ expense.name }}</td>
+      <td style="text-align: center">1</td>
+      <td class="amount" style="text-align: right">
+        {{ expense.amount | currency(invoice) }}
+      </td>
+    </tr>
+    <tr style="border-top: 1px solid black">
+      <th></th>
       <th></th>
       <td>
         <b>Total {{ invoice.dailyRate ? 'days' : 'time' }}</b>
@@ -85,7 +103,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 
 const Props = Vue.extend({
-  props: ['invoice', 'me', 'activities', 'totalMinutes']
+  props: ['invoice', 'me', 'activities', 'totalMinutes', 'expenses']
 });
 
 @Component({})
