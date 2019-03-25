@@ -26,23 +26,6 @@
         v-on:currency="currency = $event"
       ></select-currency>
       <p>
-        <label for="rate">Rate (without tax)</label>
-        <input
-          type="number"
-          name="rate"
-          id="rate"
-          v-model="rate"
-          step="0.01"
-        />&euro;
-      </p>
-      <p>
-        <label for="rate">Rate type</label>
-        <select v-model="dailyRate">
-          <option :value="false">Hourly</option>
-          <option :value="true">Daily</option>
-        </select>
-      </p>
-      <p>
         <label for="date">Date</label>
         <input type="date" name="date" id="date" v-model="date" />
       </p>
@@ -52,50 +35,31 @@
       </p>
     </fieldset>
     <fieldset>
-      <legend>Invoice Activities</legend>
+      <legend>Invoice Items</legend>
       <table>
         <tr>
-          <th>Project</th>
           <th>Description</th>
-          <th>Duration in {{ dailyRate ? 'days (8 hours / day)' : 'min' }}</th>
-          <th>{{ dailyRate ? 'Daily' : 'Hourly' }} rate</th>
+          <th>Unit price</th>
+          <th>Qty</th>
           <th>Amount</th>
           <th>Actions</th>
         </tr>
-        <tr v-for="(activity, index) in activities" :key="index">
-          <td>{{ project }}</td>
+        <tr v-for="(item, index) in items" :key="index">
           <td>
-            <input
-              type="text"
-              placeholder="Description"
-              v-model="activity.name"
-            />
+            <input type="text" placeholder="Description" v-model="item.name" />
           </td>
           <td>
             <input
-              v-if="!dailyRate"
               type="number"
-              placeholder="Duration"
-              v-model="activity.durationMinutes"
               step="0.01"
-              @keyup="computeTotal"
-            />
-            <input
-              v-if="dailyRate"
-              type="number"
-              placeholder="Duration"
-              step="0.01"
-              v-model="activity.durationDays"
+              v-model="item.unitPrice"
               @keyup="computeTotal"
             />
           </td>
-          <td>{{ rate }}&euro;</td>
-          <td v-if="!dailyRate">
-            {{ ((activity.durationMinutes / 60) * rate) | currency }}
+          <td>
+            <input type="number" v-model="item.qty" @keyup="computeTotal" />
           </td>
-          <td v-if="dailyRate">
-            {{ (activity.durationDays * rate) | currency }}
-          </td>
+          <td>{{ (item.qty * item.unitPrice) | currency }}</td>
           <td>
             <button @click="activities.splice(index, 1)">&#x2718;</button>
           </td>
@@ -174,14 +138,12 @@ export default class AddInvoice extends Vue {
     project: '',
     client: 0
   };
-  activities: Array<Activity> = [];
+  items: Array<{}> = [];
   invoice: Object = {};
   discount: number = 0;
   vat: number = 0;
   subTotal: number = 0;
   total: number = 0;
-  rate: number = 0;
-  dailyRate: boolean = false;
   errors: Array<string> = [];
   date: string = '';
   dueDate: string = '';
@@ -219,36 +181,17 @@ export default class AddInvoice extends Vue {
   appendActivity(e) {
     e.preventDefault();
 
-    this.activities.push({
-      name: '',
-      durationMinutes: 0,
-      durationDays: 0,
-      projectName: '',
-      projectSlug: this.projectAndClient.project
+    this.items.push({
+      title: '',
+      qty: 0,
+      unitPrice: 0
     });
   }
 
   computeTotal() {
-    if (!this.dailyRate) {
-      this.subTotal = this.activities.reduce(
-        (acc: number, activity: Activity) => {
-          return acc + (activity.durationMinutes / 60) * this.rate;
-        },
-        0
-      );
-    } else {
-      this.subTotal = this.activities.reduce(
-        (acc: number, activity: Activity) => {
-          return acc + activity.durationDays * this.rate;
-        },
-        0
-      );
-
-      this.activities = this.activities.map(a => {
-        a.durationMinutes = a.durationDays * (8 * 60);
-        return a;
-      });
-    }
+    this.subTotal = this.items.reduce((acc: number, item: {}) => {
+      return acc + item.unitPrice * item.qty;
+    }, 0);
 
     this.total = this.subTotal;
 
@@ -313,8 +256,6 @@ export default class AddInvoice extends Vue {
         number: this.invoiceNumber,
         date: this.date,
         dueDate: this.dueDate,
-        rate: this.rate,
-        dailyRate: this.dailyRate,
         discount: this.discount,
         vat: this.vat,
         iban: this.iban,
@@ -324,7 +265,7 @@ export default class AddInvoice extends Vue {
         activities: this.activities
       };
 
-      const response = await http('/api/invoices/with-activities', {
+      const response = await http('/api/invoices/with-items', {
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
         body: JSON.stringify(body)
