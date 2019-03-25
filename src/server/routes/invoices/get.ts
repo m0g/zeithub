@@ -1,5 +1,5 @@
-import DB from "./../../db";
-import { Invoice, BankAccount, Activity } from "./../../../types";
+import DB from './../../db';
+import { Invoice, BankAccount, Activity, Item } from './../../../models';
 
 const db = new DB();
 
@@ -49,11 +49,18 @@ export default async (req, res) => {
     group by a.name, p.name, p.slug
   `);
 
+  const items: Array<Item> = await db.query(`
+    select title, qty, unit_price
+    from items
+    where user_id = ${req.userId}
+    and invoice_id = ${invoice.id}
+  `);
+
   const address = await db.queryOne(`
     select id, name, street, city, postcode, country
     from addresses
     where id = ${invoice.userAddressId}
   `);
 
-  res.json({ success: true, invoice, activities, bankAccount, address });
+  res.json({ success: true, invoice, activities, bankAccount, address, items });
 };

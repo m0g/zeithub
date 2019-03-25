@@ -46,7 +46,7 @@
         </tr>
         <tr v-for="(item, index) in items" :key="index">
           <td>
-            <input type="text" placeholder="Description" v-model="item.name" />
+            <input type="text" placeholder="Description" v-model="item.title" />
           </td>
           <td>
             <input
