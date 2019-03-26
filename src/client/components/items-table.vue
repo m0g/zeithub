@@ -8,17 +8,21 @@
     </tr>
     <tr v-for="item in items" :key="item.id">
       <td style="text-align: center">{{ item.title }}</td>
-      <td style="text-align: center;">
+      <td style="text-align: center; font-family: monospace;">
         {{ item.unitPrice | currency(invoice) }}
       </td>
-      <td style="text-align: right;">{{ item.qty }}</td>
-      <td>{{ (item.qty * item.unitPrice) | currency(invoice) }}</td>
+      <td style="text-align: center; font-family: monospace;">
+        {{ item.qty }}
+      </td>
+      <td style="text-align: right; font-family: monospace;">
+        {{ (item.qty * item.unitPrice) | currency(invoice) }}
+      </td>
     </tr>
     <tr>
       <th></th>
       <th></th>
       <td><b>Discount</b></td>
-      <td colspan="2" style="text-align: right">
+      <td colspan="2" style="text-align: right; font-family: monospace;">
         {{ invoice.discount | currency(invoice) }}
       </td>
     </tr>
@@ -26,7 +30,7 @@
       <th></th>
       <th></th>
       <td><b>Tax (VAT)</b></td>
-      <td colspan="2" style="text-align: right">
+      <td colspan="2" style="text-align: right; font-family: monospace;">
         {{ invoice.tax | percentage }}
       </td>
     </tr>
@@ -36,7 +40,7 @@
       <td>
         <b>Total ({{ invoice.currencyCode }})</b>
       </td>
-      <td colspan="2" style="text-align: right">
+      <td colspan="2" style="text-align: right; font-family: monospace;">
         {{ computeTotal() | currency(invoice) }}
       </td>
     </tr>

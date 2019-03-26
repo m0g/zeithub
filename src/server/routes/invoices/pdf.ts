@@ -1,9 +1,9 @@
 import * as puppeteer from 'puppeteer';
 import * as Vue from 'vue/dist/vue.common.js';
 import DB from './../../db';
-import { Invoice, BankAccount, Activity } from './../../../types';
+import { Invoice, BankAccount, Item, Client } from './../../../models';
 import InvoiceInfo from '../../../lib/components/invoice-info';
-import * as ActivitiesTable from '../../../lib/components/activities-table';
+import * as ItemsTable from '../../../lib/components/items-table';
 
 const renderer = require('vue-server-renderer').createRenderer();
 const db = new DB();
@@ -40,6 +40,7 @@ export default async (req, res) => {
       i.discount,
       i.user_address_id as 'userAddressId',
       i.bank_account_id as 'bankAccountId',
+      i.client_id as 'clientId',
       c.code as 'currencyCode',
       c.sign as 'currencySign',
       c.name as 'currencyName',
@@ -55,60 +56,43 @@ export default async (req, res) => {
     where id = ${invoice.bankAccountId}
   `);
 
+  const client: Client = await db.queryOne(`
+    select 
+      c.name, 
+      c.tax_number as 'taxNumber',
+      c.vat_number as 'vatNumber',
+      a.street,
+      a.city, 
+      a.postcode, 
+      a.country
+    from clients c
+      join addresses a on a.client_id = c.id
+    where c.id = ${invoice.clientId}
+  `);
+
+  const items: Array<Item> = await db.query(`
+    select title, qty, unit_price as 'unitPrice'
+    from items
+    where user_id = ${req.userId}
+    and invoice_id = ${invoice.id}
+  `);
+
   const address = await db.queryOne(`
     select id, name, street, city, postcode, country
     from addresses
     where id = ${invoice.userAddressId}
   `);
 
-  const activities: Array<Activity> = await db.query(`
-    select
-      a.name, 
-      sum(a.duration_minutes) as 'durationMinutes',
-      p.name as 'projectName',
-      p.slug as 'projectSlug'
-    from activities a
-    join projects p on a.project_id = p.id
-    where a.user_id = ${req.userId}
-    and a.invoice_id = ${invoice.id}
-    group by a.name, p.name, p.slug
-  `);
-
-  const slug: string = activities[0].projectSlug;
-
-  const client = await db.queryOne(`
-    select 
-      c.id, 
-      c.name, 
-      c.tax_number as "taxNumber",
-      c.vat_number as "vatNumber",
-      a.street, 
-      a.city, 
-      a.postcode, 
-      a.country
-    from clients c
-    join projects p on c.id = p.client_id
-    left join addresses a on c.id = a.client_id
-    where c.user_id = ${userId}
-    and p.slug = '${slug}'
-  `);
-
-  const totalMinutes = activities.reduce(
-    (acc: number, next: Activity) => acc + next.durationMinutes,
-    0
-  );
-
   const app = new Vue({
     data: {
       invoice,
       bankAccount,
-      activities,
+      items,
       me,
-      totalMinutes,
       address,
       client
     },
-    components: { InvoiceInfo, ActivitiesTable },
+    components: { InvoiceInfo, ItemsTable },
     template: `
       <section id="invoice" ref="container">
         <h1>{{invoice.name}}</h1>
@@ -139,10 +123,7 @@ export default async (req, res) => {
           </p>
         </div>
         <invoice-info :invoice="invoice" :me="me"></invoice-info>
-        <activities-table 
-          :total-minutes="totalMinutes"
-          :activities="activities" 
-          :invoice="invoice"></activities-table>
+        <items-table :invoice="invoice" :items="items"></items-table>
         <p v-if="invoice.memo">{{invoice.memo}}</p>
         <div class="footer">
           <p><b>{{bankAccount.name}}</b></p>

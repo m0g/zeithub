@@ -57,21 +57,6 @@ export default async (req, res) => {
     where c.id = ${invoice.clientId}
   `);
 
-  console.log('Client', client, invoice.clientId);
-
-  const activities: Array<Activity> = await db.query(`
-    select
-      a.name, 
-      sum(a.duration_minutes) as 'durationMinutes',
-      p.name as 'projectName',
-      p.slug as 'projectSlug'
-    from activities a
-    join projects p on a.project_id = p.id
-    where a.user_id = ${req.userId}
-    and a.invoice_id = ${invoice.id}
-    group by a.name, p.name, p.slug
-  `);
-
   const items: Array<Item> = await db.query(`
     select title, qty, unit_price as 'unitPrice'
     from items
@@ -88,7 +73,6 @@ export default async (req, res) => {
   res.json({
     success: true,
     invoice,
-    activities,
     bankAccount,
     client,
     address,
