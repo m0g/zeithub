@@ -36,7 +36,8 @@ export class Me implements T.Me {
 export class Item {
   title: string = '';
   unitPrice: number = 0;
-  qty: number = 0;
+  qty: number = 1;
+  projectId: number = 0;
 }
 
 export class Client {

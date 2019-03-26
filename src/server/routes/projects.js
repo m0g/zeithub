@@ -50,7 +50,7 @@ router.get('/:slug', verifyToken, async (req, res) => {
 
 router.get('/', verifyToken, async (req, res) => {
   const projects = await db.query(`
-    select name, slug
+    select id, name, slug
     from projects
     where user_id = ${req.userId}
   `);

@@ -24,10 +24,6 @@ export default async (req, res) => {
     return res.status(403).json({ success: false, message: 'Missing date' });
   }
 
-  if (!req.body.projectSlug) {
-    return res.status(403).json({ success: false, message: 'Missing project' });
-  }
-
   if (!req.body.clientId) {
     return res
       .status(403)
@@ -60,7 +56,6 @@ export default async (req, res) => {
   const {
     name,
     iban,
-    projectSlug,
     date,
     dueDate,
     number,
@@ -83,18 +78,6 @@ export default async (req, res) => {
     return res
       .status(500)
       .json({ success: false, message: 'Invoice number already existing' });
-  }
-
-  const project = await db.queryOne(`
-    select id
-    from projects
-    where user_id = ${userId} and slug = '${projectSlug}'
-  `);
-
-  if (!project) {
-    return res
-      .status(500)
-      .json({ success: false, message: 'Project does not exists' });
   }
 
   const bankAccount = await db.queryOne(`
@@ -121,12 +104,11 @@ export default async (req, res) => {
           number, 
           tax,
           discount,
-          project_id, 
           user_address_id,
           bank_account_id,
           currency_code
         )
-        values (?,?,?,?,?,?,?,?,?,?,?,?)
+        values (?,?,?,?,?,?,?,?,?,?,?)
       `,
       [
         userId,
@@ -137,7 +119,6 @@ export default async (req, res) => {
         number,
         vat,
         discount,
-        project.id,
         userAddressId,
         bankAccount.id,
         currency
@@ -155,11 +136,19 @@ export default async (req, res) => {
             title,
             unit_price,
             qty,
+            project_id,
             user_id, 
             invoice_id)
-          values (?,?,?,?,?)
+          values (?,?,?,?,?,?)
         `,
-        [item.title, item.unitPrice, item.qty, userId, invoiceId]
+        [
+          item.title,
+          item.unitPrice,
+          item.qty,
+          item.projectId,
+          userId,
+          invoiceId
+        ]
       );
     } catch (error) {
       return res.status(500).json({ success: false, error });

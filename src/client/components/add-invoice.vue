@@ -2,7 +2,6 @@
   <form method="POST" @submit="createInvoice">
     <form-errors :errors="errors"></form-errors>
     <select-client
-      v-model="clientId"
       v-bind:value="clientId"
       v-on:clientId="clientId = $event"
     ></select-client>
@@ -42,6 +41,7 @@
       <legend>Invoice Items</legend>
       <table>
         <tr>
+          <th>Project</th>
           <th>Description</th>
           <th>Unit price</th>
           <th>Qty</th>
@@ -49,6 +49,12 @@
           <th>Actions</th>
         </tr>
         <tr v-for="(item, index) in items" :key="index">
+          <td>
+            <select-project
+              v-bind:value="item.projectId"
+              v-on:projectId="item.projectId = $event"
+            ></select-project>
+          </td>
           <td>
             <input type="text" placeholder="Description" v-model="item.title" />
           </td>
@@ -61,11 +67,17 @@
             />
           </td>
           <td>
-            <input type="number" v-model="item.qty" @keyup="computeTotal" />
+            <input
+              type="number"
+              min="1"
+              max="999"
+              v-model="item.qty"
+              @keyup="computeTotal"
+            />
           </td>
           <td>{{ (item.qty * item.unitPrice) | currency }}</td>
           <td>
-            <button @click="activities.splice(index, 1)">&#x2718;</button>
+            <button @click="items.splice(index, 1)">&#x2718;</button>
           </td>
         </tr>
         <tr>
@@ -127,6 +139,7 @@ import SelectBankAccount from './select-bank-account.vue';
 import SelectAddress from './select-address.vue';
 import SelectCurrency from './select-currency.vue';
 import SelectClient from './select-client.vue';
+import SelectProject from './select-project.vue';
 
 @Component({
   components: {
@@ -134,7 +147,8 @@ import SelectClient from './select-client.vue';
     SelectBankAccount,
     SelectAddress,
     SelectCurrency,
-    SelectClient
+    SelectClient,
+    SelectProject
   }
 })
 export default class AddInvoice extends Vue {
@@ -155,12 +169,10 @@ export default class AddInvoice extends Vue {
   lastInvoiceNumber: number = 0;
   currency: string = '';
   clientId: number = 0;
-  projectSlug: string = '';
-  projects: Project[] = [];
+  projectId: number = 0;
 
   created() {
     this.getLastInvoiceNumber();
-    this.getProjects();
   }
 
   getLastInvoiceNumber() {
@@ -184,12 +196,7 @@ export default class AddInvoice extends Vue {
 
   appendItem(e) {
     e.preventDefault();
-
-    this.items.push({
-      title: '',
-      qty: 0,
-      unitPrice: 0
-    });
+    this.items.push(new Item());
   }
 
   computeTotal() {
@@ -206,13 +213,6 @@ export default class AddInvoice extends Vue {
     if (this.vat > 0) {
       this.total = this.total * (1 + this.vat / 100);
     }
-  }
-
-  async getProjects() {
-    const response = await http('/api/projects');
-    const data = await response.json();
-
-    this.projects = data;
   }
 
   async createInvoice(e) {
@@ -254,7 +254,7 @@ export default class AddInvoice extends Vue {
     if (this.errors.length === 0) {
       const body = {
         clientId: this.clientId,
-        projectSlug: this.projectSlug,
+        projectId: this.projectId,
         name: this.name,
         number: this.invoiceNumber,
         date: this.date,

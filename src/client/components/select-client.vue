@@ -8,7 +8,7 @@
       @change="onChange($event)"
       :disabled="clients.length === 0"
     >
-      <option value="0" disabled>Select a client</option>
+      <option value="0" disabled selected>Select a client</option>
       <option v-for="client in clients" :key="client.id" :value="client.id">
         {{ client.name }}
       </option>
