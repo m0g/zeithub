@@ -2,7 +2,7 @@
   <form method="POST" @submit="createInvoice">
     <form-errors :errors="errors"></form-errors>
     <select-client
-      v-bind:value="clientId"
+      v-bind:clientId="clientId"
       v-on:clientId="clientId = $event"
     ></select-client>
     <fieldset>

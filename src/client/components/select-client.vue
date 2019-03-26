@@ -22,7 +22,7 @@ import { Component, Prop, Watch, Vue, Emit } from 'vue-property-decorator';
 import { Client } from '../../models';
 
 const Props = Vue.extend({
-  props: ['clientId']
+  props: ['clientId', 'value']
 });
 
 @Component({})
