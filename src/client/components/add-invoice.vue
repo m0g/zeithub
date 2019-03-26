@@ -1,7 +1,7 @@
 <template>
   <form method="POST" @submit="createInvoice">
     <form-errors :errors="errors"></form-errors>
-    <project-and-client v-model="projectAndClient"></project-and-client>
+    <select-client v-model="clientId"></select-client>
     <fieldset>
       <legend>Billing</legend>
       <p><input type="text" placeholder="Title" v-model="name" /></p>
@@ -118,26 +118,22 @@ import http from './../http';
 import FormErrors from './form-errors.vue';
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
-import { Item } from './../../types';
+import { Item } from './../../models';
 import SelectBankAccount from './select-bank-account.vue';
 import SelectAddress from './select-address.vue';
-import ProjectAndClient from './project-and-client.vue';
 import SelectCurrency from './select-currency.vue';
+import SelectClient from './select-client.vue';
 
 @Component({
   components: {
     FormErrors,
     SelectBankAccount,
     SelectAddress,
-    ProjectAndClient,
-    SelectCurrency
+    SelectCurrency,
+    SelectClient
   }
 })
 export default class AddInvoice extends Vue {
-  projectAndClient: { project: string; client: number } = {
-    project: '',
-    client: 0
-  };
   items: Item[] = [];
   invoice: Object = {};
   discount: number = 0;
@@ -154,6 +150,8 @@ export default class AddInvoice extends Vue {
   invoiceNumber: number = 0;
   lastInvoiceNumber: number = 0;
   currency: string = '';
+  clientId: number = 0;
+  projectSlug: string = '';
 
   created() {
     this.getLastInvoiceNumber();
@@ -208,11 +206,11 @@ export default class AddInvoice extends Vue {
     e.preventDefault();
     this.errors = [];
 
-    if (!this.projectAndClient.client) {
+    if (!this.clientId) {
       this.errors.push('Client is missing');
     }
 
-    if (!this.projectAndClient.project) {
+    if (!this.projectSlug) {
       this.errors.push('Project is missing');
     }
 
@@ -246,8 +244,8 @@ export default class AddInvoice extends Vue {
 
     if (this.errors.length === 0) {
       const body = {
-        client: this.projectAndClient.client,
-        projectSlug: this.projectAndClient.project,
+        clientId: this.clientId,
+        projectSlug: this.projectSlug,
         name: this.name,
         number: this.invoiceNumber,
         date: this.date,

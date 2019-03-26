@@ -38,3 +38,8 @@ export class Item {
   unitPrice: number = 0;
   qty: number = 0;
 }
+
+export class Client {
+  id: number = 0;
+  name: string = '';
+}

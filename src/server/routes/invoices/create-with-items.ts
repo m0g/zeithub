@@ -14,10 +14,6 @@ export default async (req, res) => {
       .json({ success: false, message: 'Missing invoice number' });
   }
 
-  if (!req.body.projectSlug) {
-    return res.status(403).json({ success: false, message: 'Missing project' });
-  }
-
   if (!req.body.iban) {
     return res
       .status(403)
@@ -26,6 +22,16 @@ export default async (req, res) => {
 
   if (!req.body.date) {
     return res.status(403).json({ success: false, message: 'Missing date' });
+  }
+
+  if (!req.body.projectSlug) {
+    return res.status(403).json({ success: false, message: 'Missing project' });
+  }
+
+  if (!req.body.clientId) {
+    return res
+      .status(403)
+      .json({ success: false, message: 'Missing client ID' });
   }
 
   if (!req.body.dueDate) {

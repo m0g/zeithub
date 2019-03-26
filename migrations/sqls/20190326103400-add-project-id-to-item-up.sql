@@ -1,0 +1,2 @@
+ALTER TABLE `items`
+ADD COLUMN `project_id` INTEGER(11)
