@@ -4,10 +4,11 @@
     <select
       name="client"
       id=""
-      v-model="value"
+      v-bind:value="clientId"
+      @change="onChange($event)"
       :disabled="clients.length === 0"
     >
-      <option value="">Select a client</option>
+      <option value="0" disabled>Select a client</option>
       <option v-for="client in clients" :key="client.id" :value="client.id">
         {{ client.name }}
       </option>
@@ -17,11 +18,11 @@
 
 <script lang="ts">
 import http from './../http';
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
+import { Component, Prop, Watch, Vue, Emit } from 'vue-property-decorator';
 import { Client } from '../../models';
 
 const Props = Vue.extend({
-  props: ['value']
+  props: ['clientId']
 });
 
 @Component({})
@@ -30,6 +31,11 @@ export default class SelectClient extends Props {
 
   created() {
     this.getClients();
+  }
+
+  @Emit('clientId')
+  onChange(e) {
+    return e.target.value;
   }
 
   async getClients() {

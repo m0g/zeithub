@@ -1,7 +1,11 @@
 <template>
   <form method="POST" @submit="createInvoice">
     <form-errors :errors="errors"></form-errors>
-    <select-client v-model="clientId"></select-client>
+    <select-client
+      v-model="clientId"
+      v-bind:value="clientId"
+      v-on:clientId="clientId = $event"
+    ></select-client>
     <fieldset>
       <legend>Billing</legend>
       <p><input type="text" placeholder="Title" v-model="name" /></p>
@@ -118,7 +122,7 @@ import http from './../http';
 import FormErrors from './form-errors.vue';
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
-import { Item } from './../../models';
+import { Item, Project } from './../../models';
 import SelectBankAccount from './select-bank-account.vue';
 import SelectAddress from './select-address.vue';
 import SelectCurrency from './select-currency.vue';
@@ -152,9 +156,11 @@ export default class AddInvoice extends Vue {
   currency: string = '';
   clientId: number = 0;
   projectSlug: string = '';
+  projects: Project[] = [];
 
   created() {
     this.getLastInvoiceNumber();
+    this.getProjects();
   }
 
   getLastInvoiceNumber() {
@@ -202,16 +208,19 @@ export default class AddInvoice extends Vue {
     }
   }
 
+  async getProjects() {
+    const response = await http('/api/projects');
+    const data = await response.json();
+
+    this.projects = data;
+  }
+
   async createInvoice(e) {
     e.preventDefault();
     this.errors = [];
 
     if (!this.clientId) {
       this.errors.push('Client is missing');
-    }
-
-    if (!this.projectSlug) {
-      this.errors.push('Project is missing');
     }
 
     if (!this.name) {

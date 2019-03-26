@@ -43,3 +43,8 @@ export class Client {
   id: number = 0;
   name: string = '';
 }
+
+export class Project {
+  id: number = 0;
+  name: string = '';
+}
