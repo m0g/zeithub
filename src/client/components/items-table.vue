@@ -11,8 +11,34 @@
       <td style="text-align: center;">
         {{ item.unitPrice | currency(invoice) }}
       </td>
-      <td style="text-align: center;">{{ item.qty }}</td>
+      <td style="text-align: right;">{{ item.qty }}</td>
       <td>{{ (item.qty * item.unitPrice) | currency(invoice) }}</td>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <td><b>Discount</b></td>
+      <td colspan="2" style="text-align: right">
+        {{ invoice.discount | currency(invoice) }}
+      </td>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <td><b>Tax (VAT)</b></td>
+      <td colspan="2" style="text-align: right">
+        {{ invoice.tax | percentage }}
+      </td>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <td>
+        <b>Total ({{ invoice.currencyCode }})</b>
+      </td>
+      <td colspan="2" style="text-align: right">
+        {{ computeTotal() | currency(invoice) }}
+      </td>
     </tr>
   </table>
 </template>
@@ -28,17 +54,22 @@ const Props = Vue.extend({
 
 @Component({})
 export default class ItemsTable extends Props {
-  // computeTotal() {
-  //   this.subTotal = this.items.reduce((acc: number, item: Item) => {
-  //     return acc + item.unitPrice * item.qty;
-  //   }, 0);
-  //   this.total = this.subTotal;
-  //   if (this.discount > 0) {
-  //     this.total = this.total - this.discount;
-  //   }
-  //   if (this.vat > 0) {
-  //     this.total = this.total * (1 + this.vat / 100);
-  //   }
-  // }
+  computeTotal() {
+    const subTotal = this.items.reduce((acc: number, item: Item) => {
+      return acc + item.unitPrice * item.qty;
+    }, 0);
+
+    let total = subTotal;
+
+    if (this.invoice.discount > 0) {
+      total = total - this.invoice.discount;
+    }
+
+    if (this.invoice.vat > 0) {
+      total = total * (1 + this.invoice.vat / 100);
+    }
+
+    return total;
+  }
 }
 </script>
