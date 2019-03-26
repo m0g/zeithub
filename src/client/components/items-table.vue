@@ -65,8 +65,8 @@ export default class ItemsTable extends Props {
       total = total - this.invoice.discount;
     }
 
-    if (this.invoice.vat > 0) {
-      total = total * (1 + this.invoice.vat / 100);
+    if (this.invoice.tax > 0) {
+      total = total * (1 + this.invoice.tax / 100);
     }
 
     return total;

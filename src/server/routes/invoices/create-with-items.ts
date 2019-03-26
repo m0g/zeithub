@@ -110,7 +110,7 @@ export default async (req, res) => {
           client_id,
           currency_code
         )
-        values (?,?,?,?,?,?,?,?,?,?,?)
+        values (?,?,?,?,?,?,?,?,?,?,?,?)
       `,
       [
         userId,
