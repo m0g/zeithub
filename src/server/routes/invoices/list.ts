@@ -1,4 +1,4 @@
-import DB from "./../../db";
+import DB from './../../db';
 
 const db = new DB();
 
@@ -15,16 +15,16 @@ export default async (req, res) => {
       i.rate_daily as dailyRate,
       i.discount,
       i.tax,
-      sum(a.duration_minutes) as 'totalDurationMinutes',
+      sum(it.qty * it.unit_price) as 'subTotal',
       c.code as 'currencyCode',
       c.sign as 'currencySign',
       c.name as 'currencyName',
       c.leading as 'currencyLeading'
     from invoices i
       join currencies c on i.currency_code = c.code
-      join activities a on i.id = a.invoice_id
+      join items it on i.id = it.invoice_id
     where i.user_id = ${userId}
-    group by a.invoice_id
+    group by it.invoice_id
     order by i.date desc
   `);
 

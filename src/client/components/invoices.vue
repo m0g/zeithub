@@ -38,13 +38,7 @@ export default class Invoices extends Vue {
   }
 
   getTotal(invoice) {
-    let total: number = 0;
-
-    if (invoice.dailyRate) {
-      total = (invoice.totalDurationMinutes / (8 * 60)) * invoice.rate;
-    } else {
-      total = (invoice.totalDurationMinutes / 60) * invoice.rate;
-    }
+    let total: number = invoice.subTotal;
 
     if (invoice.discount > 0) {
       total = total - invoice.discount;
