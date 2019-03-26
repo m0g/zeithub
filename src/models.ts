@@ -14,11 +14,12 @@ export class Invoice implements T.Invoice {
   tax: number = 0;
   discount: number = 0;
   rate: number = 0;
-  bankAccountId: number = 0;
   number: number = 0;
-  userAddressId: number = 0;
   currencySign: string = '';
   currencyLeading: boolean = false;
+  bankAccountId: number = 0;
+  userAddressId: number = 0;
+  clientId: number = 0;
 }
 
 export class BankAccount implements T.BankAccount {
@@ -43,6 +44,11 @@ export class Item {
 export class Client {
   id: number = 0;
   name: string = '';
+  taxNumber: string = '';
+  vatNumber: string = '';
+  street: string = '';
+  postcode: string = '';
+  country: string = '';
 }
 
 export class Project {

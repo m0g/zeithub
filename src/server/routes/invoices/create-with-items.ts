@@ -63,7 +63,8 @@ export default async (req, res) => {
     discount,
     vat,
     currency,
-    userAddressId
+    userAddressId,
+    clientId
   } = req.body;
 
   const items: Item[] = req.body.items;
@@ -106,6 +107,7 @@ export default async (req, res) => {
           discount,
           user_address_id,
           bank_account_id,
+          client_id,
           currency_code
         )
         values (?,?,?,?,?,?,?,?,?,?,?)
@@ -121,6 +123,7 @@ export default async (req, res) => {
         discount,
         userAddressId,
         bankAccount.id,
+        clientId,
         currency
       ]
     );

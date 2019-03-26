@@ -1,5 +1,11 @@
 import DB from './../../db';
-import { Invoice, BankAccount, Activity, Item } from './../../../models';
+import {
+  Invoice,
+  BankAccount,
+  Activity,
+  Item,
+  Client
+} from './../../../models';
 
 const db = new DB();
 
@@ -21,6 +27,7 @@ export default async (req, res) => {
       i.discount,
       i.user_address_id as 'userAddressId',
       i.bank_account_id as 'bankAccountId',
+      i.client_id as 'clientId',
       c.code as 'currencyCode',
       c.sign as 'currencySign',
       c.name as 'currencyName',
@@ -36,6 +43,22 @@ export default async (req, res) => {
     where id = ${invoice.bankAccountId}
   `);
 
+  const client: Client = await db.queryOne(`
+    select 
+      c.name, 
+      c.tax_number as 'taxNumber',
+      c.vat_number as 'vatNumber',
+      a.street,
+      a.city, 
+      a.postcode, 
+      a.country
+    from clients c
+      join addresses a on a.client_id = c.id
+    where c.id = ${invoice.clientId}
+  `);
+
+  console.log('Client', client, invoice.clientId);
+
   const activities: Array<Activity> = await db.query(`
     select
       a.name, 
@@ -50,7 +73,7 @@ export default async (req, res) => {
   `);
 
   const items: Array<Item> = await db.query(`
-    select title, qty, unit_price
+    select title, qty, unit_price as 'unitPrice'
     from items
     where user_id = ${req.userId}
     and invoice_id = ${invoice.id}
@@ -62,5 +85,13 @@ export default async (req, res) => {
     where id = ${invoice.userAddressId}
   `);
 
-  res.json({ success: true, invoice, activities, bankAccount, address, items });
+  res.json({
+    success: true,
+    invoice,
+    activities,
+    bankAccount,
+    client,
+    address,
+    items
+  });
 };

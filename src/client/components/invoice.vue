@@ -40,11 +40,7 @@
         </p>
       </div>
       <invoice-info :invoice="invoice" :me="me"></invoice-info>
-      <activities-table
-        :total-minutes="totalMinutes"
-        :activities="activities"
-        :invoice="invoice"
-      ></activities-table>
+      <items-table :invoice="invoice" :items="items"></items-table>
       <p v-if="invoice.memo">{{ invoice.memo }}</p>
       <div class="footer">
         <p>
@@ -61,8 +57,8 @@
 <script lang="ts">
 import slugify from 'slugify';
 import http from './../http';
-import ActivitiesTable from './activities-table.vue';
 import InvoiceInfo from './invoice-info.vue';
+import ItemsTable from './items-table.vue';
 
 import * as M from './../../models';
 
@@ -70,19 +66,19 @@ import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 @Component({
   components: {
-    ActivitiesTable,
+    ItemsTable,
     InvoiceInfo
   }
 })
 export default class Invoice extends Vue {
   invoice: M.Invoice = new M.Invoice();
-  activities: Array<M.Activity> = [];
+  items: M.Item[] = [];
   me: M.Me = new M.Me();
   bankAccount: M.BankAccount = new M.BankAccount();
   address: Object = {};
   pdfGenerated: boolean = false;
   totalMinutes: number = 0;
-  client: { id: number; name: string } = { id: 0, name: '' };
+  client: M.Client = new M.Client();
 
   created() {
     this.getInvoice();
@@ -123,16 +119,10 @@ export default class Invoice extends Vue {
 
     if (data.success) {
       this.invoice = data.invoice;
-      this.activities = data.activities;
       this.bankAccount = data.bankAccount;
       this.address = data.address;
-
-      this.totalMinutes = this.activities.reduce(
-        (acc: number, next: M.Activity) => acc + next.durationMinutes,
-        0
-      );
-
-      this.getClient(); // TODO: this is also crap
+      this.items = data.items;
+      this.client = data.client;
     }
   }
 
@@ -142,17 +132,6 @@ export default class Invoice extends Vue {
 
     if (data.success) {
       this.me = data.me;
-    }
-  }
-
-  async getClient() {
-    // TODO: Fix this crap
-    const slug: string = this.activities[0].projectSlug;
-    const response = await http(`/api/projects/${slug}/clients`);
-    const data = await response.json();
-
-    if (data.success && data.clients.length > 0) {
-      this.client = data.clients[0];
     }
   }
 }

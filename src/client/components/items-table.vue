@@ -8,8 +8,10 @@
     </tr>
     <tr v-for="item in items" :key="item.id">
       <td style="text-align: center">{{ item.title }}</td>
-      <td>{{ item.unitPrice | currency(invoice) }}</td>
-      <td>{{ item.qty }}</td>
+      <td style="text-align: center;">
+        {{ item.unitPrice | currency(invoice) }}
+      </td>
+      <td style="text-align: center;">{{ item.qty }}</td>
       <td>{{ (item.qty * item.unitPrice) | currency(invoice) }}</td>
     </tr>
   </table>
@@ -21,7 +23,7 @@ import Component from 'vue-class-component';
 import { Item } from '../../models';
 
 const Props = Vue.extend({
-  props: ['invoice', 'me', 'items']
+  props: ['invoice', 'items']
 });
 
 @Component({})
