@@ -5,7 +5,11 @@
       v-bind:clientId="invoice.clientId"
       v-on:clientId="invoice.clientId = $event"
     ></select-client>
-    <billing v-bind:invoice="invoice" v-on:invoice="invoice = $event"></billing>
+    <billing
+      :editMode="true"
+      v-bind:invoice="invoice"
+      v-on:invoice="invoice = $event"
+    ></billing>
     <fieldset>
       <legend>Invoice Items</legend>
       <table>
@@ -99,7 +103,7 @@
     </fieldset>
     <fieldset>
       <legend>Actions</legend>
-      <input type="submit" value="Create invoice" />
+      <input type="submit" value="Update invoice" />
     </fieldset>
   </form>
 </template>
@@ -134,7 +138,6 @@ export default class EditInvoice extends Vue {
   subTotal: number = 0;
   total: number = 0;
   errors: Array<string> = [];
-  currency: string = '';
 
   created() {
     this.getInvoice();
@@ -181,67 +184,28 @@ export default class EditInvoice extends Vue {
     e.preventDefault();
     this.errors = [];
 
-    if (!this.clientId) {
-      this.errors.push('Client is missing');
-    }
-
-    if (!this.name) {
-      this.errors.push('Title is missing');
-    }
-
-    if (!this.date) {
-      this.errors.push('Date is missing');
-    }
-
-    if (!this.dueDate) {
-      this.errors.push('Due date is missing');
-    }
-
-    if (!this.iban) {
-      this.errors.push('Bank account is missing');
-    }
-
-    if (!this.userAddressId) {
-      this.errors.push('Address is missing');
-    }
-
     if (this.items.length === 0) {
       this.errors.push('You should at least add one item');
     }
 
-    if (!this.currency) {
-      this.errors.push('Currency is missing');
-    }
-
     if (this.errors.length === 0) {
       const body = {
-        clientId: this.clientId,
-        projectId: this.projectId,
-        name: this.name,
-        number: this.invoiceNumber,
-        date: this.date,
-        dueDate: this.dueDate,
-        discount: this.discount,
-        vat: this.vat,
-        iban: this.iban,
-        userAddressId: this.userAddressId,
-        memo: this.memo,
-        currency: this.currency,
+        invoice: this.invoice,
         items: this.items
       };
 
-      const response = await http('/api/invoices/with-items', {
+      const response = await http(`/api/invoices/${this.invoice.id}`, {
         headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(body)
       });
 
       const data = await response.json();
 
-      if (data.success && data.invoiceId) {
+      if (data.success) {
         this.$router.push({
           name: 'Invoice',
-          params: { id: data.invoiceId }
+          params: { id: this.invoice.id }
         });
       }
     }

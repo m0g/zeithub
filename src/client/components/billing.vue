@@ -6,7 +6,7 @@
       <input
         type="number"
         placeholder="Invoice number"
-        :min="lastInvoiceNumber + 1"
+        :min="editMode ? lastInvoiceNumber : lastInvoiceNumber + 1"
         v-model="invoice.number"
       />
     </p>
@@ -47,7 +47,7 @@ import SelectAddress from './select-address.vue';
 import SelectCurrency from './select-currency.vue';
 
 const Props = Vue.extend({
-  props: ['clientId', 'value', 'invoice']
+  props: ['invoice', 'editMode']
 });
 
 @Component({

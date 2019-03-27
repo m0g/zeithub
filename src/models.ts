@@ -17,6 +17,8 @@ export class Invoice implements T.Invoice {
   number: number = 0;
   date: string = '';
   dueDate: string = '';
+  memo: string = '';
+  currencyCode: string = '';
   currencySign: string = '';
   currencyLeading: boolean = false;
   bankAccountId: number = 0;

@@ -13,9 +13,8 @@
         :key="client.id"
         :value="client.id"
         :selected="client.id === clientId"
+        >{{ client.name }}</option
       >
-        {{ client.name }}
-      </option>
     </select>
   </fieldset>
 </template>
