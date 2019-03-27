@@ -1,11 +1,12 @@
 <template>
   <p>
-    <select v-bind:value="bankAccountId" @change="onChange($event)">
+    <select @change="onChange($event)">
       <option value="" disabled selected>Select a bank account</option>
       <option
         v-for="account in bankAccounts"
         :key="account.id"
         :value="account.id"
+        :selected="account.id === bankAccountId"
       >
         {{ account.name }} {{ account.owner }} {{ account.iban }}
         {{ account.bic }}

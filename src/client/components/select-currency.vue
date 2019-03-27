@@ -1,15 +1,14 @@
 <template>
   <p>
-    <select 
-      v-bind:value="currency"
-      @change="onChange($event)"
-    >
+    <select @change="onChange($event)">
       <option value="" disabled selected>Select a currency</option>
       <option
-        v-for="currency in currencies" 
+        v-for="currency in currencies"
         :key="currency.code"
-        :value="currency.code">
-        {{currency.name}} ({{currency.sign}})
+        :value="currency.code"
+        :selected="currency.code === currencyCode"
+      >
+        {{ currency.name }} ({{ currency.sign }})
       </option>
     </select>
   </p>
@@ -20,14 +19,14 @@ import { Vue, Component, Emit } from 'vue-property-decorator';
 import http from '../http';
 
 const Props = Vue.extend({
-  props: ['currency']
+  props: ['currencyCode']
 });
 
 @Component({})
 export default class SelectBankAccount extends Props {
   currencies: Array<Object> = [];
 
-  @Emit('currency')
+  @Emit('currencyCode')
   onChange(e) {
     return e.target.value;
   }

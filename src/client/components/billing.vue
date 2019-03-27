@@ -1,6 +1,6 @@
 <template>
   <fieldset>
-    <legend>Billing</legend>
+    <legend>Billing {{ invoice.currencyCode }}</legend>
     <p><input type="text" placeholder="Title" v-model="invoice.name" /></p>
     <p>
       <input
@@ -19,8 +19,8 @@
       v-on:bankAccountId="invoice.bankAccountId = $event"
     ></select-bank-account>
     <select-currency
-      v-bind:value="currency"
-      v-on:currency="currency = $event"
+      v-bind:currencyCode="invoice.currencyCode"
+      v-on:currencyCode="invoice.currencyCode = $event"
     ></select-currency>
     <p>
       <label for="date">Date</label>

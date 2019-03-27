@@ -1,4 +1,4 @@
-import DB from "./../../db";
+import DB from './../../db';
 
 const db = new DB();
 
@@ -7,7 +7,6 @@ export default async (req, res) => {
   const id = req.params.id;
   const { name, number, rate, userAddressId } = req.body;
 
-  console.log(name, number, rate, id, userId);
   try {
     await db.execute(
       `update invoices

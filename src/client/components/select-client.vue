@@ -4,12 +4,16 @@
     <select
       name="client"
       id=""
-      v-bind:value="clientId"
       @change="onChange($event)"
       :disabled="clients.length === 0"
     >
       <option value="0" disabled selected>Select a client</option>
-      <option v-for="client in clients" :key="client.id" :value="client.id">
+      <option
+        v-for="client in clients"
+        :key="client.id"
+        :value="client.id"
+        :selected="client.id === clientId"
+      >
         {{ client.name }}
       </option>
     </select>

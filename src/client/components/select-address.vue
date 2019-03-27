@@ -1,15 +1,15 @@
 <template>
   <p>
-    <select 
-      v-bind:value="userAddressId"
-      @change="onChange($event)"
-    >
+    <select @change="onChange($event)">
       <option value="" disabled selected>Select an address</option>
       <option
-        v-for="ad in addresses" 
+        v-for="ad in addresses"
+        :selected="ad.id === userAddressId"
         :key="ad.id"
-        :value="ad.id">
-          <b>{{ad.name}}</b> {{ad.street}}, {{ad.postcode}} {{ad.city}}, {{ad.country}}
+        :value="ad.id"
+      >
+        <b>{{ ad.name }}</b> {{ ad.street }}, {{ ad.postcode }} {{ ad.city }},
+        {{ ad.country }}
       </option>
     </select>
   </p>
