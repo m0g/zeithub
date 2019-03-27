@@ -6,11 +6,11 @@ const getBankAccounts = async (req, res) => {
   const userId = req.userId;
 
   const bankAccounts = await db.query(`
-    select name, owner, iban, bic
+    select id, name, owner, iban, bic
     from bank_accounts
     where user_id = ${userId}
   `);
- 
+
   res.json({ success: true, bankAccounts });
 };
 

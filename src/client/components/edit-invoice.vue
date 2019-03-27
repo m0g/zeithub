@@ -5,7 +5,7 @@
       v-bind:clientId="clientId"
       v-on:clientId="clientId = $event"
     ></select-client>
-    <fieldset>
+    <!-- <fieldset>
       <legend>Billing</legend>
       <p><input type="text" placeholder="Title" v-model="invoice.name" /></p>
       <p>
@@ -41,7 +41,8 @@
           v-model="invoice.dueDate"
         />
       </p>
-    </fieldset>
+    </fieldset> -->
+    <billing v-bind:invoice="invoice" v-on:invoice="invoice = $event"></billing>
     <fieldset>
       <legend>Invoice Items</legend>
       <table>
@@ -145,6 +146,7 @@ import SelectAddress from './select-address.vue';
 import SelectCurrency from './select-currency.vue';
 import SelectClient from './select-client.vue';
 import SelectProject from './select-project.vue';
+import Billing from './billing.vue';
 
 @Component({
   components: {
@@ -153,7 +155,8 @@ import SelectProject from './select-project.vue';
     SelectAddress,
     SelectCurrency,
     SelectClient,
-    SelectProject
+    SelectProject,
+    Billing
   }
 })
 export default class EditInvoice extends Vue {

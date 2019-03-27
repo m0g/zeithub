@@ -1,15 +1,14 @@
 <template>
   <p>
-    <select
-      v-bind:value="iban"
-      @change="onChange($event)"
-    >
+    <select v-bind:value="bankAccountId" @change="onChange($event)">
       <option value="" disabled selected>Select a bank account</option>
       <option
-        v-for="account in bankAccounts" 
-        :key="account.iban"
-        :value="account.iban">
-          {{account.name}} {{account.owner}} {{account.iban}} {{account.bic}}
+        v-for="account in bankAccounts"
+        :key="account.id"
+        :value="account.id"
+      >
+        {{ account.name }} {{ account.owner }} {{ account.iban }}
+        {{ account.bic }}
       </option>
     </select>
   </p>
@@ -20,7 +19,7 @@ import { Vue, Component, Emit } from 'vue-property-decorator';
 import http from '../http';
 
 const Props = Vue.extend({
-  props: ['iban']
+  props: ['bankAccountId']
 });
 
 @Component({})
