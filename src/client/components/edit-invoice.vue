@@ -24,7 +24,7 @@
         <tr v-for="(item, index) in items" :key="index">
           <td>
             <select-project
-              v-bind:value="item.projectId"
+              v-bind:projectId="item.projectId"
               v-on:projectId="item.projectId = $event"
             ></select-project>
           </td>

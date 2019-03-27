@@ -48,12 +48,38 @@ export default async (req, res) => {
         invoice.bankAccountId,
         invoice.clientId,
         invoice.currencyCode,
-        req.params.id,
-        req.userId
+        id,
+        userId
       ]
     );
   } catch (error) {
     return res.status(500).json({ success: false, error });
+  }
+
+  try {
+    await db.execute(`delete from items where invoice_id = ?`, [id]);
+  } catch (error) {
+    return res.status(500).json({ success: false, error });
+  }
+
+  for (let item of items) {
+    try {
+      await db.execute(
+        `
+          insert into items (
+            title,
+            unit_price,
+            qty,
+            project_id,
+            user_id, 
+            invoice_id)
+          values (?,?,?,?,?,?)
+        `,
+        [item.title, item.unitPrice, item.qty, item.projectId, userId, id]
+      );
+    } catch (error) {
+      return res.status(500).json({ success: false, error });
+    }
   }
 
   return res.json({ success: true });

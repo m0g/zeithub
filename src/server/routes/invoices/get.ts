@@ -1,11 +1,5 @@
 import DB from './../../db';
-import {
-  Invoice,
-  BankAccount,
-  Activity,
-  Item,
-  Client
-} from './../../../models';
+import { Invoice, BankAccount, Item, Client } from './../../../models';
 
 const db = new DB();
 
@@ -58,7 +52,11 @@ export default async (req, res) => {
   `);
 
   const items: Array<Item> = await db.query(`
-    select title, qty, unit_price as 'unitPrice'
+    select 
+      title, 
+      qty, 
+      unit_price as 'unitPrice', 
+      project_id as 'projectId'
     from items
     where user_id = ${req.userId}
     and invoice_id = ${invoice.id}

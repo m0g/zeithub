@@ -6,7 +6,7 @@
       <input
         type="number"
         placeholder="Invoice number"
-        :min="editMode ? lastInvoiceNumber : lastInvoiceNumber + 1"
+        :min="editMode ? invoice.number : lastInvoiceNumber + 1"
         v-model="invoice.number"
       />
     </p>

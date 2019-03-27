@@ -2,15 +2,17 @@
   <span>
     <select
       name="project"
-      id=""
-      v-bind:value="projectId"
       @change="onChange($event)"
       :disabled="projects.length === 0"
     >
       <option value="0">Select a project</option>
-      <option v-for="project in projects" :key="project.id" :value="project.id">
-        {{ project.name }}
-      </option>
+      <option
+        v-for="project in projects"
+        :key="project.id"
+        :value="project.id"
+        :selected="project.id === projectId"
+        >{{ project.name }}</option
+      >
     </select>
   </span>
 </template>
