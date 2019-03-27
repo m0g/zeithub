@@ -11,7 +11,7 @@
       />
     </p>
     <select-address
-      v-bind:value="invoice.userAddressId"
+      v-bind:userAddressId="invoice.userAddressId"
       v-on:userAddressId="invoice.userAddressId = $event"
     ></select-address>
     <select-bank-account
