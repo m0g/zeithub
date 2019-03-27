@@ -1,95 +1,311 @@
 <template>
   <form method="PUT" @submit="updateInvoice">
+    <form-errors :errors="errors"></form-errors>
+    <select-client
+      v-bind:clientId="clientId"
+      v-on:clientId="clientId = $event"
+    ></select-client>
     <fieldset>
       <legend>Billing</legend>
-      <p><input type="text" placeholder="Title" v-model="invoice.name"></p>
-      <p><input 
-        type="number" 
-        placeholder="Invoice number" 
-        v-model="invoice.number"></p>
+      <p><input type="text" placeholder="Title" v-model="invoice.name" /></p>
       <p>
-        <select v-model="invoice.userAddressId">
-          <option value="" disabled selected>Select an address</option>
-          <option
-            v-for="ad in addresses" 
-            :key="ad.id"
-            :value="ad.id">
-              <b>{{ad.name}}</b> {{ad.street}}, {{ad.postcode}} {{ad.city}}, {{ad.country}}
-          </option>
-        </select>
+        <input
+          type="number"
+          placeholder="Invoice number"
+          :min="lastInvoiceNumber + 1"
+          v-model="invoice.number"
+        />
+      </p>
+      <select-address
+        v-bind:value="invoice.userAddressId"
+        v-on:userAddressId="invoice.userAddressId = $event"
+      ></select-address>
+      <select-bank-account
+        v-bind:value="iban"
+        v-on:iban="iban = $event"
+      ></select-bank-account>
+      <select-currency
+        v-bind:value="currency"
+        v-on:currency="currency = $event"
+      ></select-currency>
+      <p>
+        <label for="date">Date</label>
+        <input type="date" name="date" id="date" v-model="invoice.date" />
       </p>
       <p>
-        <label for="rate">Rate</label>
-        <input type="number" name="rate" id="rate" v-model="invoice.rate">&euro;
+        <label for="due-date">Due date</label>
+        <input
+          type="date"
+          name="due-date"
+          id="due-date"
+          v-model="invoice.dueDate"
+        />
       </p>
     </fieldset>
     <fieldset>
+      <legend>Invoice Items</legend>
+      <table>
+        <tr>
+          <th>Project</th>
+          <th>Description</th>
+          <th>Unit price</th>
+          <th>Qty</th>
+          <th>Amount</th>
+          <th>Actions</th>
+        </tr>
+        <tr v-for="(item, index) in items" :key="index">
+          <td>
+            <select-project
+              v-bind:value="item.projectId"
+              v-on:projectId="item.projectId = $event"
+            ></select-project>
+          </td>
+          <td>
+            <input type="text" placeholder="Description" v-model="item.title" />
+          </td>
+          <td>
+            <input
+              type="number"
+              step="0.01"
+              v-model="item.unitPrice"
+              @keyup="computeTotal"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              min="1"
+              max="999"
+              v-model="item.qty"
+              @keyup="computeTotal"
+            />
+          </td>
+          <td>{{ (item.qty * item.unitPrice) | currency }}</td>
+          <td>
+            <button @click="items.splice(index, 1)">&#x2718;</button>
+          </td>
+        </tr>
+        <tr>
+          <td><button @click="appendItem">Add another item</button></td>
+        </tr>
+        <tr>
+          <th colspan="3">Sub total</th>
+          <td>{{ subTotal | currency }}</td>
+        </tr>
+        <tr>
+          <th colspan="3">Discount</th>
+          <td>
+            <input
+              type="number"
+              name="discount"
+              v-model="discount"
+              step="0.01"
+              @keyup="computeTotal"
+            />
+            &euro;
+          </td>
+        </tr>
+        <tr>
+          <th colspan="3">Tax</th>
+          <td>
+            <input
+              type="number"
+              name="tax"
+              v-model="vat"
+              step="0.01"
+              @keyup="computeTotal"
+            />%
+          </td>
+        </tr>
+        <tr>
+          <th colspan="3">Total</th>
+          <td>{{ total | currency }}</td>
+        </tr>
+      </table>
+    </fieldset>
+    <fieldset>
+      <legend>Memo</legend>
+      <textarea name="memo" id="" cols="40" rows="10" v-model="memo"></textarea>
+    </fieldset>
+    <fieldset>
       <legend>Actions</legend>
-      <input type="submit" value="Update invoice" />
+      <input type="submit" value="Create invoice" />
     </fieldset>
   </form>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import http from './../http';
-import * as M from './../../models';
+import FormErrors from './form-errors.vue';
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
-@Component({})
+import { Item, Project } from './../../models';
+import SelectBankAccount from './select-bank-account.vue';
+import SelectAddress from './select-address.vue';
+import SelectCurrency from './select-currency.vue';
+import SelectClient from './select-client.vue';
+import SelectProject from './select-project.vue';
+
+@Component({
+  components: {
+    FormErrors,
+    SelectBankAccount,
+    SelectAddress,
+    SelectCurrency,
+    SelectClient,
+    SelectProject
+  }
+})
 export default class EditInvoice extends Vue {
-  addresses: Array<Object> = [];
-  invoice: M.Invoice = new M.Invoice();
+  items: Item[] = [];
+  invoice: Object = {};
+  discount: number = 0;
+  vat: number = 0;
+  subTotal: number = 0;
+  total: number = 0;
+  errors: Array<string> = [];
+  date: string = '';
+  dueDate: string = '';
+  memo: string = '';
+  name: string = '';
+  iban: string = '';
+  userAddressId: string = '';
+  invoiceNumber: number = 0;
+  lastInvoiceNumber: number = 0;
+  currency: string = '';
+  clientId: number = 0;
+  projectId: number = 0;
 
   created() {
+    this.getLastInvoiceNumber();
     this.getInvoice();
-    this.getAddresses();
   }
 
-  getAddresses() {
-    http('/api/addresses', {
+  getLastInvoiceNumber() {
+    http('/api/invoices', {
       headers: { 'Content-Type': 'application/json' },
       method: 'GET'
     })
       .then(response => response.json())
       .then(response => {
         if (response.success) {
-          this.addresses = response.addresses;
+          response.invoices.forEach(invoice => {
+            if (invoice.number > this.lastInvoiceNumber) {
+              this.lastInvoiceNumber = invoice.number;
+            }
+          });
+
+          this.invoiceNumber = this.lastInvoiceNumber + 1;
         }
       });
   }
 
-  getInvoice() {
-    http(`/api/invoices/${this.$route.params.id}`, {
+  appendItem(e) {
+    e.preventDefault();
+    this.items.push(new Item());
+  }
+
+  computeTotal() {
+    this.subTotal = this.items.reduce((acc: number, item: Item) => {
+      return acc + item.unitPrice * item.qty;
+    }, 0);
+
+    this.total = this.subTotal;
+
+    if (this.discount > 0) {
+      this.total = this.total - this.discount;
+    }
+
+    if (this.vat > 0) {
+      this.total = this.total * (1 + this.vat / 100);
+    }
+  }
+
+  async getInvoice() {
+    const response = await http(`/api/invoices/${this.$route.params.id}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          this.invoice = response.invoice;
-        }
-      });
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      this.invoice = data.invoice;
+      this.iban = data.bankAccount.iban;
+      this.userAddressId = data.address.id;
+      this.items = data.items;
+      this.clientId = data.client.id;
+    }
   }
 
-  updateInvoice(e) {
-    const id = this.$route.params.id;
-
+  async updateInvoice(e) {
     e.preventDefault();
+    this.errors = [];
 
-    http(`/api/invoices/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(this.invoice)
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          this.$router.push({
-            name: 'Invoice',
-            params: { id }
-          });
-        }
+    if (!this.clientId) {
+      this.errors.push('Client is missing');
+    }
+
+    if (!this.name) {
+      this.errors.push('Title is missing');
+    }
+
+    if (!this.date) {
+      this.errors.push('Date is missing');
+    }
+
+    if (!this.dueDate) {
+      this.errors.push('Due date is missing');
+    }
+
+    if (!this.iban) {
+      this.errors.push('Bank account is missing');
+    }
+
+    if (!this.userAddressId) {
+      this.errors.push('Address is missing');
+    }
+
+    if (this.items.length === 0) {
+      this.errors.push('You should at least add one item');
+    }
+
+    if (!this.currency) {
+      this.errors.push('Currency is missing');
+    }
+
+    if (this.errors.length === 0) {
+      const body = {
+        clientId: this.clientId,
+        projectId: this.projectId,
+        name: this.name,
+        number: this.invoiceNumber,
+        date: this.date,
+        dueDate: this.dueDate,
+        discount: this.discount,
+        vat: this.vat,
+        iban: this.iban,
+        userAddressId: this.userAddressId,
+        memo: this.memo,
+        currency: this.currency,
+        items: this.items
+      };
+
+      const response = await http('/api/invoices/with-items', {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        body: JSON.stringify(body)
       });
+
+      const data = await response.json();
+
+      if (data.success && data.invoiceId) {
+        this.$router.push({
+          name: 'Invoice',
+          params: { id: data.invoiceId }
+        });
+      }
+    }
   }
 }
 </script>
