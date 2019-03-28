@@ -31,7 +31,7 @@ export default class SelectBankAccount extends Props {
     this.getBankAccounts();
   }
 
-  @Emit('iban')
+  @Emit('bankAccountId')
   onChange(e) {
     return e.target.value;
   }
