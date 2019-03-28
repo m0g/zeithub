@@ -1,6 +1,6 @@
 <template>
   <fieldset>
-    <legend>Billing {{ invoice.currencyCode }}</legend>
+    <legend>Billing</legend>
     <p><input type="text" placeholder="Title" v-model="invoice.name" /></p>
     <p>
       <input
@@ -78,6 +78,10 @@ export default class Billing extends Props {
           this.lastInvoiceNumber = invoice.number;
         }
       });
+
+      if (!this.editMode) {
+        this.invoice.number = this.lastInvoiceNumber + 1;
+      }
     }
   }
 }

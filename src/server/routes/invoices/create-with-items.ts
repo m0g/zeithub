@@ -4,93 +4,30 @@ import { Item, Invoice } from './../../../models';
 const db = new DB();
 
 export default async (req, res) => {
-  if (!req.body.name) {
-    return res.status(403).json({ success: false, message: 'Missing name' });
-  }
-
-  if (!req.body.number) {
-    return res
-      .status(403)
-      .json({ success: false, message: 'Missing invoice number' });
-  }
-
-  if (!req.body.iban) {
-    return res
-      .status(403)
-      .json({ success: false, message: 'Missing bank account' });
-  }
-
-  if (!req.body.date) {
-    return res.status(403).json({ success: false, message: 'Missing date' });
-  }
-
-  if (!req.body.clientId) {
-    return res
-      .status(403)
-      .json({ success: false, message: 'Missing client ID' });
-  }
-
-  if (!req.body.dueDate) {
-    return res
-      .status(403)
-      .json({ success: false, message: 'Missing due date' });
-  }
-
-  if (!req.body.userAddressId) {
-    return res.status(403).json({ success: false, message: 'Missing address' });
+  if (!req.body.invoice) {
+    return res.status(403).json({ success: false, message: 'Missing invoice' });
   }
 
   if (!req.body.items || req.body.items.length === 0) {
     return res.status(403).json({ success: false, message: 'Missing items' });
   }
 
-  if (!req.body.currency) {
-    return res
-      .status(403)
-      .json({ success: false, message: 'Missing currency' });
-  }
-
   const userId = req.userId;
-  let invoiceId;
-
-  const {
-    name,
-    iban,
-    date,
-    dueDate,
-    number,
-    memo,
-    discount,
-    vat,
-    currency,
-    userAddressId,
-    clientId
-  } = req.body;
-
+  const invoice: Invoice = req.body.invoice;
   const items: Item[] = req.body.items;
+
+  let invoiceId;
 
   const isNumberExisting = await db.queryOne(`
     select id
     from invoices
-    where user_id = ${userId} and number = ${number}
+    where user_id = ${userId} and number = ${invoice.number}
   `);
 
   if (isNumberExisting) {
     return res
       .status(500)
       .json({ success: false, message: 'Invoice number already existing' });
-  }
-
-  const bankAccount = await db.queryOne(`
-    select id
-    from bank_accounts
-    where user_id = ${userId} and iban = '${iban}'
-  `);
-
-  if (!bankAccount) {
-    return res
-      .status(500)
-      .json({ success: false, message: 'Bank account does not exists' });
   }
 
   try {
@@ -107,24 +44,24 @@ export default async (req, res) => {
           discount,
           user_address_id,
           bank_account_id,
-          client_id,
-          currency_code
+          currency_code,
+          client_id
         )
         values (?,?,?,?,?,?,?,?,?,?,?,?)
       `,
       [
         userId,
-        date,
-        dueDate,
-        name,
-        memo,
-        number,
-        vat,
-        discount,
-        userAddressId,
-        bankAccount.id,
-        clientId,
-        currency
+        invoice.date,
+        invoice.dueDate,
+        invoice.name,
+        invoice.memo,
+        invoice.number,
+        invoice.tax,
+        invoice.discount,
+        invoice.userAddressId,
+        invoice.bankAccountId,
+        invoice.currencyCode,
+        invoice.clientId
       ]
     );
   } catch (error) {

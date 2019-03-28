@@ -2,41 +2,14 @@
   <form method="POST" @submit="createInvoice">
     <form-errors :errors="errors"></form-errors>
     <select-client
-      v-bind:clientId="clientId"
-      v-on:clientId="clientId = $event"
+      v-bind:clientId="invoice.clientId"
+      v-on:clientId="invoice.clientId = $event"
     ></select-client>
-    <fieldset>
-      <legend>Billing</legend>
-      <p><input type="text" placeholder="Title" v-model="name" /></p>
-      <p>
-        <input
-          type="number"
-          placeholder="Invoice number"
-          :min="lastInvoiceNumber + 1"
-          v-model="invoiceNumber"
-        />
-      </p>
-      <select-address
-        v-bind:value="userAddressId"
-        v-on:userAddressId="userAddressId = $event"
-      ></select-address>
-      <select-bank-account
-        v-bind:value="iban"
-        v-on:iban="iban = $event"
-      ></select-bank-account>
-      <select-currency
-        v-bind:value="currency"
-        v-on:currency="currency = $event"
-      ></select-currency>
-      <p>
-        <label for="date">Date</label>
-        <input type="date" name="date" id="date" v-model="date" />
-      </p>
-      <p>
-        <label for="due-date">Due date</label>
-        <input type="date" name="due-date" id="due-date" v-model="dueDate" />
-      </p>
-    </fieldset>
+    <billing
+      :editMode="false"
+      v-bind:invoice="invoice"
+      v-on:invoice="invoice = $event"
+    ></billing>
     <fieldset>
       <legend>Invoice Items</legend>
       <table>
@@ -93,7 +66,7 @@
             <input
               type="number"
               name="discount"
-              v-model="discount"
+              v-model="invoice.discount"
               step="0.01"
               @keyup="computeTotal"
             />
@@ -106,7 +79,7 @@
             <input
               type="number"
               name="tax"
-              v-model="vat"
+              v-model="invoice.tax"
               step="0.01"
               @keyup="computeTotal"
             />%
@@ -120,7 +93,12 @@
     </fieldset>
     <fieldset>
       <legend>Memo</legend>
-      <textarea name="memo" id="" cols="40" rows="10" v-model="memo"></textarea>
+      <textarea
+        name="memo"
+        cols="40"
+        rows="10"
+        v-model="invoice.memo"
+      ></textarea>
     </fieldset>
     <fieldset>
       <legend>Actions</legend>
@@ -134,65 +112,25 @@ import http from './../http';
 import FormErrors from './form-errors.vue';
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
-import { Item, Project } from './../../models';
-import SelectBankAccount from './select-bank-account.vue';
-import SelectAddress from './select-address.vue';
-import SelectCurrency from './select-currency.vue';
+import { Item, Project, Invoice } from './../../models';
 import SelectClient from './select-client.vue';
 import SelectProject from './select-project.vue';
+import Billing from './billing.vue';
 
 @Component({
   components: {
     FormErrors,
-    SelectBankAccount,
-    SelectAddress,
-    SelectCurrency,
+    SelectProject,
     SelectClient,
-    SelectProject
+    Billing
   }
 })
 export default class AddInvoice extends Vue {
   items: Item[] = [];
-  invoice: Object = {};
-  discount: number = 0;
-  vat: number = 0;
+  invoice: Invoice = new Invoice();
   subTotal: number = 0;
   total: number = 0;
   errors: Array<string> = [];
-  date: string = '';
-  dueDate: string = '';
-  memo: string = '';
-  name: string = '';
-  iban: string = '';
-  userAddressId: string = '';
-  invoiceNumber: number = 0;
-  lastInvoiceNumber: number = 0;
-  currency: string = '';
-  clientId: number = 0;
-  projectId: number = 0;
-
-  created() {
-    this.getLastInvoiceNumber();
-  }
-
-  getLastInvoiceNumber() {
-    http('/api/invoices', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          response.invoices.forEach(invoice => {
-            if (invoice.number > this.lastInvoiceNumber) {
-              this.lastInvoiceNumber = invoice.number;
-            }
-          });
-
-          this.invoiceNumber = this.lastInvoiceNumber + 1;
-        }
-      });
-  }
 
   appendItem(e) {
     e.preventDefault();
@@ -206,12 +144,12 @@ export default class AddInvoice extends Vue {
 
     this.total = this.subTotal;
 
-    if (this.discount > 0) {
-      this.total = this.total - this.discount;
+    if (this.invoice.discount > 0) {
+      this.total = this.total - this.invoice.discount;
     }
 
-    if (this.vat > 0) {
-      this.total = this.total * (1 + this.vat / 100);
+    if (this.invoice.tax > 0) {
+      this.total = this.total * (1 + this.invoice.tax / 100);
     }
   }
 
@@ -219,52 +157,15 @@ export default class AddInvoice extends Vue {
     e.preventDefault();
     this.errors = [];
 
-    if (!this.clientId) {
-      this.errors.push('Client is missing');
-    }
-
-    if (!this.name) {
-      this.errors.push('Title is missing');
-    }
-
-    if (!this.date) {
-      this.errors.push('Date is missing');
-    }
-
-    if (!this.dueDate) {
-      this.errors.push('Due date is missing');
-    }
-
-    if (!this.iban) {
-      this.errors.push('Bank account is missing');
-    }
-
-    if (!this.userAddressId) {
-      this.errors.push('Address is missing');
-    }
+    // TODO: add some invoice check
 
     if (this.items.length === 0) {
       this.errors.push('You should at least add one item');
     }
 
-    if (!this.currency) {
-      this.errors.push('Currency is missing');
-    }
-
     if (this.errors.length === 0) {
       const body = {
-        clientId: this.clientId,
-        projectId: this.projectId,
-        name: this.name,
-        number: this.invoiceNumber,
-        date: this.date,
-        dueDate: this.dueDate,
-        discount: this.discount,
-        vat: this.vat,
-        iban: this.iban,
-        userAddressId: this.userAddressId,
-        memo: this.memo,
-        currency: this.currency,
+        invoice: this.invoice,
         items: this.items
       };
 
