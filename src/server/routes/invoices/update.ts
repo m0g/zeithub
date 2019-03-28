@@ -1,5 +1,5 @@
 import DB from './../../db';
-import { Invoice, Item } from './../../../models';
+import { Invoice, Item } from '../../../lib/models';
 
 const db = new DB();
 

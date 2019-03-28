@@ -1,7 +1,7 @@
 import * as puppeteer from 'puppeteer';
 import * as Vue from 'vue/dist/vue.common.js';
 import DB from './../../db';
-import { Invoice, BankAccount, Item, Client } from './../../../models';
+import { Invoice, BankAccount, Item, Client } from './../../../lib/models';
 import InvoiceInfo from '../../../lib/components/invoice-info';
 import * as ItemsTable from '../../../lib/components/items-table';
 

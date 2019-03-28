@@ -27,6 +27,7 @@
   "dependencies": {
     "bcrypt": "3.0.5",
     "cheerio": "^1.0.0-rc.2",
+    "class-validator": "^0.9.1",
     "cookie-parser": "~1.4.3",
     "db-migrate": "0.11.5",
     "db-migrate-mysql": "^1.1.10",

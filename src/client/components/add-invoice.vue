@@ -111,8 +111,9 @@
 import http from './../http';
 import FormErrors from './form-errors.vue';
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
+import { validate, ValidationError } from 'class-validator';
 
-import { Item, Project, Invoice } from './../../models';
+import { Item, Project, Invoice } from './../../lib/models';
 import SelectClient from './select-client.vue';
 import SelectProject from './select-project.vue';
 import Billing from './billing.vue';
@@ -130,7 +131,7 @@ export default class AddInvoice extends Vue {
   invoice: Invoice = new Invoice();
   subTotal: number = 0;
   total: number = 0;
-  errors: Array<string> = [];
+  errors: ValidationError[] = [];
 
   appendItem(e) {
     e.preventDefault();
@@ -155,9 +156,9 @@ export default class AddInvoice extends Vue {
 
   async createInvoice(e) {
     e.preventDefault();
-    this.errors = [];
 
     // TODO: add some invoice check
+    this.errors = await validate(this.invoice);
 
     if (this.items.length === 0) {
       this.errors.push('You should at least add one item');

@@ -113,7 +113,7 @@ import http from './../http';
 import FormErrors from './form-errors.vue';
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
-import { Item, Project, Invoice } from './../../models';
+import { Item, Project, Invoice } from './../../lib/models';
 import SelectClient from './select-client.vue';
 import SelectProject from './select-project.vue';
 import Billing from './billing.vue';

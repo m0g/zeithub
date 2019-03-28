@@ -60,7 +60,7 @@ import http from './../http';
 import InvoiceInfo from './invoice-info.vue';
 import ItemsTable from './items-table.vue';
 
-import * as M from './../../models';
+import * as M from './../../lib/models';
 
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 

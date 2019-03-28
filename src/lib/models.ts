@@ -1,6 +1,6 @@
-import * as T from './types';
+import { IsNotEmpty } from 'class-validator';
 
-export class Activity implements T.Activity {
+export class Activity {
   name: string = '';
   durationMinutes: number = 0;
   durationDays: number = 0;
@@ -8,32 +8,44 @@ export class Activity implements T.Activity {
   projectSlug: string = '';
 }
 
-export class Invoice implements T.Invoice {
+export class Invoice {
   id: number = 0;
+
+  @IsNotEmpty()
   name: string = '';
+
   tax: number = 0;
   discount: number = 0;
-  rate: number = 0;
   number: number = 0;
+
+  @IsNotEmpty()
   date: string = '';
+
+  @IsNotEmpty()
   dueDate: string = '';
   memo: string = '';
+
+  @IsNotEmpty()
   currencyCode: string = '';
   currencySign: string = '';
   currencyLeading: boolean = false;
+
+  @IsNotEmpty()
   bankAccountId: number = 0;
+
+  @IsNotEmpty()
   userAddressId: number = 0;
   clientId: number = 0;
 }
 
-export class BankAccount implements T.BankAccount {
+export class BankAccount {
   name: string = '';
   owner: string = '';
   iban: string = '';
   bic: string = '';
 }
 
-export class Me implements T.Me {
+export class Me {
   firstName: string = '';
   lastName: string = '';
 }
