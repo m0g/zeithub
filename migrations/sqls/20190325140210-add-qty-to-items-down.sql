@@ -1,3 +1,3 @@
 ALTER TABLE `items`
-RENAME COLUMN `unit_price` TO `amount`,
+CHANGE COLUMN `unit_price` `amount` decimal(15,2),
 DROP COLUMN `qty`;
