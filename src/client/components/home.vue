@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>Konta</h1>
-    <p>v{{version}}</p>
+    <h1>Zeithub</h1>
+    <p>v{{ version }}</p>
   </div>
 </template>
 

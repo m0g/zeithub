@@ -155,6 +155,7 @@ export default class AddInvoice extends Vue {
 
   async createInvoice(e) {
     e.preventDefault();
+    // this.errors = this.invoice.validate();
     this.errors = [];
 
     // TODO: add some invoice check

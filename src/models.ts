@@ -24,6 +24,28 @@ export class Invoice implements T.Invoice {
   bankAccountId: number = 0;
   userAddressId: number = 0;
   clientId: number = 0;
+
+  validate(): string[] {
+    let errors: string[] = [];
+
+    if (this.name.length === 0) {
+      errors.push('Missing name');
+    }
+
+    if (this.date.length === 0) {
+      errors.push('Missing date');
+    }
+
+    if (this.dueDate.length === 0) {
+      errors.push('Missing due date');
+    }
+
+    if (this.currencyCode.length === 0) {
+      errors.push('Missing currency');
+    }
+
+    return errors;
+  }
 }
 
 export class BankAccount implements T.BankAccount {

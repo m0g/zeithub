@@ -13,10 +13,15 @@ export default async (req, res) => {
   }
 
   const userId = req.userId;
-  const invoice: Invoice = req.body.invoice;
+  const invoice: Invoice = req.body.invoice; // TODO: pass it to the constructor
   const items: Item[] = req.body.items;
 
   let invoiceId;
+  let errors: string[] = invoice.validate();
+
+  if (errors.length > 0) {
+    return res.status(403).json({ success: false, errors });
+  }
 
   const isNumberExisting = await db.queryOne(`
     select id
