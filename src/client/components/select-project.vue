@@ -3,7 +3,7 @@
     <select
       name="project"
       @change="onChange($event)"
-      :disabled="projects.length === 0"
+      :disabled="projects.length === 0 || disabled"
     >
       <option value="0">Select a project</option>
       <option
@@ -23,7 +23,7 @@ import { Component, Prop, Watch, Vue, Emit } from 'vue-property-decorator';
 import { Project } from '../../models';
 
 const Props = Vue.extend({
-  props: ['projectId']
+  props: ['projectId', 'disabled']
 });
 
 @Component({})

@@ -2,10 +2,13 @@
   <div>
     <h3>Time tracker</h3>
     <select-project
+      :disabled="isRecording"
       v-bind:value="projectId"
       v-on:projectId="projectId = $event"
     ></select-project>
-    <button v-if="!isRecording" @click="start()">⏺️</button>
+    <button :disabled="projectId === 0" v-if="!isRecording" @click="start()">
+      ⏺️
+    </button>
     <button v-if="isRecording" @click="stop()">⏹️</button>
     <span>{{ (currentTime - startTime) | duration }}</span>
   </div>
