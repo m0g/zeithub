@@ -43,6 +43,7 @@ Vue.filter('iban', value => {
 });
 
 Vue.filter('invoiceNum', number => number.toString().padStart(3, '0'));
+Vue.filter('duration', timestamp => moment.utc(timestamp).format('HH:mm:ss'));
 
 new Vue({
   router,

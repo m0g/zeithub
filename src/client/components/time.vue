@@ -1,6 +1,9 @@
 <template>
   <section>
-    <aside><hamster></hamster></aside>
+    <aside>
+      <time-tracker></time-tracker>
+      <hamster></hamster>
+    </aside>
     <div class="time-tracking">
       <h3>Activities</h3>
       <ul>
@@ -28,9 +31,10 @@ import Component from 'vue-class-component';
 import * as moment from 'moment';
 import Activity from './activity.vue';
 import Hamster from './hamster.vue';
+import TimeTracker from './time-tracker.vue';
 
 @Component({
-  components: { Activity, Hamster }
+  components: { Activity, Hamster, TimeTracker }
 })
 export default class Time extends Vue {
   activityGroups: {} = {};
