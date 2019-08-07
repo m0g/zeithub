@@ -17,7 +17,8 @@
           {{ getTotal(invoice) | currency(invoice) }}
         </td>
         <td class="align-center">
-          <button v-on:click="remove(invoice)">&#x2718;</button>
+          <button @click="downloadPDF(invoice)">Download</button>
+          <button @click="remove(invoice)">&#x2718;</button>
         </td>
       </tr>
     </table>
@@ -26,15 +27,20 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import http from '../http';
+import slugify from 'slugify';
 import Component from 'vue-class-component';
+
+import http from '../http';
+import * as M from './../../models';
 
 @Component({})
 export default class Invoices extends Vue {
   invoices: {}[] = [];
+  me: M.Me = new M.Me();
 
   created() {
     this.getInvoices();
+    this.getMe();
   }
 
   getTotal(invoice) {
@@ -76,6 +82,39 @@ export default class Invoices extends Vue {
       if (data.success) {
         this.getInvoices();
       }
+    }
+  }
+
+  async downloadPDF(invoice) {
+    const title = slugify(invoice.name);
+    const fullName = `${this.me.firstName}-${this.me.lastName}`;
+    const filename = `${invoice.number
+      .toString()
+      .padStart(3, '0')}-${title}-${fullName}.pdf`.toLowerCase();
+
+    const response = await http(`/api/invoices/${invoice.id}/pdf`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    const blob = await response.blob();
+    const file = new Blob([blob], { type: 'application/pdf' });
+    const link = document.createElement('a');
+
+    link.href = window.URL.createObjectURL(file);
+    link.download = filename;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  async getMe() {
+    const response = await http('/api/me');
+    const data = await response.json();
+
+    if (data.success) {
+      this.me = data.me;
     }
   }
 }
