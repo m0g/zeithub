@@ -42,8 +42,9 @@
           <td>
             <input
               type="number"
-              min="1"
+              min="0.1"
               max="999"
+              step="0.1"
               v-model="item.qty"
               @keyup="computeTotal"
             />
