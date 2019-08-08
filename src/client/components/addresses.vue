@@ -3,10 +3,12 @@
     <legend>Addresses</legend>
     <add-address :get-addresses="getAddresses"></add-address>
     <ul>
-      <li v-for="ad in addresses" :key="ad.id">
-        <b>{{ad.name}}</b> {{ad.street}}, {{ad.postcode}} {{ad.city}}, {{ad.country}}
-        <button v-on:click="deleteAddress(ad.id)">&#x2718;</button>
-      </li>
+      <address-info
+        :address="address"
+        :get-addresses="getAddresses"
+        v-for="address in addresses"
+        :key="address.id"
+      ></address-info>
     </ul>
   </fieldset>
 </template>
@@ -16,9 +18,10 @@ import Vue from 'vue';
 import http from '../http';
 import Component from 'vue-class-component';
 import AddAddress from './add-address.vue';
+import AddressInfo from './address-info.vue';
 
 @Component({
-  components: { AddAddress }
+  components: { AddAddress, AddressInfo }
 })
 export default class Addresses extends Vue {
   addresses: {}[] = [];
@@ -27,30 +30,18 @@ export default class Addresses extends Vue {
     this.getAddresses();
   }
 
-  getAddresses() {
-    http('/api/addresses', {
+  async getAddresses() {
+    const response = await http('/api/addresses', {
       headers: { 'Content-Type': 'application/json' },
       method: 'GET'
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          this.addresses = response.addresses;
-        }
-      });
-  }
+    });
 
-  deleteAddress(id) {
-    http(`/api/addresses/${id}`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'DELETE'
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success) {
-          this.getAddresses();
-        }
-      });
+    const data = await response.json();
+
+    if (data.success) {
+      this.addresses = data.addresses;
+      console.log(data.addresses);
+    }
   }
 }
 </script>
