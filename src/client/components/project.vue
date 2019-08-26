@@ -1,12 +1,12 @@
 <template>
   <section>
-    <h1>{{project.name}}</h1>
+    <h1>{{ project.name }}</h1>
     <aside>
       <project-filters :get-project="getProject"></project-filters>
       <project-client></project-client>
       <fieldset>
         <legend>Stats</legend>
-        <p><b>Total time:</b> {{stats.durationMinutes | totalHours}} hours</p>
+        <p><b>Total time:</b> {{ stats.durationMinutes | totalHours }} hours</p>
       </fieldset>
       <generate-invoice></generate-invoice>
     </aside>
@@ -14,12 +14,16 @@
       <legend>Time tracking</legend>
       <ul>
         <li v-for="(activities, date) in activityGroups" :key="date">
-          <p><b>{{date}}</b></p>
+          <p>
+            <b>{{ date }}</b>
+          </p>
           <ul>
-            <activity 
-              v-for="activity in activities" 
-              :key="activity.id" 
-              :activity="activity"></activity>
+            <activity
+              v-for="activity in activities"
+              :key="activity.id"
+              :get-activities="getProject"
+              :activity="activity"
+            ></activity>
           </ul>
         </li>
       </ul>
@@ -104,7 +108,6 @@ export default class Project extends Vue implements WithRoute {
   }
 }
 </script>
-
 
 <style scoped>
 section {

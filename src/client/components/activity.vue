@@ -21,7 +21,7 @@ import Component from 'vue-class-component';
 import http from '../http';
 
 const Props = Vue.extend({
-  props: ['activity']
+  props: ['activity', 'getActivities']
 });
 
 @Component({})
@@ -36,7 +36,7 @@ export default class Activity extends Props {
       const data = await response.json();
 
       if (data.success) {
-        // this.getClients();
+        this.getActivities();
       }
     }
   }

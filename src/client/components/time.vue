@@ -17,6 +17,7 @@
               v-for="activity in activities"
               :key="activity.id"
               :activity="activity"
+              :get-activities="getActivities"
             ></activity>
           </ul>
         </li>
@@ -42,9 +43,14 @@ export default class Time extends Vue {
   activityGroups: {} = {};
 
   created() {
-    http('/api/activities')
-      .then(response => response.json())
-      .then(this.groupByDate);
+    this.getActivities();
+  }
+
+  async getActivities() {
+    const response = await http('/api/activities');
+    const data = await response.json();
+
+    this.groupByDate(data);
   }
 
   groupByDate({ activities }) {
