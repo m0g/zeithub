@@ -47,7 +47,7 @@ export default class Time extends Vue {
       .then(this.groupByDate);
   }
 
-  groupByDate(activities) {
+  groupByDate({ activities }) {
     let activityGroups = {};
     activities.forEach(activity => {
       const date = moment(activity.startTime).format('dddd, Do MMMM YYYY');

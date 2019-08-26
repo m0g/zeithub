@@ -1,14 +1,12 @@
-const express = require('express');
+import DB from './../../db';
 
-const DB = require('./../db').default;
-const verifyToken = require('./../verify-token').default;
-
-const router = express.Router();
 const db = new DB();
 
-router.get('/', verifyToken, async (req, res) => {
+export default async (req, res) => {
+  let activities;
+
   try {
-    const activities = await db.query(`
+    activities = await db.query(`
       select 
         a.id, 
         a.name, 
@@ -22,11 +20,19 @@ router.get('/', verifyToken, async (req, res) => {
       where a.user_id = ${req.userId}
       order by a.start_time asc
     `);
-
-    res.json(activities);
   } catch (error) {
-    res.status(500).json({ success: false, error });
+    return res.status(500).json({
+      success: false,
+      message: 'Error on select',
+      error
+    });
   }
-});
 
-module.exports = router;
+  if (activities) {
+    return res.json({ success: true, activities });
+  }
+
+  return res
+    .status(500)
+    .json({ success: false, message: 'Activities not found' });
+};
