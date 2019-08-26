@@ -16,9 +16,7 @@
         <input type="date" placeholder="End Date" v-model="item.endDate" />
         <input type="time" placeholder="End time" v-model="item.endTime" />
       </div>
-      <div>
-        Duration: {{ getDuration() }} {{ projectId }} {{ item.projectId }}
-      </div>
+      <div>Duration: {{ getDuration() }}</div>
       <select-project
         v-if="!this.projectId"
         v-bind:projectId="item.projectId"
@@ -46,7 +44,7 @@ interface Item {
   projectId: number;
 }
 const Props = Vue.extend({
-  props: ['projectId']
+  props: ['projectId', 'getActivities']
 });
 
 @Component({
@@ -120,7 +118,15 @@ export default class AddExpense extends Props {
       const data = await response.json();
 
       if (data.success === true) {
-        console.log('done');
+        this.getActivities();
+        this.item = {
+          name: '',
+          startDate: '',
+          startTime: '',
+          endDate: '',
+          endTime: '',
+          projectId: 0
+        };
       }
     }
   }

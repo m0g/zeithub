@@ -2,7 +2,7 @@
   <section>
     <aside>
       <time-tracker></time-tracker>
-      <add-activity></add-activity>
+      <add-activity :get-activities="getActivities"></add-activity>
       <hamster></hamster>
     </aside>
     <div class="time-tracking">

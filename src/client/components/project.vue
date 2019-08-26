@@ -8,7 +8,10 @@
         <p><b>Total time:</b> {{ stats.durationMinutes | totalHours }} hours</p>
       </div>
       <generate-invoice></generate-invoice>
-      <add-activity :project-id="project.id"></add-activity>
+      <add-activity
+        :get-activities="getProject"
+        :project-id="project.id"
+      ></add-activity>
     </aside>
     <div class="project">
       <h1>{{ project.name }}</h1>
