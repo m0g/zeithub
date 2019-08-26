@@ -1,17 +1,17 @@
 <template>
   <section>
-    <h1>{{ project.name }}</h1>
     <aside>
       <project-filters :get-project="getProject"></project-filters>
       <project-client></project-client>
-      <fieldset>
-        <legend>Stats</legend>
+      <div>
+        <h3>Stats</h3>
         <p><b>Total time:</b> {{ stats.durationMinutes | totalHours }} hours</p>
-      </fieldset>
+      </div>
       <generate-invoice></generate-invoice>
+      <add-activity :project-id="project.id"></add-activity>
     </aside>
-    <fieldset class="time-tracking">
-      <legend>Time tracking</legend>
+    <div class="project">
+      <h1>{{ project.name }}</h1>
       <ul>
         <li v-for="(activities, date) in activityGroups" :key="date">
           <p>
@@ -27,7 +27,7 @@
           </ul>
         </li>
       </ul>
-    </fieldset>
+    </div>
   </section>
 </template>
 
@@ -37,6 +37,7 @@ import Component from 'vue-class-component';
 import http from '../http';
 import * as moment from 'moment';
 import Activity from './activity.vue';
+import AddActivity from './add-activity.vue';
 import ProjectFilters from './project-filters.vue';
 import GenerateInvoice from './generate-invoice.vue';
 import ProjectClient from './project-client.vue';
@@ -49,6 +50,7 @@ interface WithRoute {
 @Component({
   components: {
     Activity,
+    AddActivity,
     ProjectFilters,
     GenerateInvoice,
     ProjectClient
@@ -113,20 +115,23 @@ export default class Project extends Vue implements WithRoute {
 section {
   display: flex;
   flex-flow: row wrap;
-  min-height: 100%;
-  height: 100%;
-}
-
-section h1 {
-  flex: 1 100%;
-  margin: 0 0 10px;
+  height: calc(100% - 59px);
 }
 
 section aside {
   flex: 1;
+  border-right: 1px dotted black;
 }
 
-section fieldset.time-tracking {
+section aside div {
+  border-bottom: 1px dotted black;
+  padding: 10px;
+}
+
+section .project {
   flex: 3;
+  padding: 10px;
+  overflow-y: auto;
+  max-height: 100%;
 }
 </style>

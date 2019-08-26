@@ -1,15 +1,17 @@
 <template>
-  <fieldset>
-    <legend>Generate invoice</legend>
+  <div>
+    <h3>Generate invoice</h3>
     <form method="POST" @submit="generate">
       <form-errors :errors="errors"></form-errors>
-      <p><input type="text" placeholder="Title" v-model="name"></p>
-      <p><input type="number" placeholder="Hourly rate" v-model="hourlyRate" /></p>
+      <p><input type="text" placeholder="Title" v-model="name" /></p>
+      <p>
+        <input type="number" placeholder="Hourly rate" v-model="hourlyRate" />
+      </p>
       <select-address
         v-bind:value="userAddressId"
         v-on:userAddressId="userAddressId = $event"
       ></select-address>
-      <select-bank-account 
+      <select-bank-account
         v-bind:value="iban"
         v-on:iban="iban = $event"
       ></select-bank-account>
@@ -19,7 +21,7 @@
       ></select-currency>
       <p><input type="submit" value="Generate Invoice" /></p>
     </form>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">

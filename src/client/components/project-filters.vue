@@ -1,13 +1,9 @@
 <template>
-  <fieldset>
-      <legend>Filters</legend>
-      <label for="month">Filter by month</label>
-      <input
-        id="month"
-        @change="filterByMonth"
-        type="month" 
-        v-model="month" />
-  </fieldset>
+  <div>
+    <h3>Filters</h3>
+    <label for="month">Filter by month</label>
+    <input id="month" @change="filterByMonth" type="month" v-model="month" />
+  </div>
 </template>
 
 <script lang="ts">

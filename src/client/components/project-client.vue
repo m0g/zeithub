@@ -1,26 +1,28 @@
 <template>
-  <fieldset>
-    <legend>Client</legend>
-    <select 
-      @change="updateClient(client)" 
-      name="client" 
-      v-model="client.id" 
-      :disabled="clients.length === 0">
+  <div>
+    <h3>Client</h3>
+    <select
+      @change="updateClient(client)"
+      name="client"
+      v-model="client.id"
+      :disabled="clients.length === 0"
+    >
       <option value="">Select a client</option>
-      <option 
-        v-for="client in clients" 
-        :key="client.id" 
-        :value="client.id">{{client.name}}</option>
+      <option v-for="client in clients" :key="client.id" :value="client.id">{{
+        client.name
+      }}</option>
     </select>
-    <p v-if="exists">{{client.name}}</p>
+    <p v-if="exists">{{ client.name }}</p>
     <p v-if="!exists">Client does not exists</p>
-    <p v-if="!exists"><button v-on:click="showForm = true">Create one</button></p>
+    <p v-if="!exists">
+      <button v-on:click="showForm = true">Create one</button>
+    </p>
     <form action="" v-if="showForm" @submit="createClient">
       <form-errors :errors="errors"></form-errors>
       <input type="text" name="name" v-model="name" />
       <input type="submit" value="Add" />
     </form>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">
