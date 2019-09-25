@@ -22,3 +22,14 @@ The app is now available at http://localhost:3000
 ```bash
 npx db-migrate create --config config/database.json my-fancy-migration --sql-file
 ```
+
+## Prod installation with Docker
+
+As prerequesites, you will need docker and docker-compose.
+
+```
+mkdir ~/zeithub
+cd ~/zeithub
+wget https://raw.githubusercontent.com/m0g/zeithub/master/docker-compose.yml
+docker-compose up -d
+```

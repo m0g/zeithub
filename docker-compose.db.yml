@@ -10,7 +10,7 @@ services:
       MYSQL_PASSWORD: zeithub
       MYSQL_DATABASE: zeithub
     volumes:
-      - ./db-data:/var/lib/mysql
+      - ./docker/mysql:/var/lib/mysql
     ports:
       - '3306:3306'
     expose:

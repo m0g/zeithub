@@ -1,4 +1,4 @@
-FROM node:10.15.1
+FROM node:12.10.0-alpine
 # Create app directory
 WORKDIR /usr/src/app
 
@@ -7,6 +7,8 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
+RUN apk --no-cache add g++ gcc libgcc libstdc++ linux-headers make python
+RUN npm install --quiet node-gyp -g
 RUN npm install
 
 # Bundle app source
