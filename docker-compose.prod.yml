@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+  zeithub:
+    image: m0gd0ck/zeithub:latest
+    container_name: zeithub
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: zeithub
+      DB_NAME: zeithub
+      DB_PASSWD: zeithub
+      JWT_SECRET: yoursecretaintsecret
+      NODE_ENV: production
+      PORT: 80
+    ports:
+      - 80:80
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: zeithub
+      MYSQL_USER: zeithub
+      MYSQL_PASSWORD: zeithub
+      MYSQL_DATABASE: zeithub
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
