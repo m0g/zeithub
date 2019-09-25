@@ -4,11 +4,12 @@ services:
   zeithub:
     image: m0gd0ck/zeithub:latest
     container_name: zeithub
+    restart: always
     depends_on:
       - db
     environment:
       DB_HOST: db
-      DB_USER: zeithub
+      DB_USER: root
       DB_NAME: zeithub
       DB_PASSWD: zeithub
       JWT_SECRET: yoursecretaintsecret
@@ -17,8 +18,9 @@ services:
     ports:
       - 80:80
   db:
-    image: mysql
+    image: mysql:8
     restart: always
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: zeithub
       MYSQL_USER: zeithub
@@ -26,7 +28,5 @@ services:
       MYSQL_DATABASE: zeithub
     volumes:
       - ./docker/mysql:/var/lib/mysql
-    ports:
-      - '3306:3306'
     expose:
       - '3306'
