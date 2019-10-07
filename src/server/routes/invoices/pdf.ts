@@ -1,4 +1,4 @@
-import * as puppeteer from 'puppeteer';
+import * as puppeteer from 'puppeteer-core';
 import * as Vue from 'vue/dist/vue.common.js';
 import DB from './../../db';
 import { Invoice, BankAccount, Item, Client } from './../../../models';
@@ -200,6 +200,7 @@ export default async (req, res) => {
 
   const html = await renderer.renderToString(app);
   const browser = await puppeteer.launch({
+    executablePath: process.env.CHROME_BIN,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   const page = await browser.newPage();

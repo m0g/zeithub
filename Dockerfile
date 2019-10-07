@@ -7,13 +7,23 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
+# Installs latest Chromium package.
+RUN apk add --no-cache \
+      chromium=72.0.3626.121-r0 \
+      nss \
+      freetype \
+      freetype-dev \
+      harfbuzz \
+      ca-certificates \
+      ttf-freefont
+
 RUN apk --no-cache add g++ gcc libgcc libstdc++ linux-headers make python
 RUN npm install --quiet node-gyp -g
 RUN npm install
 
 # Bundle app source
 COPY . .
-ENV NODE_ENV=production
+ENV NODE_ENV=production CHROME_BIN="/usr/bin/chromium-browser"
 RUN npm run build
 RUN npm prune
 EXPOSE 3000
