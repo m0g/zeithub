@@ -35,7 +35,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import http from './../http';
 import FormErrors from './form-errors.vue';
 import SelectProject from './select-project.vue';
@@ -69,11 +69,22 @@ export default class AddExpense extends Props {
   };
 
   getDuration() {
-    const start = moment(`${this.item.startDate} ${this.item.startTime}`);
-    const end = moment(`${this.item.endDate} ${this.item.endTime}`);
-    const duration = moment.duration(end.diff(start));
+    if (
+      this.item.startDate &&
+      this.item.startTime &&
+      this.item.endDate &&
+      this.item.endTime
+    ) {
+      const start = DateTime.fromISO(
+        `${this.item.startDate}T${this.item.startTime}`
+      );
+      const end = DateTime.fromISO(`${this.item.endDate}T${this.item.endTime}`);
+      const duration = end.diff(start);
 
-    return duration.asMinutes() || 0;
+      return duration.as('minutes');
+    }
+
+    return 0;
   }
 
   // By default end date takes the same value as start date.

@@ -38,7 +38,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
-import * as moment from 'moment';
+// import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import Activity from './activity.vue';
 import AddActivity from './add-activity.vue';
 import ProjectFilters from './project-filters.vue';
@@ -100,7 +101,7 @@ export default class Project extends Vue implements WithRoute {
     let activityGroups: {} = {};
 
     activities.forEach(activity => {
-      const date = moment(activity.startTime).format('dddd, Do MMMM YYYY');
+      const date = DateTime.fromISO(activity.startTime).toFormat('DDDD');
 
       if (!activityGroups[date]) {
         activityGroups[date] = [];
