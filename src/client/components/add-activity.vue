@@ -80,6 +80,8 @@ export default class AddExpense extends Props {
       );
       const end = DateTime.fromISO(`${this.item.endDate}T${this.item.endTime}`);
       const duration = end.diff(start);
+      console.log(start.toISO());
+      console.log(start.toUTC().toISO());
 
       return duration.as('minutes');
     }
@@ -127,13 +129,17 @@ export default class AddExpense extends Props {
     }
 
     if (this.errors.length === 0) {
+      const start = DateTime.fromISO(
+        `${this.item.startDate}T${this.item.startTime}`
+      );
+      const end = DateTime.fromISO(`${this.item.endDate}T${this.item.endTime}`);
       const response = await http('/api/activities', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: this.item.name,
-          start: `${this.item.startDate} ${this.item.startTime}`,
-          end: `${this.item.endDate} ${this.item.endTime}`,
+          start: start.toISO(),
+          end: end.toISO(),
           projectId: this.item.projectId
         })
       });

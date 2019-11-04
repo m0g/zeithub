@@ -1,7 +1,8 @@
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import DB from './../../db';
 
 const db = new DB();
+const dateFormat = 'yyyy-MM-dd hh:mm:ss';
 
 export default async (req, res) => {
   for (const attr of ['name', 'start', 'end', 'projectId']) {
@@ -12,9 +13,13 @@ export default async (req, res) => {
     }
   }
 
+  console.log(DateTime.local().offset);
   const { name, start, end, projectId } = req.body;
-  const duration = moment.duration(moment(end).diff(moment(start)));
+  const startDate = DateTime.fromISO(start).toUTC();
+  const endDate = DateTime.fromISO(end).toUTC();
+  const duration = endDate.diff(startDate);
 
+  console.log(startDate.toFormat(dateFormat));
   try {
     await db.execute(
       `
@@ -28,7 +33,14 @@ export default async (req, res) => {
           user_id
         ) values (?, '', ?, ?, ?, ?, ?)
       `,
-      [name, duration.asMinutes(), start, end, projectId, req.userId]
+      [
+        name,
+        duration.as('minutes'),
+        startDate.toFormat(dateFormat),
+        endDate.toFormat(dateFormat),
+        projectId,
+        req.userId
+      ]
     );
   } catch (err) {
     return res
