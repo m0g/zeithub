@@ -8,7 +8,12 @@
       </div>
       <div>
         <label>Start</label>
-        <input type="date" placeholder="Start date" v-model="item.startDate" />
+        <input
+          type="date"
+          placeholder="Start date"
+          v-model="item.startDate"
+          @change="updateEndDate()"
+        />
         <input type="time" placeholder="Start time" v-model="item.startTime" />
       </div>
       <div>
@@ -69,6 +74,13 @@ export default class AddExpense extends Props {
     const duration = moment.duration(end.diff(start));
 
     return duration.asMinutes() || 0;
+  }
+
+  // By default end date takes the same value as start date.
+  updateEndDate() {
+    if (this.item.endDate === '') {
+      this.item.endDate = this.item.startDate;
+    }
   }
 
   async addActivity(e) {
