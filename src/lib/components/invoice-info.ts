@@ -12,11 +12,11 @@ export default Vue.component('invoice-info', {
       </tr>
       <tr>
         <td>Date</td>
-        <td>{{invoice.date | formatDate('DD/MM/YYYY')}}</td>
+        <td>{{invoice.date | formatDate('dd/MM/yyyy')}}</td>
       </tr>
       <tr>
         <td>Due date</td>
-        <td>{{invoice.dueDate | formatDate('DD/MM/YYYY')}}</td>
+        <td>{{invoice.dueDate | formatDate('dd/MM/yyyy')}}</td>
       </tr>
     </table>
   `

@@ -1,9 +1,15 @@
 import * as Vue from 'vue/dist/vue.common.js';
 import { DateTime } from 'luxon';
 
-Vue.filter('formatDate', (date, format = 'MMMM cccc yyyy, HH:mm:ss') =>
-  DateTime.fromISO(date).toFormat(format)
-);
+// For some reason, when parsing the date from Puppeteer,
+// the date ends up a JS date object rather than a string
+// Hence the type check in the function
+Vue.filter('formatDate', (date, format = 'MMMM cccc yyyy, HH:mm:ss') => {
+  if (typeof date === 'object') {
+    return DateTime.fromJSDate(date).toFormat(format);
+  }
+  return DateTime.fromISO(date).toFormat(format);
+});
 
 Vue.filter('currency', (amount, invoice) => {
   if (invoice.currencyLeading) {

@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import DB from './../../db';
 
 const db = new DB();
-const dateFormat = 'yyyy-MM-dd hh:mm:ss';
+const dateFormat = 'yyyy-MM-dd HH:mm:ss';
 
 export default async (req, res) => {
   for (const attr of ['name', 'start', 'end', 'projectId']) {
