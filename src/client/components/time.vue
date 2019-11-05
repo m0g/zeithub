@@ -30,7 +30,7 @@
 import Vue from 'vue';
 import http from '../http';
 import Component from 'vue-class-component';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import Activity from './activity.vue';
 import Hamster from './hamster.vue';
 import TimeTracker from './time-tracker.vue';
@@ -56,7 +56,7 @@ export default class Time extends Vue {
   groupByDate({ activities }) {
     let activityGroups = {};
     activities.forEach(activity => {
-      const date = moment(activity.startTime).format('dddd, Do MMMM YYYY');
+      const date = DateTime.fromISO(activity.startTime).toFormat('DDDD');
 
       if (!activityGroups[date]) {
         activityGroups[date] = [];

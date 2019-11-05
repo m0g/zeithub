@@ -1,31 +1,32 @@
-import * as moment from "moment";
-import DB from "./../../db";
+import { DateTime } from 'luxon';
+import DB from './../../db';
 
+const dateFormat = 'yyyy-MM-dd';
 const db = new DB();
 
 export default async (req, res) => {
   if (!req.body.name) {
-    return res.status(403).json({ success: false, message: "Missing name" });
+    return res.status(403).json({ success: false, message: 'Missing name' });
   }
 
   if (!req.body.hourlyRate) {
     return res
       .status(403)
-      .json({ success: false, message: "Missing hourly rate" });
+      .json({ success: false, message: 'Missing hourly rate' });
   }
 
   if (!req.body.month) {
-    return res.status(403).json({ success: false, message: "Missing month" });
+    return res.status(403).json({ success: false, message: 'Missing month' });
   }
 
   if (!req.body.projectSlug) {
-    return res.status(403).json({ success: false, message: "Missing project" });
+    return res.status(403).json({ success: false, message: 'Missing project' });
   }
 
   if (!req.body.iban) {
     return res
       .status(403)
-      .json({ success: false, message: "Missing bank account" });
+      .json({ success: false, message: 'Missing bank account' });
   }
 
   if (!req.body.userAddressId) {
@@ -37,7 +38,7 @@ export default async (req, res) => {
   if (!req.body.currency) {
     return res
       .status(403)
-      .json({ success: false, message: "Missing currency" });
+      .json({ success: false, message: 'Missing currency' });
   }
 
   const userId = req.userId;
@@ -50,7 +51,7 @@ export default async (req, res) => {
     currency
   } = req.body;
 
-  const [year, month] = req.body.month.split("-");
+  const [year, month] = req.body.month.split('-');
 
   try {
     const project = await db.queryOne(`
@@ -62,7 +63,7 @@ export default async (req, res) => {
     if (!project) {
       return res
         .status(500)
-        .json({ success: false, message: "Project does not exists" });
+        .json({ success: false, message: 'Project does not exists' });
     }
 
     const bankAccount = await db.queryOne(`
@@ -71,9 +72,10 @@ export default async (req, res) => {
       where user_id = ${userId} and iban = '${iban}'
     `);
 
-    const dueDate = moment()
-      .add(1, "month")
-      .format("YYYY-MM-DD");
+    const dueDate = DateTime.local()
+      .plus({ months: 1 })
+      .toFormat(dateFormat);
+
     let number = 1;
 
     const lastInvoice = await db.queryOne(`
@@ -133,7 +135,7 @@ export default async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Error on insert",
+      message: 'Error on insert',
       error
     });
   }

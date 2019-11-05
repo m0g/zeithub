@@ -1,12 +1,12 @@
 import Vue from 'vue';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 
 import App from './components/app.vue';
 import router from './router';
 
 // Duplication of filters with filter.ts
-Vue.filter('formatDate', (date, format = 'MMMM Do YYYY, h:mm:ss a') =>
-  moment(date).format(format)
+Vue.filter('formatDate', (date, format = 'MMMM cccc yyyy, HH:mm:ss') =>
+  DateTime.fromISO(date).toFormat(format)
 );
 
 Vue.filter(
@@ -22,13 +22,6 @@ Vue.filter(
 
 Vue.filter('percentage', amount => `${parseFloat(amount).toFixed(2)}%`);
 
-Vue.filter('formatHours', minutes =>
-  moment()
-    .startOf('day')
-    .add(minutes, 'minutes')
-    .format('HH:mm')
-);
-
 Vue.filter(
   'totalHours',
   minutes =>
@@ -43,7 +36,10 @@ Vue.filter('iban', value => {
 });
 
 Vue.filter('invoiceNum', number => number.toString().padStart(3, '0'));
-Vue.filter('duration', timestamp => moment.utc(timestamp).format('HH:mm:ss'));
+
+Vue.filter('duration', timestamp =>
+  DateTime.fromSeconds(timestamp).toFormat('HH:mm:ss')
+);
 
 new Vue({
   router,

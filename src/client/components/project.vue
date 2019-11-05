@@ -38,7 +38,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
-// import * as moment from 'moment';
 import { DateTime } from 'luxon';
 import Activity from './activity.vue';
 import AddActivity from './add-activity.vue';
