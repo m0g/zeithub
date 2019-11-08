@@ -1,6 +1,10 @@
-<!-- [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy) -->
-
 # Zeithub
+
+![](zeithub.png)
+
+## Introduction
+
+Zeithub is an open source time tracking, invoicing & expenses management for freelancers.
 
 ## Installation
 
