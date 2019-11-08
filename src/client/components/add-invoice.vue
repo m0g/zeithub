@@ -133,6 +133,37 @@ export default class AddInvoice extends Vue {
   total: number = 0;
   errors: Array<string> = [];
 
+  created() {
+    window.addEventListener('beforeunload', this.storeForm);
+    this.retrieveForm();
+  }
+
+  retrieveForm() {
+    const json = localStorage.getItem('newInvoice');
+
+    if (json) {
+      const data = JSON.parse(json);
+
+      if (data.invoice) {
+        this.invoice = data.invoice;
+      }
+
+      if (data.items) {
+        this.items = data.items;
+      }
+    }
+  }
+
+  storeForm() {
+    localStorage.setItem(
+      'newInvoice',
+      JSON.stringify({
+        invoice: this.invoice,
+        items: this.items
+      })
+    );
+  }
+
   appendItem(e) {
     e.preventDefault();
     this.items.push(new Item());
@@ -159,7 +190,6 @@ export default class AddInvoice extends Vue {
     this.errors = [];
 
     // TODO: add some invoice check
-
     if (this.items.length === 0) {
       this.errors.push('You should at least add one item');
     }
