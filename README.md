@@ -34,6 +34,6 @@ As prerequesites, you will need docker and docker-compose.
 ```
 mkdir ~/zeithub
 cd ~/zeithub
-wget https://raw.githubusercontent.com/m0g/zeithub/master/docker-compose.yml
+wget https://raw.githubusercontent.com/m0g/zeithub/master/docker-compose.prod.yml docker-compose.yml
 docker-compose up -d
 ```
