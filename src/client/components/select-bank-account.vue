@@ -33,7 +33,7 @@ export default class SelectBankAccount extends Props {
 
   @Emit('bankAccountId')
   onChange(e) {
-    return e.target.value;
+    return parseInt(e.target.value);
   }
 
   async getBankAccounts() {

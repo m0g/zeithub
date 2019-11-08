@@ -38,7 +38,7 @@ export default class SelectClient extends Props {
 
   @Emit('clientId')
   onChange(e) {
-    return e.target.value;
+    return parseInt(e.target.value);
   }
 
   async getClients() {

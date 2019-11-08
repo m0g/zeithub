@@ -29,7 +29,7 @@ export default class SelectBankAccount extends Props {
 
   @Emit('userAddressId')
   onChange(e) {
-    return e.target.value;
+    return parseInt(e.target.value);
   }
 
   created() {

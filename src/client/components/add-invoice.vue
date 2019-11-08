@@ -144,6 +144,7 @@ export default class AddInvoice extends Vue {
     if (json) {
       const data = JSON.parse(json);
 
+      console.log('retrieve form', data.invoice.bankAccountId);
       if (data.invoice) {
         this.invoice = data.invoice;
       }
