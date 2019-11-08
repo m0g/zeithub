@@ -144,18 +144,19 @@ export default class AddInvoice extends Vue {
     if (json) {
       const data = JSON.parse(json);
 
-      console.log('retrieve form', data.invoice.bankAccountId);
       if (data.invoice) {
         this.invoice = data.invoice;
       }
 
       if (data.items) {
         this.items = data.items;
+        this.computeTotal(); // Otherwise totals will remain at 0
       }
     }
   }
 
   storeForm() {
+    console.log('store form');
     localStorage.setItem(
       'newInvoice',
       JSON.stringify({
@@ -210,6 +211,11 @@ export default class AddInvoice extends Vue {
       const data = await response.json();
 
       if (data.success && data.invoiceId) {
+        this.invoice = new Invoice();
+        this.items = [];
+
+        localStorage.setItem('newInvoice', '{}');
+
         this.$router.push({
           name: 'Invoice',
           params: { id: data.invoiceId }
