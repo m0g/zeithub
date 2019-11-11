@@ -34,6 +34,12 @@ As prerequesites, you will need docker and docker-compose.
 ```
 mkdir ~/zeithub
 cd ~/zeithub
-wget https://raw.githubusercontent.com/m0g/zeithub/master/docker-compose.prod.yml docker-compose.yml
+wget -O docker-compose.yml https://raw.githubusercontent.com/m0g/zeithub/master/docker-compose.prod.yml 
 docker-compose up -d
+```
+
+then we need to populate the database:
+
+```
+docker-compose exec zeithub npm run db:up
 ```

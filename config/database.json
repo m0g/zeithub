@@ -2,6 +2,7 @@
   "dev": {
     "driver": "mysql",
     "multipleStatements": true,
+    "host": { "ENV": "DB_HOST" },
     "user": { "ENV": "DB_USER" },
     "password": { "ENV": "DB_PASSWD" },
     "database": { "ENV": "DB_NAME" }
