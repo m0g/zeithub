@@ -42,15 +42,8 @@ Vue.filter('duration', timestamp =>
   DateTime.fromSeconds(timestamp).toFormat('HH:mm:ss')
 );
 
-// new Vue({
-//   { router, vuetify },
-//   el: '#app',
-//   template: '<App/>',
-//   components: { App }
-// });
-
 new Vue({
-  router,
   vuetify,
+  router,
   render: h => h(App)
 }).$mount('#app');

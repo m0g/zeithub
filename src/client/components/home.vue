@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <v-card>
     <h1>Konta</h1>
-    <p>v{{version}}</p>
-  </div>
+    <p>v{{ version }}</p>
+  </v-card>
 </template>
 
 <script lang="ts">

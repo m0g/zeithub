@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
 
 module.exports = {
   entry: ['./src/client/index.ts'],
@@ -63,7 +64,8 @@ module.exports = {
   },
   plugins: [
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new VuetifyLoaderPlugin()
   ],
   node: {
     fs: 'empty'

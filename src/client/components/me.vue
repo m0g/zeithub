@@ -1,10 +1,10 @@
 <template>
-  <section>
+  <v-card>
     <personal-info :me="me" :get-me="getMe"></personal-info>
     <addresses></addresses>
     <bank-accounts></bank-accounts>
     <change-password></change-password>
-  </section>
+  </v-card>
 </template>
 
 <script lang="ts">

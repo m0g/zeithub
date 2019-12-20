@@ -1,19 +1,142 @@
 <template>
-  <div id="app">
-    <header>
-      <router-link id="app-name" to="/">Zeithub</router-link>
-      <router-link to="/time" v-if="isLoggedIn">Time Tracking</router-link>
-      <router-link to="/projects" v-if="isLoggedIn">Projects</router-link>
-      <router-link to="/clients" v-if="isLoggedIn">Clients</router-link>
-      <router-link to="/expenses" v-if="isLoggedIn">Expenses</router-link>
-      <router-link to="/invoices" v-if="isLoggedIn">Invoices</router-link>
-      <router-link to="/me" v-if="isLoggedIn">Profile</router-link>
-      <router-link to="/signin" v-if="!isLoggedIn">Sign-in</router-link>
-      <router-link to="/signup" v-if="!isLoggedIn">Sign-up</router-link>
-      <router-link to="/signout" v-if="isLoggedIn">Sign-out</router-link>
-    </header>
-    <router-view id="router-view"></router-view>
-  </div>
+  <v-app>
+    <v-navigation-drawer permanent app clipped class="transparent" floating>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            Zeithub
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            subtext
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list dense nav>
+        <router-link to="/time" v-if="isLoggedIn">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-view-dashboard</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                Time Tracking
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
+        <router-link to="/projects" v-if="isLoggedIn">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-view-dashboard</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                Projects
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
+        <router-link to="/clients" v-if="isLoggedIn">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-view-dashboard</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                Clients
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
+        <router-link to="/expenses" v-if="isLoggedIn">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-view-dashboard</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                Expenses
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
+        <router-link to="/invoices" v-if="isLoggedIn">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-view-dashboard</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                Invoices
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
+        <router-link to="/me" v-if="isLoggedIn">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-view-dashboard</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                Profile
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
+        <router-link to="/signin" v-if="!isLoggedIn">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-view-dashboard</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                Sign-in
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
+        <router-link to="/signup" v-if="!isLoggedIn">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-view-dashboard</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                Sign-up
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
+        <router-link to="/signout" v-if="isLoggedIn">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-view-dashboard</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                Sign-out
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
+      </v-list>
+    </v-navigation-drawer>
+    <v-content>
+      <v-container fluid>
+        <router-view id="router-view"></router-view>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script lang="ts">
@@ -38,54 +161,3 @@ export default class App extends Vue {
   }
 }
 </script>
-
-<style>
-html,
-body,
-#app {
-  font-family: arial;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
-
-#app-name {
-  color: #ff7979;
-}
-
-header {
-  margin-bottom: 0;
-  padding: 10px 15px;
-  border-bottom: 1px dotted black;
-}
-
-header a {
-  color: black;
-  margin: 0 5px;
-}
-
-.router-link-exact-active {
-  color: white;
-  background: black;
-}
-
-#router-view {
-  margin: 0;
-  padding: 0;
-}
-
-h3 {
-  margin-top: 0;
-}
-
-a {
-  color: black;
-}
-
-@media only screen and (max-width: 480px) {
-  /* header a:not(#app-name) {
-    display: none;
-  } */
-}
-</style>
