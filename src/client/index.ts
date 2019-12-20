@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 
 import App from './components/app.vue';
 import router from './router';
+import vuetify from './vuetify'; // path to vuetify export
 
 // Duplication of filters with filter.ts
 Vue.filter('formatDate', (date, format = 'MMMM cccc yyyy, HH:mm:ss') =>
@@ -41,9 +42,15 @@ Vue.filter('duration', timestamp =>
   DateTime.fromSeconds(timestamp).toFormat('HH:mm:ss')
 );
 
+// new Vue({
+//   { router, vuetify },
+//   el: '#app',
+//   template: '<App/>',
+//   components: { App }
+// });
+
 new Vue({
   router,
-  el: '#app',
-  template: '<App/>',
-  components: { App }
-});
+  vuetify,
+  render: h => h(App)
+}).$mount('#app');
