@@ -1,23 +1,33 @@
 <template>
-  <fieldset>
-    <legend>Sign-in</legend>
-    <form @submit="signIn" method="post">
-      <form-errors :errors="errors"></form-errors>
-      <p>
-        <input
+  <v-card class="elevation-12">
+    <v-toolbar color="primary" dark flat>
+      <v-toolbar-title>Login form</v-toolbar-title>
+    </v-toolbar>
+    <v-card-text>
+      <v-form @submit="signIn" method="post">
+        <v-text-field
+          label="Login"
+          name="login"
+          prepend-icon="mdi-account"
           type="text"
-          placeholder="User name"
-          v-model="username" />
-      </p>
-      <p>
-        <input
+          v-model="username"
+        />
+
+        <v-text-field
+          id="password"
+          label="Password"
+          name="password"
+          prepend-icon="mdi-lock"
           type="password"
-          placeholder="Password"
-          v-model="password" />
-      </p>
-      <p><input type="submit" value="Send" /></p>
-    </form>
-  </fieldset>
+          v-model="password"
+        />
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn color="primary" @click="signIn">Login</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script lang="ts">

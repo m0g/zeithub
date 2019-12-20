@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import { DateTime } from 'luxon';
+import '@mdi/font/css/materialdesignicons.css';
+// import 'vue-material-design-icons/styles.css';
 
 import App from './components/app.vue';
 import router from './router';
