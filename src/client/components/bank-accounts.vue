@@ -1,14 +1,21 @@
 <template>
-  <fieldset>
-    <legend>Bank accounts</legend>
-    <add-bank-account :get-bank-accounts="getBankAccounts"></add-bank-account>
-    <ul>
-      <li v-for="account in bankAccounts" :key="account.iban">
-        <b>{{account.name}}</b> {{account.owner}} {{account.iban | iban}} {{account.bic}}
-        <button v-on:click="deleteAccount(account.iban)">&#x2718;</button>
-      </li>
-    </ul>
-  </fieldset>
+  <v-card>
+    <v-toolbar color="primary" dark flat class="mt-5">
+      <v-toolbar-title>Bank accounts</v-toolbar-title>
+    </v-toolbar>
+    <v-card-text>
+      <add-bank-account :get-bank-accounts="getBankAccounts"></add-bank-account>
+      <ul>
+        <li v-for="account in bankAccounts" :key="account.iban">
+          <b>{{ account.name }}</b> {{ account.owner }}
+          {{ account.iban | iban }} {{ account.bic }}
+          <v-btn text icon color="red" @click="deleteAccount(account.iban)">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </li>
+      </ul>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script lang="ts">

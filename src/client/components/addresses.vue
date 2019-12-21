@@ -1,16 +1,20 @@
 <template>
-  <fieldset>
-    <legend>Addresses</legend>
-    <add-address :get-addresses="getAddresses"></add-address>
-    <ul>
-      <address-info
-        :address="address"
-        :get-addresses="getAddresses"
-        v-for="address in addresses"
-        :key="address.id"
-      ></address-info>
-    </ul>
-  </fieldset>
+  <v-card class="mt-5">
+    <v-toolbar color="primary" dark flat>
+      <v-toolbar-title>Addresses</v-toolbar-title>
+    </v-toolbar>
+    <v-card-text>
+      <add-address :get-addresses="getAddresses"></add-address>
+      <ul>
+        <address-info
+          :address="address"
+          :get-addresses="getAddresses"
+          v-for="address in addresses"
+          :key="address.id"
+        ></address-info>
+      </ul>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script lang="ts">

@@ -1,17 +1,24 @@
 <template>
-  <fieldset>
-    <legend>Change password</legend>
-    <form method="POST" @submit="changePassword">
-      <form-errors :errors="errors"></form-errors>
-      <p><b>Current password:</b> <input type="password" v-model="currentPassword" /></p>
-      <p><b>New password:</b> <input type="password" v-model="password" /></p>
-      <p>
-        <b>New password repeat:</b>&nbsp;
-        <input type="password" v-model="passwordRepeat" />
-      </p>
-      <p><input type="submit" value="Change" /></p>
-    </form>
-  </fieldset>
+  <v-card>
+    <v-toolbar color="primary" dark flat class="mt-5">
+      <v-toolbar-title>Change password</v-toolbar-title>
+    </v-toolbar>
+    <v-card-text>
+      <form method="POST" @submit="changePassword">
+        <form-errors :errors="errors"></form-errors>
+        <p>
+          <b>Current password:</b>
+          <input type="password" v-model="currentPassword" />
+        </p>
+        <p><b>New password:</b> <input type="password" v-model="password" /></p>
+        <p>
+          <b>New password repeat:</b>&nbsp;
+          <input type="password" v-model="passwordRepeat" />
+        </p>
+        <p><input type="submit" value="Change" /></p>
+      </form>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script lang="ts">
