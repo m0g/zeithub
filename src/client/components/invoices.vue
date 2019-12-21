@@ -1,6 +1,7 @@
 <template>
   <v-card>
     <v-toolbar color="primary" dark flat>
+      <v-icon left>mdi-file-document-box-multiple</v-icon>
       <v-toolbar-title>Invoices</v-toolbar-title>
       <template v-slot:extension>
         <router-link to="/invoices/new">

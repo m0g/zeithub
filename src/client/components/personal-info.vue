@@ -1,8 +1,21 @@
 <template>
-  <fieldset>
-    <legend>Personal information</legend>
-    <button @click="editMode = !editMode">&#9998;</button>
-    <div v-if="!editMode">
+  <v-card>
+    <v-toolbar color="primary" dark flat>
+      <v-toolbar-title>Personal information</v-toolbar-title>
+      <template v-slot:extension>
+        <v-btn
+          fab
+          color="cyan accent-2"
+          bottom
+          right
+          absolute
+          @click="editMode = !editMode"
+        >
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+      </template>
+    </v-toolbar>
+    <v-card-text left v-if="!editMode">
       <p><b>Email:</b> {{ me.email }}</p>
       <p><b>Username:</b> {{ me.name }}</p>
       <p><b>First name:</b> {{ me.firstName }}</p>
@@ -14,8 +27,8 @@
         <b>Website:</b>&nbsp;
         <a :href="me.website" target="_blank">{{ me.website }}</a>
       </p>
-    </div>
-    <form v-if="editMode" @submit="save" method="POST">
+    </v-card-text>
+    <v-form v-if="editMode" @submit="save" method="POST">
       <form-errors :errors="errors"></form-errors>
       <p><b>Email:</b> <input type="email" v-model="user.email" /></p>
       <p><b>Username:</b> {{ me.name }}</p>
@@ -29,8 +42,8 @@
       </p>
       <p><b>Website:</b> <input type="text" v-model="user.website" /></p>
       <p><input type="submit" value="Save" /></p>
-    </form>
-  </fieldset>
+    </v-form>
+  </v-card>
 </template>
 
 <script lang="ts">
