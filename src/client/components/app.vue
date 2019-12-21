@@ -6,16 +6,14 @@
           <v-list-item-title class="title">
             Zeithub
           </v-list-item-title>
-          <v-list-item-subtitle>
-            subtext
-          </v-list-item-subtitle>
+          <v-list-item-subtitle> v{{ version }} </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-list dense nav>
         <router-link to="/time" v-if="isLoggedIn">
           <v-list-item link>
             <v-list-item-icon>
-              <v-icon>mdi-view-dashboard</v-icon>
+              <v-icon>mdi-clock</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
@@ -41,7 +39,7 @@
         <router-link to="/clients" v-if="isLoggedIn">
           <v-list-item link>
             <v-list-item-icon>
-              <v-icon>mdi-view-dashboard</v-icon>
+              <v-icon>mdi-account-multiple</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
@@ -54,7 +52,7 @@
         <router-link to="/expenses" v-if="isLoggedIn">
           <v-list-item link>
             <v-list-item-icon>
-              <v-icon>mdi-view-dashboard</v-icon>
+              <v-icon>mdi-cash-register</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
@@ -67,7 +65,7 @@
         <router-link to="/invoices" v-if="isLoggedIn">
           <v-list-item link>
             <v-list-item-icon>
-              <v-icon>mdi-view-dashboard</v-icon>
+              <v-icon>mdi-file-document-box-multiple</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
@@ -80,7 +78,7 @@
         <router-link to="/me" v-if="isLoggedIn">
           <v-list-item link>
             <v-list-item-icon>
-              <v-icon>mdi-view-dashboard</v-icon>
+              <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
@@ -119,7 +117,7 @@
         <router-link to="/signout" v-if="isLoggedIn">
           <v-list-item link>
             <v-list-item-icon>
-              <v-icon>mdi-view-dashboard</v-icon>
+              <v-icon>mdi-logout</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
@@ -142,11 +140,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { version } from './../../../package.json';
 import { isLoggedIn, signOut } from './../auth';
 import http from './../http';
 
 @Component({})
 export default class App extends Vue {
+  version: string = version;
   isLoggedIn: Boolean = isLoggedIn();
 
   created() {

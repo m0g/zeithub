@@ -81,3 +81,9 @@ export default class SignIn extends Vue {
   }
 }
 </script>
+
+<style>
+a {
+  text-decoration: none;
+}
+</style>

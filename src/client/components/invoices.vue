@@ -1,28 +1,49 @@
 <template>
-  <section>
-    <router-link to="/invoices/new">Create new invoice</router-link>
-    <table>
-      <tr class="title">
-        <th>Name</th>
-        <th>Total</th>
-        <th>Actions</th>
-      </tr>
-      <tr v-for="invoice in invoices" :key="invoice.number">
-        <td>
-          <router-link :to="{ name: 'Invoice', params: { id: invoice.id } }">
-            {{ invoice.name }}
-          </router-link>
-        </td>
-        <td class="align-center">
-          {{ getTotal(invoice) | currency(invoice) }}
-        </td>
-        <td class="align-center">
-          <button @click="downloadPDF(invoice)">Download</button>
-          <button @click="remove(invoice)">&#x2718;</button>
-        </td>
-      </tr>
-    </table>
-  </section>
+  <v-card>
+    <v-toolbar color="primary" dark flat>
+      <v-toolbar-title>Invoices</v-toolbar-title>
+      <template v-slot:extension>
+        <router-link to="/invoices/new">
+          <v-btn fab color="cyan accent-2" bottom right absolute>
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </router-link>
+      </template>
+    </v-toolbar>
+    <v-simple-table>
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">Name</th>
+            <th class="text-center">Total</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="invoice in invoices" :key="invoice.number">
+            <td>
+              <router-link
+                :to="{ name: 'Invoice', params: { id: invoice.id } }"
+              >
+                {{ invoice.name }}
+              </router-link>
+            </td>
+            <td class="align-center">
+              {{ getTotal(invoice) | currency(invoice) }}
+            </td>
+            <td class="align-center">
+              <v-btn text icon color="primary" @click="downloadPDF(invoice)">
+                <v-icon>mdi-cloud-download</v-icon>
+              </v-btn>
+              <v-btn text icon color="red" @click="remove(invoice)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
+  </v-card>
 </template>
 
 <script lang="ts">
