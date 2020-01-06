@@ -1,6 +1,6 @@
 <template>
-  <fieldset>
-    <legend>Personal information</legend>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
+    <h2>Personal information</h2>
     <button @click="editMode = !editMode">&#9998;</button>
     <div v-if="!editMode">
       <p><b>Email:</b> {{ me.email }}</p>
@@ -30,7 +30,7 @@
       <p><b>Website:</b> <input type="text" v-model="user.website" /></p>
       <p><input type="submit" value="Save" /></p>
     </form>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">
