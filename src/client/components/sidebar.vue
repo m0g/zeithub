@@ -1,5 +1,5 @@
 <template>
-  <header class="flex-none w-48">
+  <header class="flex-none w-48 fixed">
     <div class="pt-4 pl-4 pr-4">
       <h1 class="font-semibold text-lg">
         <router-link id="app-name" to="/">

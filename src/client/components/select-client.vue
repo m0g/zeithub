@@ -1,8 +1,9 @@
 <template>
-  <fieldset>
-    <legend>Client</legend>
+  <div class="p-4 border-b">
+    <h3 class="text-bg font-semibold">Client</h3>
     <select
       name="client"
+      class="select"
       id=""
       @change="onChange($event)"
       :disabled="clients.length === 0"
@@ -16,7 +17,7 @@
         >{{ client.name }}</option
       >
     </select>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">

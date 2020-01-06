@@ -2,6 +2,7 @@
   <span>
     <select
       name="project"
+      class="select"
       @change="onChange($event)"
       :disabled="projects.length === 0"
     >

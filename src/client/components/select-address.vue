@@ -1,6 +1,6 @@
 <template>
-  <p>
-    <select @change="onChange($event)">
+  <div class="mt-4">
+    <select @change="onChange($event)" class="select">
       <option value="" disabled selected>Select an address</option>
       <option
         v-for="ad in addresses"
@@ -12,7 +12,7 @@
         {{ ad.country }}
       </option>
     </select>
-  </p>
+  </div>
 </template>
 
 <script lang="ts">

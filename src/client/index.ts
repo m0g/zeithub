@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { DateTime } from 'luxon';
 
-import './tailwind.css';
+import './style.css';
 
 import App from './components/app.vue';
 import router from './router';

@@ -1,6 +1,6 @@
 <template>
-  <p>
-    <select @change="onChange($event)">
+  <div class="mt-4">
+    <select @change="onChange($event)" class="select">
       <option value="" disabled selected>Select a currency</option>
       <option
         v-for="currency in currencies"
@@ -11,7 +11,7 @@
         {{ currency.name }} ({{ currency.sign }})
       </option>
     </select>
-  </p>
+  </div>
 </template>
 
 <script lang="ts">

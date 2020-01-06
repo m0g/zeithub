@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="flex">
     <sidebar></sidebar>
-    <router-view id="router-view" class="flex-1"></router-view>
+    <router-view id="router-view" class="flex-1 ml-48"></router-view>
   </div>
 </template>
 

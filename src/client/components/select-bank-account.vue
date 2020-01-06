@@ -1,6 +1,6 @@
 <template>
-  <p>
-    <select @change="onChange($event)">
+  <div class="mt-4">
+    <select @change="onChange($event)" class="select">
       <option value="" disabled selected>Select a bank account</option>
       <option
         v-for="account in bankAccounts"
@@ -12,7 +12,7 @@
         {{ account.bic }}
       </option>
     </select>
-  </p>
+  </div>
 </template>
 
 <script lang="ts">

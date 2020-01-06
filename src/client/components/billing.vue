@@ -1,15 +1,23 @@
 <template>
-  <fieldset>
-    <legend>Billing</legend>
-    <p><input type="text" placeholder="Title" v-model="invoice.name" /></p>
-    <p>
+  <div class="p-4 border-b">
+    <h3 class="text-lg font-semibold">Billing</h3>
+    <div class="mt-4">
+      <input
+        type="text"
+        class="input"
+        placeholder="Title"
+        v-model="invoice.name"
+      />
+    </div>
+    <div class="mt-4">
       <input
         type="number"
+        class="input"
         placeholder="Invoice number"
         :min="editMode ? invoice.number : lastInvoiceNumber + 1"
         v-model="invoice.number"
       />
-    </p>
+    </div>
     <select-address
       v-bind:userAddressId="invoice.userAddressId"
       v-on:userAddressId="invoice.userAddressId = $event"
@@ -22,20 +30,27 @@
       v-bind:currencyCode="invoice.currencyCode"
       v-on:currencyCode="invoice.currencyCode = $event"
     ></select-currency>
-    <p>
+    <div class="mt-4">
       <label for="date">Date</label>
-      <input type="date" name="date" id="date" v-model="invoice.date" />
-    </p>
-    <p>
+      <input
+        class="input"
+        type="date"
+        name="date"
+        id="date"
+        v-model="invoice.date"
+      />
+    </div>
+    <div class="mt-4">
       <label for="due-date">Due date</label>
       <input
         type="date"
+        class="input"
         name="due-date"
         id="due-date"
         v-model="invoice.dueDate"
       />
-    </p>
-  </fieldset>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
