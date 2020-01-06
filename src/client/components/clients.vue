@@ -1,15 +1,16 @@
 <template>
-  <fieldset>
-    <legend>Clients</legend>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
+    <h2>Clients</h2>
     <ul>
-      <client 
-        :client="client" 
-        :get-clients="getClients" 
-        v-for="client in clients" 
-        :key="client.id"></client>
+      <client
+        :client="client"
+        :get-clients="getClients"
+        v-for="client in clients"
+        :key="client.id"
+      ></client>
     </ul>
     <add-client :get-clients="getClients"></add-client>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">

@@ -1,9 +1,12 @@
 <template>
-  <fieldset>
-    <legend>Change password</legend>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
+    <h2>Change password</h2>
     <form method="POST" @submit="changePassword">
       <form-errors :errors="errors"></form-errors>
-      <p><b>Current password:</b> <input type="password" v-model="currentPassword" /></p>
+      <p>
+        <b>Current password:</b>
+        <input type="password" v-model="currentPassword" />
+      </p>
       <p><b>New password:</b> <input type="password" v-model="password" /></p>
       <p>
         <b>New password repeat:</b>&nbsp;
@@ -11,7 +14,7 @@
       </p>
       <p><input type="submit" value="Change" /></p>
     </form>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">

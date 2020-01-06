@@ -1,6 +1,6 @@
 <template>
-  <fieldset>
-    <legend>Addresses</legend>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
+    <h2>Addresses</h2>
     <add-address :get-addresses="getAddresses"></add-address>
     <ul>
       <address-info
@@ -10,7 +10,7 @@
         :key="address.id"
       ></address-info>
     </ul>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
     <router-link to="/invoices/new">Create new invoice</router-link>
     <table>
       <tr class="title">
@@ -22,7 +22,7 @@
         </td>
       </tr>
     </table>
-  </section>
+  </div>
 </template>
 
 <script lang="ts">

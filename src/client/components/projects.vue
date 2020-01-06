@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
+    <h2>Projects</h2>
     <router-link to="/projects/new">Create project</router-link>
     <ul>
       <li v-for="project in projects" :key="project.slug">
         <router-link :to="{ name: 'Project', params: { slug: project.slug } }">
-          {{project.name}}
+          {{ project.name }}
         </router-link>
       </li>
     </ul>

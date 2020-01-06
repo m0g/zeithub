@@ -1,14 +1,15 @@
 <template>
-  <fieldset>
-    <legend>Bank accounts</legend>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
+    <h2>Bank accounts</h2>
     <add-bank-account :get-bank-accounts="getBankAccounts"></add-bank-account>
     <ul>
       <li v-for="account in bankAccounts" :key="account.iban">
-        <b>{{account.name}}</b> {{account.owner}} {{account.iban | iban}} {{account.bic}}
+        <b>{{ account.name }}</b> {{ account.owner }} {{ account.iban | iban }}
+        {{ account.bic }}
         <button v-on:click="deleteAccount(account.iban)">&#x2718;</button>
       </li>
     </ul>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">
