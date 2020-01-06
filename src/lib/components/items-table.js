@@ -19,36 +19,54 @@ module.exports = Vue.component('items-table', {
         <td style="text-align: center; font-family: monospace;">{{ item.qty }}</td>
         <td style="text-align: right; font-family: monospace;">{{ (item.qty * item.unitPrice) | currency(invoice) }}</td>
       </tr>
+
       <tr>
         <th></th>
+        <td colspan="2"><b>Net Amount</b></td>
+        <td colspan="2" style="text-align: right; font-family: monospace;">
+          {{ computeNetAmount | currency(invoice) }}
+        </td>
+      </tr>
+      <tr>
         <th></th>
-        <td><b>Discount</b></td>
+        <td colspan="2"><b>Discount</b></td>
         <td colspan="2" style="text-align: right; font-family: monospace;">
           {{ invoice.discount | currency(invoice) }}
         </td>
       </tr>
       <tr>
         <th></th>
-        <th></th>
-        <td><b>Tax (VAT)</b></td>
+        <td colspan="2"><b>Tax (VAT)</b></td>
         <td colspan="2" style="text-align: right; font-family: monospace;">
           {{ invoice.tax | percentage }}
         </td>
       </tr>
       <tr>
         <th></th>
+        <td colspan="2"><b>Tax Amount</b></td>
+        <td colspan="2" style="text-align: right; font-family: monospace;">
+          {{ taxAmount | currency(invoice) }}
+        </td>
+      </tr>
+      <tr>
         <th></th>
-        <td>
+        <td colspan="2">
           <b>Total ({{ invoice.currencyCode }})</b>
         </td>
         <td colspan="2" style="text-align: right; font-family: monospace;">
-          {{ computeTotal() | currency(invoice) }}
+          {{ computeTotal | currency(invoice) }}
         </td>
       </tr>
     </table>
   `,
   props: ['invoice', 'items'],
-  methods: {
+  computed: {
+    computeNetAmount() {
+      return this.items.reduce((acc, item) => {
+        return acc + item.unitPrice * item.qty;
+      }, 0);
+    },
+
     computeTotal() {
       const subTotal = this.items.reduce((acc, item) => {
         return acc + item.unitPrice * item.qty;
@@ -65,6 +83,12 @@ module.exports = Vue.component('items-table', {
       }
 
       return total;
+    },
+
+    taxAmount() {
+      const total = this.computeTotal;
+
+      return total - total / (1 + this.invoice.tax / 100);
     }
   }
 });
