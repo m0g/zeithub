@@ -1,13 +1,21 @@
 <template>
-  <div>
-    <fieldset>
-      <legend>Actions</legend>
-      <button @click="downloadPDF">Download PDF</button>
-      <router-link :to="{ name: 'EditInvoice', params: { id: invoice.id } }">
+  <div class="bg-white shadow m-4 ml-0 rounded-lg overflow-hidden">
+    <div class="border-b p-4 flex bg-gray-700 text-white">
+      <h3 class="font-semibold text-lg flex-1">{{ invoice.name }}</h3>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+        @click="downloadPDF"
+      >
+        Download PDF
+      </button>
+      <router-link
+        :to="{ name: 'EditInvoice', params: { id: invoice.id } }"
+        class="ml-2 bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+      >
         Edit
       </router-link>
-    </fieldset>
-    <section id="invoice" ref="container">
+    </div>
+    <section id="invoice" ref="container" class="m-4">
       <h1>{{ invoice.name }}</h1>
       <div class="from">
         <p>
