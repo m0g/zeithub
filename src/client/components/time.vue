@@ -1,11 +1,6 @@
 <template>
-  <section>
-    <aside>
-      <time-tracker></time-tracker>
-      <add-activity :get-activities="getActivities"></add-activity>
-      <hamster></hamster>
-    </aside>
-    <div class="time-tracking">
+  <div class="flex">
+    <div class="flex-1 bg-white shadow m-4 ml-0 p-4 rounded-lg">
       <h3>Activities</h3>
       <ul>
         <li v-for="(activities, date) in activityGroups" :key="date">
@@ -23,7 +18,12 @@
         </li>
       </ul>
     </div>
-  </section>
+    <aside class="flex-none w-72">
+      <time-tracker></time-tracker>
+      <add-activity :get-activities="getActivities"></add-activity>
+      <hamster></hamster>
+    </aside>
+  </div>
 </template>
 
 <script lang="ts">
@@ -69,28 +69,3 @@ export default class Time extends Vue {
   }
 }
 </script>
-
-<style scoped>
-section {
-  display: flex;
-  flex-flow: row wrap;
-  height: calc(100% - 59px);
-}
-
-section aside {
-  flex: 1;
-  border-right: 1px dotted black;
-}
-
-section aside div {
-  border-bottom: 1px dotted black;
-  padding: 10px;
-}
-
-section .time-tracking {
-  flex: 3;
-  padding: 10px;
-  overflow-y: auto;
-  max-height: 100%;
-}
-</style>

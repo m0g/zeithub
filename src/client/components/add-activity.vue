@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
     <h3>Add activity</h3>
     <form method="POST" @submit="addActivity">
       <form-errors :errors="errors"></form-errors>

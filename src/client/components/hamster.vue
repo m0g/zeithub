@@ -1,11 +1,8 @@
 <template>
-  <div>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
     <h3>Hamster upload</h3>
     <h4>Upload your hamster XML here</h4>
-    <input
-      type="file"
-      name="xml"
-      @change="handleFileUpload" />
+    <input type="file" name="xml" @change="handleFileUpload" />
     <p v-if="success">Upload complete!</p>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
     <h3>Time tracker</h3>
     <select-project
       v-bind:value="projectId"
