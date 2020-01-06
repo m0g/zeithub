@@ -1,40 +1,53 @@
 <template>
-  <fieldset>
-    <legend>Sign up</legend>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
+    <h2>Sign up</h2>
     <form @submit="signUp" method="post">
       <form-errors :errors="errors"></form-errors>
-      <p>
+      <div class="mt-4">
         <input
           type="text"
+          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           placeholder="User name"
-          v-model="username" />
-      </p>
-      <p>
+          v-model="username"
+        />
+      </div>
+      <div class="mt-4">
         <input
           type="text"
+          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           placeholder="Email"
-          v-model="email" />
-      </p>
- 
-      <p>
+          v-model="email"
+        />
+      </div>
+      <div class="mt-4">
         <input
           type="password"
+          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           placeholder="Password"
-          v-model="password" />
-      </p>
-      <p>
+          v-model="password"
+        />
+      </div>
+      <div class="mt-4">
         <input
           type="password"
+          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           placeholder="Repeat password"
-          v-model="passwordRepeat" />
-      </p>
-      <p><input type="submit" value="Send" /></p>
+          v-model="passwordRepeat"
+        />
+      </div>
+      <div class="mt-4">
+        <input
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          value="Send"
+        />
+      </div>
     </form>
     <p>How to write a password:</p>
     <a href="https://xkcd.com/936/" target="_blank">
       <img src="https://imgs.xkcd.com/comics/password_strength.png" />
     </a>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">
