@@ -16,12 +16,6 @@ export default async (req, res) => {
     vatNumber
   } = req.body;
 
-  console.log(
-    `update addresses
-      set street = ?, extra = ?, city = ?, postcode = ?, country = ?
-      where client_id = ? and user_id = ?`,
-    [street, extra, city, postcode, country, id, userId]
-  );
   try {
     await db.execute(
       `update clients

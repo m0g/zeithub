@@ -21,6 +21,7 @@
         <p>
           <b>{{ me.firstName }} {{ me.lastName }}</b>
         </p>
+        <p v-if="address.extra">{{ address.extra }}</p>
         <p>{{ address.street }}</p>
         <p>{{ address.postcode }} {{ address.city }}, {{ address.country }}</p>
         <p v-if="me.taxNumber">
@@ -36,6 +37,7 @@
         <p>
           <b>{{ client.name }}</b>
         </p>
+        <p v-if="client.extra">{{ client.extra }}</p>
         <p>{{ client.street }}</p>
         <p>{{ client.postcode }} {{ client.city }}, {{ client.country }}</p>
         <p v-if="client.taxNumber">

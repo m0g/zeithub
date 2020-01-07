@@ -61,6 +61,7 @@ export default async (req, res) => {
       c.name, 
       c.tax_number as 'taxNumber',
       c.vat_number as 'vatNumber',
+      a.extra,
       a.street,
       a.city, 
       a.postcode, 
@@ -98,6 +99,7 @@ export default async (req, res) => {
         <h1>{{invoice.name}}</h1>
         <div class="from">
           <p><b>{{me.firstName}} {{me.lastName}}</b></p>
+          <p v-if="me.extra">{{ me.extra }}</p>
           <p>{{address.street}}</p>
           <p>{{address.postcode}} {{address.city}}, {{address.country}}</p>
           <p v-if="me.taxNumber">
@@ -111,6 +113,7 @@ export default async (req, res) => {
         </div>
         <div class="to">
           <p><b>{{client.name}}</b></p>
+          <p v-if="client.extra">{{ client.extra }}</p>
           <p>{{client.street}}</p>
           <p>{{client.postcode}} {{client.city}}, {{client.country}}</p>
           <p v-if="client.taxNumber">

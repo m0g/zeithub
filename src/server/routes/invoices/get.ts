@@ -42,6 +42,7 @@ export default async (req, res) => {
       c.name, 
       c.tax_number as 'taxNumber',
       c.vat_number as 'vatNumber',
+      a.extra,
       a.street,
       a.city, 
       a.postcode, 
