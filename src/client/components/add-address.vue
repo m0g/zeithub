@@ -1,12 +1,23 @@
 <template>
-   <form method="POST" @submit="addAddress">
+  <form method="POST" @submit="addAddress">
     <form-errors :errors="errors"></form-errors>
-    <input type="text" placeholder="Name" v-model="name"/>
-    <input type="text" placeholder="Street" v-model="street"/>
-    <input type="text" placeholder="City" v-model="city"/>
-    <input type="text" placeholder="Postcode" v-model="postcode"/>
-    <input type="text" placeholder="Country" v-model="country"/>
-    <input type="submit" value="Add" />
+    <input type="text" class="input" placeholder="Name" v-model="name" />
+    <input
+      type="text"
+      class="input"
+      placeholder="Extra (c/o...)"
+      v-model="extra"
+    />
+    <input type="text" class="input" placeholder="Street" v-model="street" />
+    <input type="text" class="input" placeholder="City" v-model="city" />
+    <input
+      type="text"
+      class="input"
+      placeholder="Postcode"
+      v-model="postcode"
+    />
+    <input type="text" class="input" placeholder="Country" v-model="country" />
+    <input type="submit" class="btn-primary" value="Add" />
   </form>
 </template>
 
@@ -27,6 +38,7 @@ export default class AddAddress extends Props {
   errors: string[] = [];
   name: string = '';
   street: string = '';
+  extra: string = '';
   city: string = '';
   postcode: string = '';
   country: string = '';
@@ -59,6 +71,7 @@ export default class AddAddress extends Props {
       const body = {
         name: this.name,
         street: this.street,
+        extra: this.extra,
         city: this.city,
         postcode: this.postcode,
         country: this.country
@@ -72,6 +85,13 @@ export default class AddAddress extends Props {
         .then(response => response.json())
         .then(response => {
           this.getAddresses();
+
+          this.name = '';
+          this.street = '';
+          this.extra = '';
+          this.city = '';
+          this.postcode = '';
+          this.country = '';
         });
     }
   }

@@ -1,8 +1,10 @@
 <template>
-  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
-    <h2>Addresses</h2>
-    <add-address :get-addresses="getAddresses"></add-address>
-    <ul>
+  <div class="bg-white shadow m-4 ml-0 rounded-lg">
+    <div class="border-b p-4">
+      <h2 class="text-lg font-semibold">Addresses</h2>
+    </div>
+    <add-address class="p-4" :get-addresses="getAddresses"></add-address>
+    <ul class="border-t p-4">
       <address-info
         :address="address"
         :get-addresses="getAddresses"

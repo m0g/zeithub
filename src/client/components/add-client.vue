@@ -1,15 +1,59 @@
 <template>
   <form method="POST" @submit="addAddress">
-    <h2>Add client</h2>
+    <h2 class="text-lg font-semibold">Add client</h2>
     <form-errors :errors="errors"></form-errors>
-    <input type="text" placeholder="Name" v-model="name" />
-    <input type="text" placeholder="Tax Number" v-model="taxNumber" />
-    <input type="text" placeholder="VAT Number" v-model="vatNumber" />
-    <input type="text" placeholder="Street" v-model="street" />
-    <input type="text" placeholder="City" v-model="city" />
-    <input type="text" placeholder="Postcode" v-model="postcode" />
-    <input type="text" placeholder="Country" v-model="country" />
-    <input type="submit" value="Add" />
+    <div class="mt-4">
+      <input type="text" class="input" placeholder="Name" v-model="name" />
+    </div>
+    <div class="mt-4">
+      <input
+        type="text"
+        class="input"
+        placeholder="Tax Number"
+        v-model="taxNumber"
+      />
+    </div>
+    <div class="mt-4">
+      <input
+        type="text"
+        class="input"
+        placeholder="VAT Number"
+        v-model="vatNumber"
+      />
+    </div>
+    <div class="mt-4">
+      <input
+        type="text"
+        class="input"
+        placeholder="Extra (c/o...)"
+        v-model="extra"
+      />
+    </div>
+    <div class="mt-4">
+      <input type="text" class="input" placeholder="Street" v-model="street" />
+    </div>
+    <div class="mt-4">
+      <input type="text" class="input" placeholder="City" v-model="city" />
+    </div>
+    <div class="mt-4">
+      <input
+        type="text"
+        class="input"
+        placeholder="Postcode"
+        v-model="postcode"
+      />
+    </div>
+    <div class="mt-4">
+      <input
+        type="text"
+        class="input"
+        placeholder="Country"
+        v-model="country"
+      />
+    </div>
+    <div class="mt-4">
+      <input type="submit" class="btn-primary" value="Add" />
+    </div>
   </form>
 </template>
 
@@ -32,6 +76,7 @@ export default class AddClient extends Props {
   name: string = '';
   taxNumber: string = '';
   vatNumber: string = '';
+  extra: string = '';
   street: string = '';
   city: string = '';
   postcode: string = '';
@@ -66,6 +111,7 @@ export default class AddClient extends Props {
         name: this.name,
         taxNumber: this.taxNumber,
         vatNumber: this.vatNumber,
+        extra: this.extra,
         street: this.street,
         city: this.city,
         postcode: this.postcode,
@@ -83,6 +129,7 @@ export default class AddClient extends Props {
             this.getClients();
 
             this.name = '';
+            this.extra = '';
             this.street = '';
             this.city = '';
             this.postcode = '';

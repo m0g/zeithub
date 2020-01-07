@@ -14,7 +14,9 @@ const create = async (req, res) => {
   }
 
   if (!req.body.postcode) {
-    return res.status(403).json({ success: false, message: 'Missing postcode' });
+    return res
+      .status(403)
+      .json({ success: false, message: 'Missing postcode' });
   }
 
   if (!req.body.city) {
@@ -25,24 +27,24 @@ const create = async (req, res) => {
     return res.status(403).json({ success: false, message: 'Missing country' });
   }
 
-  const { name, street, postcode, city, country } = req.body;
+  const { name, street, postcode, city, country, extra } = req.body;
   let addressId;
 
   try {
     addressId = await db.execute(`
-      insert into addresses (name, street, city, postcode, country, user_id)
-      values ('${name}', '${street}', '${city}', '${postcode}', '${country}', ${userId})
-    `)
+      insert into addresses (name, street, extra, city, postcode, country, user_id)
+      values ('${name}', '${street}', '${extra}', '${city}', '${postcode}', '${country}', ${userId})
+    `);
   } catch (error) {
-    return res.status(500).json({ 
-      success: false, 
-      message: 'Error on insert', 
+    return res.status(500).json({
+      success: false,
+      message: 'Error on insert',
       error
     });
   }
 
   const address = await db.queryOne(`
-    select name, street, city, postcode, country
+    select name, street, extra, city, postcode, country
     from addresses
     where id = ${addressId} and user_id = ${userId}
   `);

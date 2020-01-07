@@ -1,7 +1,9 @@
 <template>
-  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
-    <h2>Clients</h2>
-    <ul>
+  <div class="bg-white shadow m-4 ml-0 rounded-lg overflow-hidden">
+    <div class="border-b p-4 flex bg-gray-700 text-white">
+      <h2 class="text-lg font-semibold">Clients</h2>
+    </div>
+    <ul class="border-b p-4">
       <client
         :client="client"
         :get-clients="getClients"
@@ -9,7 +11,7 @@
         :key="client.id"
       ></client>
     </ul>
-    <add-client :get-clients="getClients"></add-client>
+    <add-client class="p-4" :get-clients="getClients"></add-client>
   </div>
 </template>
 

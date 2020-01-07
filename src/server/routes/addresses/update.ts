@@ -6,14 +6,14 @@ export default async (req, res) => {
   const userId = req.userId;
   const id = req.params.id;
 
-  const { name, street, city, postcode, country } = req.body;
+  const { name, street, extra, city, postcode, country } = req.body;
 
   try {
     await db.execute(
       `update addresses
-      set name = ?, street = ?, city = ?, postcode = ?, country = ?
+      set name = ?, street = ?, extra = ?, city = ?, postcode = ?, country = ?
       where id = ? and user_id = ?`,
-      [name, street, city, postcode, country, id, userId]
+      [name, street, extra, city, postcode, country, id, userId]
     );
   } catch (error) {
     return res.status(500).json({ success: false, error });

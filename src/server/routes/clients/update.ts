@@ -1,4 +1,4 @@
-import DB from "./../../db";
+import DB from './../../db';
 
 const db = new DB();
 
@@ -8,6 +8,7 @@ export default async (req, res) => {
   const {
     name,
     street,
+    extra,
     city,
     postcode,
     country,
@@ -15,6 +16,12 @@ export default async (req, res) => {
     vatNumber
   } = req.body;
 
+  console.log(
+    `update addresses
+      set street = ?, extra = ?, city = ?, postcode = ?, country = ?
+      where client_id = ? and user_id = ?`,
+    [street, extra, city, postcode, country, id, userId]
+  );
   try {
     await db.execute(
       `update clients
@@ -30,9 +37,9 @@ export default async (req, res) => {
   try {
     await db.execute(
       `update addresses
-      set street = ?, city = ?, postcode = ?, country = ?
-      where client_id = ? and user_id = ?`,
-      [street, city, postcode, country, id, userId]
+      set street = ?, extra = ?, city = ?, postcode = ?, country = ?
+      where client_id = ?`,
+      [street, extra, city, postcode, country, id]
     );
   } catch (error) {
     return res.status(500).json({ success: false, error });

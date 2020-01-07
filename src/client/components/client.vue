@@ -7,14 +7,45 @@
     </div>
     <form v-if="editMode" @submit="save" method="POST">
       <form-errors :errors="errors"></form-errors>
-      <input type="text" placeholder="Name" v-model="edit.name" />
-      <input type="text" placeholder="Tax number" v-model="edit.taxNumber" />
-      <input type="text" placeholder="VAT number" v-model="edit.vatNumber" />
-      <input type="text" placeholder="Street" v-model="edit.street" />
-      <input type="text" placeholder="City" v-model="edit.city" />
-      <input type="text" placeholder="Postcode" v-model="edit.postcode" />
-      <input type="text" placeholder="Country" v-model="edit.country" />
-      <input type="submit" value="Save" />
+      <input type="text" class="input" placeholder="Name" v-model="edit.name" />
+      <input
+        type="text"
+        class="input"
+        placeholder="Tax number"
+        v-model="edit.taxNumber"
+      />
+      <input
+        type="text"
+        class="input"
+        placeholder="VAT number"
+        v-model="edit.vatNumber"
+      />
+      <input
+        type="text"
+        class="input"
+        placeholder="Extra (c/o...)"
+        v-model="edit.extra"
+      />
+      <input
+        type="text"
+        class="input"
+        placeholder="Street"
+        v-model="edit.street"
+      />
+      <input type="text" class="input" placeholder="City" v-model="edit.city" />
+      <input
+        type="text"
+        class="input"
+        placeholder="Postcode"
+        v-model="edit.postcode"
+      />
+      <input
+        type="text"
+        class="input"
+        placeholder="Country"
+        v-model="edit.country"
+      />
+      <input type="submit" class="btn-primary" value="Save" />
     </form>
   </li>
 </template>
