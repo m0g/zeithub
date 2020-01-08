@@ -1,26 +1,39 @@
 <template>
-  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
-    <router-link to="/invoices/new">Create new invoice</router-link>
-    <table>
-      <tr class="title">
-        <th>Name</th>
-        <th>Total</th>
-        <th>Actions</th>
-      </tr>
-      <tr v-for="invoice in invoices" :key="invoice.number">
-        <td>
-          <router-link :to="{ name: 'Invoice', params: { id: invoice.id } }">
-            {{ invoice.name }}
-          </router-link>
-        </td>
-        <td class="align-center">
-          {{ getTotal(invoice) | currency(invoice) }}
-        </td>
-        <td class="align-center">
-          <button @click="downloadPDF(invoice)">Download</button>
-          <button @click="remove(invoice)">&#x2718;</button>
-        </td>
-      </tr>
+  <div class="bg-white shadow m-4 ml-0 rounded-lg overflow-hidden">
+    <div class="border-b p-4 flex bg-gray-700 text-white">
+      <h2 class="flex-1 text-lg font-semibold">Invoices</h2>
+      <router-link to="/invoices/new" class="btn-primary"
+        >Create new invoice</router-link
+      >
+    </div>
+    <table class="table-auto w-full">
+      <thead>
+        <tr class="title bg-gray-100">
+          <th class="border px-4 py-2">Name</th>
+          <th class="border px-4 py-2">Total</th>
+          <th class="border px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(invoice, index) in invoices"
+          :key="invoice.number"
+          :class="{ 'bg-gray-100': index % 2 !== 0 }"
+        >
+          <td class="border px-4 py-2">
+            <router-link :to="{ name: 'Invoice', params: { id: invoice.id } }">
+              {{ invoice.name }}
+            </router-link>
+          </td>
+          <td class="align-center border px-4 py-2">
+            {{ getTotal(invoice) | currency(invoice) }}
+          </td>
+          <td class="align-center border px-4 py-2">
+            <button @click="downloadPDF(invoice)">Download</button>
+            <button @click="remove(invoice)">&#x2718;</button>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
@@ -119,19 +132,3 @@ export default class Invoices extends Vue {
   }
 }
 </script>
-
-<style scoped>
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-tr.title {
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-}
-
-td.align-center {
-  text-align: center;
-}
-</style>
