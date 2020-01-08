@@ -1,10 +1,39 @@
 import Vue from 'vue';
 import { DateTime } from 'luxon';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faDownload,
+  faTrashAlt,
+  faClock,
+  faUsers,
+  faReceipt,
+  faFileInvoice,
+  faUserCircle,
+  faFolder,
+  faSignInAlt,
+  faSignOutAlt
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import './style.css';
 
 import App from './components/app.vue';
 import router from './router';
+
+library.add(
+  faDownload,
+  faTrashAlt,
+  faClock,
+  faUsers,
+  faReceipt,
+  faFileInvoice,
+  faUserCircle,
+  faFolder,
+  faSignInAlt,
+  faSignOutAlt
+);
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 // Duplication of filters with filter.ts
 Vue.filter('formatDate', (date, format = 'MMMM cccc yyyy, HH:mm:ss') =>

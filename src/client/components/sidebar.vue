@@ -10,31 +10,55 @@
     </div>
     <ul class="list-reset m-4">
       <li>
-        <router-link to="/time" v-if="isLoggedIn">Time Tracking</router-link>
+        <router-link to="/time" v-if="isLoggedIn">
+          <font-awesome-icon icon="clock" />
+          <span>Time Tracking</span>
+        </router-link>
       </li>
       <li>
-        <router-link to="/projects" v-if="isLoggedIn">Projects</router-link>
+        <router-link to="/projects" v-if="isLoggedIn">
+          <font-awesome-icon icon="folder" />
+          <span>Projects</span>
+        </router-link>
       </li>
       <li>
-        <router-link to="/clients" v-if="isLoggedIn">Clients</router-link>
+        <router-link to="/clients" v-if="isLoggedIn">
+          <font-awesome-icon icon="users" />
+          <span>Clients</span>
+        </router-link>
       </li>
       <li>
-        <router-link to="/expenses" v-if="isLoggedIn">Expenses</router-link>
+        <router-link to="/expenses" v-if="isLoggedIn">
+          <font-awesome-icon icon="receipt" />
+          <span>Expenses</span>
+        </router-link>
       </li>
       <li>
-        <router-link to="/invoices" v-if="isLoggedIn">Invoices</router-link>
+        <router-link to="/invoices" v-if="isLoggedIn">
+          <font-awesome-icon icon="file-invoice" />
+          <span>Invoices</span>
+        </router-link>
       </li>
       <li>
-        <router-link to="/me" v-if="isLoggedIn">Profile</router-link>
+        <router-link to="/me" v-if="isLoggedIn">
+          <font-awesome-icon icon="user-circle" />
+          <span>Invoices</span>
+        </router-link>
       </li>
       <li>
-        <router-link to="/signin" v-if="!isLoggedIn">Sign-in</router-link>
+        <router-link to="/signin" v-if="!isLoggedIn">
+          <font-awesome-icon icon="sign-in-alt" />
+          <span>Sign-in</span>
+        </router-link>
       </li>
       <li>
         <router-link to="/signup" v-if="!isLoggedIn">Sign-up</router-link>
       </li>
       <li>
-        <router-link to="/signout" v-if="isLoggedIn">Sign-out</router-link>
+        <router-link to="/signout" v-if="isLoggedIn">
+          <font-awesome-icon icon="sign-out-alt" />
+          <span>Sign-out</span>
+        </router-link>
       </li>
     </ul>
   </header>

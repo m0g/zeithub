@@ -11,7 +11,7 @@
         <tr class="title bg-gray-100">
           <th class="border px-4 py-2">Name</th>
           <th class="border px-4 py-2">Total</th>
-          <th class="border px-4 py-2">Actions</th>
+          <th class="border px-2 py-2">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -28,9 +28,13 @@
           <td class="align-center border px-4 py-2">
             {{ getTotal(invoice) | currency(invoice) }}
           </td>
-          <td class="align-center border px-4 py-2">
-            <button @click="downloadPDF(invoice)">Download</button>
-            <button @click="remove(invoice)">&#x2718;</button>
+          <td class="align-center border px-2 py-2 text-center">
+            <button @click="downloadPDF(invoice)" class="btn">
+              <font-awesome-icon icon="download" />
+            </button>
+            <button @click="remove(invoice)" class="btn ml-2">
+              <font-awesome-icon icon="trash-alt" />
+            </button>
           </td>
         </tr>
       </tbody>
