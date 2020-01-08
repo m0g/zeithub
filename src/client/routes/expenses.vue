@@ -37,10 +37,10 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
-import AddExpense from './add-expense.vue';
-import YearFilter from './year-filter.vue';
-import Expense from './expense.vue';
-import DownloadCsv from './download-csv.vue';
+import AddExpense from './../components/add-expense.vue';
+import YearFilter from './../components/year-filter.vue';
+import Expense from './../components/expense.vue';
+import DownloadCsv from './../components/download-csv.vue';
 
 @Component({
   components: { AddExpense, YearFilter, Expense, DownloadCsv }

@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import './style.css';
 
 import App from './components/app.vue';
-import router from './router';
+import router from './routes';
 
 library.add(
   faDownload,

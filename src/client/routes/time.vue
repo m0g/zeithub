@@ -31,10 +31,10 @@ import Vue from 'vue';
 import http from '../http';
 import Component from 'vue-class-component';
 import { DateTime } from 'luxon';
-import Activity from './activity.vue';
-import Hamster from './hamster.vue';
-import TimeTracker from './time-tracker.vue';
-import AddActivity from './add-activity.vue';
+import Activity from './../components/activity.vue';
+import Hamster from './../components/hamster.vue';
+import TimeTracker from './../components/time-tracker.vue';
+import AddActivity from './../components/add-activity.vue';
 
 @Component({
   components: { Activity, Hamster, TimeTracker, AddActivity }

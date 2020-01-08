@@ -1,23 +1,23 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Home from './components/home.vue';
-import Projects from './components/projects.vue';
-import Project from './components/project.vue';
-import CreateProject from './components/create-project.vue';
-import SignIn from './components/sign-in.vue';
-import SignOut from './components/sign-out.vue';
-import SignUp from './components/sign-up.vue';
-import Time from './components/time.vue';
-import Expenses from './components/expenses.vue';
-import Me from './components/me.vue';
-import Invoices from './components/invoices.vue';
-import Invoice from './components/invoice.vue';
-import AddInvoice from './components/add-invoice.vue';
-import EditInvoice from './components/edit-invoice.vue';
-import Clients from './components/clients.vue';
+import Home from './home.vue';
+import Projects from './projects.vue';
+import Project from './project.vue';
+import CreateProject from './create-project.vue';
+import SignIn from './sign-in.vue';
+import SignOut from './sign-out.vue';
+import SignUp from './sign-up.vue';
+import Time from './time.vue';
+import Expenses from './expenses.vue';
+import Me from './me.vue';
+import Invoices from './invoices.vue';
+import Invoice from './invoice.vue';
+import AddInvoice from './add-invoice.vue';
+import EditInvoice from './edit-invoice.vue';
+import Clients from './clients.vue';
 
-import { requireAuth, requireUnauth } from './auth';
+import { requireAuth, requireUnauth } from './../auth';
 
 Vue.use(VueRouter);
 

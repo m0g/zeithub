@@ -19,8 +19,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
-import AddClient from './add-client.vue';
-import Client from './client.vue';
+import AddClient from './../components/add-client.vue';
+import Client from './../components/client.vue';
 
 @Component({
   components: {

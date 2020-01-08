@@ -1,24 +1,21 @@
 <template>
-<fieldset>
-  <legend>Create project</legend>
-  <form @submit="sendForm" method="post">
-    <form-errors :errors="errors"></form-errors>
-    <p>
-      <input
-        type="text"
-        placeholder="Name"
-        v-model="name" />
-    </p>
-    <p><input type="submit" value="Send" /></p>
-  </form>
-</fieldset>
+  <fieldset>
+    <legend>Create project</legend>
+    <form @submit="sendForm" method="post">
+      <form-errors :errors="errors"></form-errors>
+      <p>
+        <input type="text" placeholder="Name" v-model="name" />
+      </p>
+      <p><input type="submit" value="Send" /></p>
+    </form>
+  </fieldset>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
-import FormErrors from './form-errors.vue';
+import FormErrors from './../components/form-errors.vue';
 
 @Component({
   components: { FormErrors }

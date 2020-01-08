@@ -11,10 +11,10 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
-import PersonalInfo from './personal-info.vue';
-import ChangePassword from './change-password.vue';
-import BankAccounts from './bank-accounts.vue';
-import Addresses from './addresses.vue';
+import PersonalInfo from './../components/personal-info.vue';
+import ChangePassword from './../components/change-password.vue';
+import BankAccounts from './../components/bank-accounts.vue';
+import Addresses from './../components/addresses.vue';
 
 @Component({
   components: {

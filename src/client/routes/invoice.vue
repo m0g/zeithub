@@ -67,8 +67,8 @@
 <script lang="ts">
 import slugify from 'slugify';
 import http from './../http';
-import InvoiceInfo from './invoice-info.vue';
-import ItemsTable from './items-table.vue';
+import InvoiceInfo from './../components/invoice-info.vue';
+import ItemsTable from './../components/items-table.vue';
 
 import * as M from './../../models';
 

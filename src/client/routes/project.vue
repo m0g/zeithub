@@ -39,11 +39,11 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
 import { DateTime } from 'luxon';
-import Activity from './activity.vue';
-import AddActivity from './add-activity.vue';
-import ProjectFilters from './project-filters.vue';
-import GenerateInvoice from './generate-invoice.vue';
-import ProjectClient from './project-client.vue';
+import Activity from './../components/activity.vue';
+import AddActivity from './../components/add-activity.vue';
+import ProjectFilters from './../components/project-filters.vue';
+import GenerateInvoice from './../components/generate-invoice.vue';
+import ProjectClient from './../components/project-client.vue';
 import { Route } from 'vue-router';
 
 interface WithRoute {

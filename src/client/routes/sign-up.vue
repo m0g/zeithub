@@ -54,7 +54,7 @@
 import Vue from 'vue';
 import http from '../http';
 import Component from 'vue-class-component';
-import FormErrors from './form-errors.vue';
+import FormErrors from './../components/form-errors.vue';
 
 @Component({
   components: { FormErrors }
