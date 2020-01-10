@@ -1,14 +1,19 @@
 <template>
-  <div>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
     <h3>Add expense</h3>
     <form method="POST" @submit="sendForm">
       <form-errors :errors="errors"></form-errors>
       <input type="text" placeholder="Label" v-model="name" />
       <input type="date" placeholder="Date" v-model="date" />
-      <input type="number" placeholder="Amount in Euro" v-model="amount" step=".01" />
+      <input
+        type="number"
+        placeholder="Amount in Euro"
+        v-model="amount"
+        step=".01"
+      />
       <input type="submit" value="Add" />
     </form>
-  </div> 
+  </div>
 </template>
 
 <script lang="ts">

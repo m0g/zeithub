@@ -1,20 +1,7 @@
 <template>
-  <section>
-    <aside>
-      <year-filter
-        :get-expenses="getExpenses"
-        :selected-year="year"
-      ></year-filter>
-      <add-expense :get-expenses="getExpenses"></add-expense>
-      <div>
-        <h3>€</h3>
-        <p><b>Turnover:</b> {{ turnover | currency }}</p>
-        <p><b>Profit:</b> {{ profit | currency }}</p>
-      </div>
-      <download-csv :expenses="expenses"></download-csv>
-    </aside>
-    <div class="expenses">
-      <h3>List of expenses</h3>
+  <div class="flex">
+    <div class="flex-1 bg-white shadow m-4 ml-0 p-4 rounded-lg">
+      <h3>Activities</h3>
       <table>
         <tr>
           <th>Name</th>
@@ -30,7 +17,21 @@
         ></expense>
       </table>
     </div>
-  </section>
+
+    <aside class="flex-none w-72">
+      <year-filter
+        :get-expenses="getExpenses"
+        :selected-year="year"
+      ></year-filter>
+      <add-expense :get-expenses="getExpenses"></add-expense>
+      <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
+        <h3>€</h3>
+        <p><b>Turnover:</b> {{ turnover | currency }}</p>
+        <p><b>Profit:</b> {{ profit | currency }}</p>
+      </div>
+      <download-csv :expenses="expenses"></download-csv>
+    </aside>
+  </div>
 </template>
 
 <script lang="ts">
@@ -86,42 +87,3 @@ export default class Expenses extends Vue {
   }
 }
 </script>
-
-<style scoped>
-section {
-  display: flex;
-  flex-flow: row wrap;
-  flex: 1 100%;
-  margin: 0 0 10px;
-  height: calc(100% - 60px);
-}
-
-section aside {
-  flex: 1;
-  border-right: 1px dotted black;
-}
-
-section aside div {
-  border-bottom: 1px dotted black;
-  padding: 10px;
-}
-
-.expenses {
-  flex: 3;
-  padding: 10px;
-  overflow-y: auto;
-  max-height: 100%;
-}
-
-section table {
-  width: 100%;
-}
-
-.align-center {
-  text-align: center;
-}
-
-.align-right {
-  text-align: right;
-}
-</style>

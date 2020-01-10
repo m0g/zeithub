@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
     <h3>Filter per year</h3>
     <label for="year">Filter by year</label>
     <select name="" id="" v-model="year" @change="handleChange">
