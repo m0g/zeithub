@@ -43,3 +43,17 @@ then we need to populate the database:
 ```
 docker-compose exec zeithub npm run db:up
 ```
+
+## Backup & Restore MySQL database
+
+### Backup
+
+```
+docker exec CONTAINER /usr/bin/mysqldump -u root --password=root DATABASE > backup.sql
+```
+
+### Restore
+
+```
+cat backup.sql | docker exec -i CONTAINER /usr/bin/mysql -u root --password=root DATABASE
+```
