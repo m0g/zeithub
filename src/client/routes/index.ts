@@ -2,9 +2,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Home from './home.vue';
-import Projects from './projects.vue';
-import Project from './project.vue';
-import CreateProject from './create-project.vue';
 import SignIn from './sign-in.vue';
 import SignOut from './sign-out.vue';
 import SignUp from './sign-up.vue';
@@ -24,25 +21,6 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/', name: 'Home', component: Home },
-    {
-      path: '/projects',
-      name: 'Projects',
-      beforeEnter: requireAuth,
-      component: Projects
-    },
-    {
-      path: '/projects/new',
-      name: 'CreateProject',
-      beforeEnter: requireAuth,
-      component: CreateProject
-    },
-    {
-      path: '/projects/:slug',
-      name: 'Project',
-      beforeEnter: requireAuth,
-      component: Project
-    },
-
     {
       path: '/signin',
       name: 'SignIn',

@@ -9,12 +9,6 @@
       <p class="text-gray-600 text-xs">{{ version }}</p>
     </div>
     <ul class="list-reset m-4">
-     <li>
-        <router-link to="/projects" v-if="isLoggedIn">
-          <font-awesome-icon icon="folder" />
-          <span>Projects</span>
-        </router-link>
-      </li>
       <li>
         <router-link to="/clients" v-if="isLoggedIn">
           <font-awesome-icon icon="users" />
