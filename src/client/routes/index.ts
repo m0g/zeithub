@@ -8,7 +8,6 @@ import CreateProject from './create-project.vue';
 import SignIn from './sign-in.vue';
 import SignOut from './sign-out.vue';
 import SignUp from './sign-up.vue';
-import Time from './time.vue';
 import Expenses from './expenses.vue';
 import Me from './me.vue';
 import Invoices from './invoices.vue';
@@ -61,12 +60,6 @@ const router = new VueRouter({
       name: 'SignUp',
       beforeEnter: requireUnauth,
       component: SignUp
-    },
-    {
-      path: '/time',
-      name: 'Time',
-      beforeEnter: requireAuth,
-      component: Time
     },
     {
       path: '/expenses',

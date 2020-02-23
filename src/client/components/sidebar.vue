@@ -9,13 +9,7 @@
       <p class="text-gray-600 text-xs">{{ version }}</p>
     </div>
     <ul class="list-reset m-4">
-      <li>
-        <router-link to="/time" v-if="isLoggedIn">
-          <font-awesome-icon icon="clock" />
-          <span>Time Tracking</span>
-        </router-link>
-      </li>
-      <li>
+     <li>
         <router-link to="/projects" v-if="isLoggedIn">
           <font-awesome-icon icon="folder" />
           <span>Projects</span>
@@ -42,7 +36,7 @@
       <li>
         <router-link to="/me" v-if="isLoggedIn">
           <font-awesome-icon icon="user-circle" />
-          <span>Invoices</span>
+          <span>Profile</span>
         </router-link>
       </li>
       <li>
