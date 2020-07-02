@@ -2,35 +2,7 @@
   <div class="flex">
     <div class="flex-1 bg-white shadow m-4 ml-0 p-4 rounded-lg">
       <h1>{{ project.name }}</h1>
-      <ul>
-        <li v-for="(activities, date) in activityGroups" :key="date">
-          <p>
-            <b>{{ date }}</b>
-          </p>
-          <ul>
-            <activity
-              v-for="activity in activities"
-              :key="activity.id"
-              :get-activities="getProject"
-              :activity="activity"
-            ></activity>
-          </ul>
-        </li>
-      </ul>
     </div>
-    <aside class="flex-none w-72">
-      <project-filters :get-project="getProject"></project-filters>
-      <project-client></project-client>
-      <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
-        <h3>Stats</h3>
-        <p><b>Total time:</b> {{ stats.durationMinutes | totalHours }} hours</p>
-      </div>
-      <generate-invoice></generate-invoice>
-      <add-activity
-        :get-activities="getProject"
-        :project-id="project.id"
-      ></add-activity>
-    </aside>
   </div>
 </template>
 
@@ -39,26 +11,13 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
 import { DateTime } from 'luxon';
-import Activity from './../components/activity.vue';
-import AddActivity from './../components/add-activity.vue';
-import ProjectFilters from './../components/project-filters.vue';
-import GenerateInvoice from './../components/generate-invoice.vue';
-import ProjectClient from './../components/project-client.vue';
 import { Route } from 'vue-router';
 
 interface WithRoute {
   $route: Route;
 }
 
-@Component({
-  components: {
-    Activity,
-    AddActivity,
-    ProjectFilters,
-    GenerateInvoice,
-    ProjectClient
-  }
-})
+@Component({})
 export default class Project extends Vue implements WithRoute {
   project: {}[] = [];
   activityGroups: {} = {};
@@ -72,15 +31,13 @@ export default class Project extends Vue implements WithRoute {
     const newQuery = Object.assign({}, this.$route.query, query);
 
     const response = await http(`/api/projects/${this.$route.params.slug}`, {
-      query: newQuery
+      query: newQuery,
     });
 
     const data = await response.json();
 
     if (data.success) {
       this.project = data.project;
-      this.activityGroups = this.groupByDate(data.activities);
-      this.stats = this.getStats(data.activities);
 
       if (Object.keys(query).length > 0) {
         this.$router.push({ query });

@@ -8,7 +8,6 @@ import CreateProject from './create-project.vue';
 import SignIn from './sign-in.vue';
 import SignOut from './sign-out.vue';
 import SignUp from './sign-up.vue';
-import Time from './time.vue';
 import Expenses from './expenses.vue';
 import Me from './me.vue';
 import Invoices from './invoices.vue';
@@ -29,87 +28,81 @@ const router = new VueRouter({
       path: '/projects',
       name: 'Projects',
       beforeEnter: requireAuth,
-      component: Projects
+      component: Projects,
     },
     {
       path: '/projects/new',
       name: 'CreateProject',
       beforeEnter: requireAuth,
-      component: CreateProject
+      component: CreateProject,
     },
     {
       path: '/projects/:slug',
       name: 'Project',
       beforeEnter: requireAuth,
-      component: Project
+      component: Project,
     },
 
     {
       path: '/signin',
       name: 'SignIn',
       beforeEnter: requireUnauth,
-      component: SignIn
+      component: SignIn,
     },
     {
       path: '/signout',
       name: 'SignOut',
       beforeEnter: requireAuth,
-      component: SignOut
+      component: SignOut,
     },
     {
       path: '/signup',
       name: 'SignUp',
       beforeEnter: requireUnauth,
-      component: SignUp
-    },
-    {
-      path: '/time',
-      name: 'Time',
-      beforeEnter: requireAuth,
-      component: Time
+      component: SignUp,
     },
     {
       path: '/expenses',
       name: 'Expenses',
       beforeEnter: requireAuth,
-      component: Expenses
+      component: Expenses,
     },
     {
       path: '/me',
       name: 'Me',
       beforeEnter: requireAuth,
-      component: Me
+      component: Me,
     },
     {
       path: '/invoices',
       name: 'Invoices',
       beforeEnter: requireAuth,
-      component: Invoices
+      component: Invoices,
     },
     {
       path: '/invoices/new',
       name: 'AddInvoice',
       beforeEnter: requireAuth,
-      component: AddInvoice
+      component: AddInvoice,
     },
     {
       path: '/invoices/:id/edit',
       name: 'EditInvoice',
       beforeEnter: requireAuth,
-      component: EditInvoice
+      component: EditInvoice,
     },
     {
       path: '/invoices/:id',
       name: 'Invoice',
       beforeEnter: requireAuth,
-      component: Invoice
+      component: Invoice,
     },
     {
       path: '/clients',
       name: 'Clients',
-      component: Clients
-    }
-  ]
+      component: Clients,
+    },
+  ],
 });
 
 export default router;
