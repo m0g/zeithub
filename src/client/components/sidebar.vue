@@ -10,12 +10,6 @@
     </div>
     <ul class="list-reset m-4">
       <li>
-        <router-link to="/time" v-if="isLoggedIn">
-          <font-awesome-icon icon="clock" />
-          <span>Time Tracking</span>
-        </router-link>
-      </li>
-      <li>
         <router-link to="/projects" v-if="isLoggedIn">
           <font-awesome-icon icon="folder" />
           <span>Projects</span>

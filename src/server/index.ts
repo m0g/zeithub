@@ -15,12 +15,10 @@ import clients from './routes/clients';
 import invoices from './routes/invoices';
 import expenses from './routes/expenses';
 import currencies from './routes/currencies';
-import activities from './routes/activities';
 
 const hamsterRouter = require('./routes/hamster');
 const projectsRouter = require('./routes/projects');
 const signRouter = require('./routes/sign');
-// const activitiesRouter = require("./routes/activities");
 const meRouter = require('./routes/me');
 
 const app = express();
@@ -34,7 +32,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('webpack-dev-middleware')(compiler, {
       writeToDisk: true,
       noInfo: true,
-      publicPath: config.output.publicPath
+      publicPath: config.output.publicPath,
     })
   );
 }
@@ -49,7 +47,6 @@ app.use('/dist', express.static('dist'));
 app.use('/api/hamster', hamsterRouter);
 app.use('/api/projects', projectsRouter);
 app.use('/api/sign', signRouter);
-app.use('/api/activities', activities);
 app.use('/api/expenses', expenses);
 app.use('/api/me', meRouter);
 app.use('/api/invoices', invoices);
