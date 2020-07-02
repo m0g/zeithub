@@ -36,7 +36,7 @@
       <li>
         <router-link to="/me" v-if="isLoggedIn">
           <font-awesome-icon icon="user-circle" />
-          <span>Invoices</span>
+          <span>Profile</span>
         </router-link>
       </li>
       <li>

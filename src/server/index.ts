@@ -16,7 +16,6 @@ import invoices from './routes/invoices';
 import expenses from './routes/expenses';
 import currencies from './routes/currencies';
 
-const hamsterRouter = require('./routes/hamster');
 const projectsRouter = require('./routes/projects');
 const signRouter = require('./routes/sign');
 const meRouter = require('./routes/me');
@@ -44,7 +43,6 @@ app.use(cookieParser());
 app.use(helmet());
 
 app.use('/dist', express.static('dist'));
-app.use('/api/hamster', hamsterRouter);
 app.use('/api/projects', projectsRouter);
 app.use('/api/sign', signRouter);
 app.use('/api/expenses', expenses);
