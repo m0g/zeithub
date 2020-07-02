@@ -29,7 +29,6 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "bcrypt": "5.0.0",
-    "cheerio": "^1.0.0-rc.3",
     "cookie-parser": "~1.4.5",
     "db-migrate": "0.11.11",
     "db-migrate-mysql": "^2.1.1",
