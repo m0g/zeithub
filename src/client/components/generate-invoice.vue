@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
     <h3>Generate invoice</h3>
     <form method="POST" @submit="generate">
       <form-errors :errors="errors"></form-errors>

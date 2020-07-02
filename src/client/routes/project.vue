@@ -1,19 +1,6 @@
 <template>
-  <section>
-    <aside>
-      <project-filters :get-project="getProject"></project-filters>
-      <project-client></project-client>
-      <div>
-        <h3>Stats</h3>
-        <p><b>Total time:</b> {{ stats.durationMinutes | totalHours }} hours</p>
-      </div>
-      <generate-invoice></generate-invoice>
-      <add-activity
-        :get-activities="getProject"
-        :project-id="project.id"
-      ></add-activity>
-    </aside>
-    <div class="project">
+  <div class="flex">
+    <div class="flex-1 bg-white shadow m-4 ml-0 p-4 rounded-lg">
       <h1>{{ project.name }}</h1>
       <ul>
         <li v-for="(activities, date) in activityGroups" :key="date">
@@ -31,7 +18,20 @@
         </li>
       </ul>
     </div>
-  </section>
+    <aside class="flex-none w-72">
+      <project-filters :get-project="getProject"></project-filters>
+      <project-client></project-client>
+      <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
+        <h3>Stats</h3>
+        <p><b>Total time:</b> {{ stats.durationMinutes | totalHours }} hours</p>
+      </div>
+      <generate-invoice></generate-invoice>
+      <add-activity
+        :get-activities="getProject"
+        :project-id="project.id"
+      ></add-activity>
+    </aside>
+  </div>
 </template>
 
 <script lang="ts">

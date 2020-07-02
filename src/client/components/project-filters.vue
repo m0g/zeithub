@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
     <h3>Filters</h3>
     <label for="month">Filter by month</label>
     <input id="month" @change="filterByMonth" type="month" v-model="month" />
