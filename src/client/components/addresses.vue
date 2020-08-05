@@ -23,7 +23,7 @@ import AddAddress from './add-address.vue';
 import AddressInfo from './address-info.vue';
 
 @Component({
-  components: { AddAddress, AddressInfo }
+  components: { AddAddress, AddressInfo },
 })
 export default class Addresses extends Vue {
   addresses: {}[] = [];
@@ -35,14 +35,13 @@ export default class Addresses extends Vue {
   async getAddresses() {
     const response = await http('/api/addresses', {
       headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
+      method: 'GET',
     });
 
     const data = await response.json();
 
     if (data.success) {
       this.addresses = data.addresses;
-      console.log(data.addresses);
     }
   }
 }

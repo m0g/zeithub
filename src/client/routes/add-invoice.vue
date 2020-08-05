@@ -16,7 +16,7 @@
       ></billing>
       <div class="p-4 border-b">
         <h3 class="text-bg font-semibold">Invoice Items</h3>
-        <table>
+        <table class="max-w-full">
           <tr>
             <th>Project</th>
             <th>Description</th>
@@ -43,7 +43,7 @@
             <td class="px-4 py-2">
               <input
                 type="number"
-                class="input"
+                class="input w-24"
                 step="0.01"
                 v-model="item.unitPrice"
                 @keyup="computeTotal"
@@ -52,7 +52,7 @@
             <td class="px-4 py-2">
               <input
                 type="number"
-                class="input"
+                class="input w-24"
                 min="0.1"
                 max="999"
                 step="0.1"
@@ -78,29 +78,30 @@
           </tr>
           <tr>
             <th colspan="3" class="px-4 py-2">Discount</th>
-            <td class="px-4 py-2">
+            <td class="px-4 py-2 relative">
               <input
                 type="number"
-                class="input"
+                class="input w-24"
                 name="discount"
                 v-model="invoice.discount"
                 step="0.01"
                 @keyup="computeTotal"
               />
-              &euro;
+              <span class="absolute left-0 leading-normal">&euro;</span>
             </td>
           </tr>
           <tr>
             <th colspan="3" class="px-4 py-2">Tax</th>
-            <td class="px-4 py-2">
+            <td class="px-4 py-2 relative">
               <input
                 type="number"
-                class="input"
+                class="input w-24"
                 name="tax"
                 v-model="invoice.tax"
                 step="0.01"
                 @keyup="computeTotal"
-              />%
+              />
+              <span class="absolute left-0 leading-normal">%</span>
             </td>
           </tr>
           <tr>
@@ -140,8 +141,8 @@ import Billing from './../components/billing.vue';
     FormErrors,
     SelectProject,
     SelectClient,
-    Billing
-  }
+    Billing,
+  },
 })
 export default class AddInvoice extends Vue {
   items: Item[] = [];
@@ -178,7 +179,7 @@ export default class AddInvoice extends Vue {
       'newInvoice',
       JSON.stringify({
         invoice: this.invoice,
-        items: this.items
+        items: this.items,
       })
     );
   }
@@ -216,13 +217,13 @@ export default class AddInvoice extends Vue {
     if (this.errors.length === 0) {
       const body = {
         invoice: this.invoice,
-        items: this.items
+        items: this.items,
       };
 
       const response = await http('/api/invoices/with-items', {
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       });
 
       const data = await response.json();
@@ -235,7 +236,7 @@ export default class AddInvoice extends Vue {
 
         this.$router.push({
           name: 'Invoice',
-          params: { id: data.invoiceId }
+          params: { id: data.invoiceId },
         });
       }
     }
