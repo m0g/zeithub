@@ -19,8 +19,9 @@ services:
     ports:
       - 80:80
   db:
-    image: mysql
+    image: mariadb
     restart: always
+    hostname: db
     environment:
       MYSQL_ROOT_PASSWORD: zeithub
       MYSQL_USER: zeithub
