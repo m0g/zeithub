@@ -22,12 +22,6 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/expenses" v-if="isLoggedIn">
-          <font-awesome-icon icon="receipt" />
-          <span>Expenses</span>
-        </router-link>
-      </li>
-      <li>
         <router-link to="/invoices" v-if="isLoggedIn">
           <font-awesome-icon icon="file-invoice" />
           <span>Invoices</span>

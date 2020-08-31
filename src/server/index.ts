@@ -13,7 +13,6 @@ import bankAccounts from './routes/bank-accounts';
 import addresses from './routes/addresses';
 import clients from './routes/clients';
 import invoices from './routes/invoices';
-import expenses from './routes/expenses';
 import currencies from './routes/currencies';
 
 const projectsRouter = require('./routes/projects');
@@ -45,7 +44,6 @@ app.use(helmet());
 app.use('/dist', express.static('dist'));
 app.use('/api/projects', projectsRouter);
 app.use('/api/sign', signRouter);
-app.use('/api/expenses', expenses);
 app.use('/api/me', meRouter);
 app.use('/api/invoices', invoices);
 app.use('/api/bank-accounts', bankAccounts);
