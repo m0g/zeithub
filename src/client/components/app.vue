@@ -1,7 +1,8 @@
 <template>
   <div id="app" class="flex">
     <sidebar></sidebar>
-    <router-view id="router-view" class="flex-1 ml-48"></router-view>
+    <router-view id="router-view" class="flex-1 ml-4 mt-20 md:mt-4 md:ml-48">
+    </router-view>
   </div>
 </template>
 

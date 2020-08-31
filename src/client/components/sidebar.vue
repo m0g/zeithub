@@ -1,14 +1,32 @@
 <template>
-  <header class="flex-none w-48 fixed">
+  <header class="md:flex-none md:w-48 fixed bg-gray-200">
     <div class="pt-4 pl-4 pr-4">
-      <h1 class="font-semibold text-lg">
-        <router-link id="app-name" to="/">
-          {{ name }}
-        </router-link>
-      </h1>
-      <p class="text-gray-600 text-xs">{{ version }}</p>
+      <div class="flex flex-row">
+        <button
+          type="button"
+          id="sidebar-open"
+          aria-label="Open the sidebar"
+          class="flex mr-2 px-2 items-center lg:hidden text-black focus:outline-none focus:text-gray-700"
+        >
+          <svg
+            class="fill-current w-4 h-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+          </svg>
+        </button>
+        <div>
+          <h1 class="font-semibold text-lg">
+            <router-link id="app-name" to="/" class="flex">
+              {{ name }}
+            </router-link>
+          </h1>
+          <p class="text-gray-600 text-xs">{{ version }}</p>
+        </div>
+      </div>
     </div>
-    <ul class="list-reset m-4">
+    <ul class="hidden list-reset m-4 md:block">
       <li>
         <router-link to="/projects" v-if="isLoggedIn">
           <font-awesome-icon icon="folder" />
