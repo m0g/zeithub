@@ -11,7 +11,7 @@ import {
   faUserCircle,
   faFolder,
   faSignInAlt,
-  faSignOutAlt
+  faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -72,9 +72,4 @@ Vue.filter('duration', timestamp =>
   DateTime.fromSeconds(timestamp).toFormat('HH:mm:ss')
 );
 
-new Vue({
-  router,
-  el: '#app',
-  template: '<App/>',
-  components: { App }
-});
+new Vue({ el: '#app', router, render: h => h(App) });
