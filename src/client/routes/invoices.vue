@@ -9,6 +9,7 @@
     <table class="table-auto w-full">
       <thead>
         <tr class="title bg-gray-100">
+          <th class="border py-2">Number</th>
           <th class="border px-4 py-2">Name</th>
           <th class="border px-4 py-2">Total</th>
           <th class="border px-2 py-2">Actions</th>
@@ -20,6 +21,9 @@
           :key="invoice.number"
           :class="{ 'bg-gray-100': index % 2 !== 0 }"
         >
+          <td class="align-center text-center text-bold border py-2">
+            {{ invoice.number }}
+          </td>
           <td class="border px-4 py-2">
             <router-link :to="{ name: 'Invoice', params: { id: invoice.id } }">
               {{ invoice.name }}
@@ -77,7 +81,7 @@ export default class Invoices extends Vue {
   async getInvoices() {
     const response = await http('/api/invoices', {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
 
     const data = await response.json();
@@ -91,7 +95,7 @@ export default class Invoices extends Vue {
     if (window.confirm('Do you really want to delete this invoice?')) {
       const response = await http(`/api/invoices/${id}`, {
         headers: { 'Content-Type': 'application/json' },
-        method: 'DELETE'
+        method: 'DELETE',
       });
 
       const data = await response.json();
@@ -111,7 +115,7 @@ export default class Invoices extends Vue {
 
     const response = await http(`/api/invoices/${invoice.id}/pdf`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
 
     const blob = await response.blob();
