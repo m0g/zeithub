@@ -29,7 +29,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(
     require('webpack-dev-middleware')(compiler, {
       writeToDisk: true,
-      noInfo: true,
+      // noInfo: true,
       publicPath: config.output.publicPath,
     })
   );

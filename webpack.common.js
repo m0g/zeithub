@@ -7,13 +7,13 @@ module.exports = {
   output: {
     filename: 'index.bundle.js',
     chunkFilename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: 'vue-loader',
       },
       {
         test: /\.tsx?$/,
@@ -22,8 +22,8 @@ module.exports = {
         options: {
           transpileOnly: true,
           experimentalWatchApi: true,
-          appendTsSuffixTo: [/\.vue$/]
-        }
+          appendTsSuffixTo: [/\.vue$/],
+        },
       },
       {
         test: /\.css$/,
@@ -31,22 +31,22 @@ module.exports = {
           'vue-style-loader',
           'style-loader',
           'css-loader',
-          'postcss-loader'
-        ]
-      }
-    ]
+          'postcss-loader',
+        ],
+      },
+    ],
   },
   resolve: {
     alias: {
-      vue$: 'vue/dist/vue.esm.js'
+      vue$: 'vue/dist/vue.esm.js',
     },
-    extensions: ['*', '.ts', '.js', '.vue', '.json']
+    extensions: ['*', '.ts', '.js', '.vue', '.json'],
+    fallback: {
+      fs: false,
+    },
   },
   plugins: [
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new VueLoaderPlugin()
+    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new VueLoaderPlugin(),
   ],
-  node: {
-    fs: 'empty'
-  }
 };
