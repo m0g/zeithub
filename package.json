@@ -52,7 +52,7 @@
     "vue-server-renderer": "2.6.12"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^2.3.0",
+    "@fullhuman/postcss-purgecss": "4.0.3",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "4.17.13",
     "@types/mocha": "9.0.0",
