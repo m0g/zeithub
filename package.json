@@ -69,7 +69,6 @@
     "npm-check-updates": "11.8.5",
     "postcss-loader": "6.2.0",
     "prettier": "2.4.1",
-    "style-loader": "1.2.1",
     "supertest": "6.1.6",
     "ts-loader": "9.2.6",
     "ts-node": "10.4.0",
