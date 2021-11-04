@@ -4,7 +4,7 @@
     <div class="mt-4">
       <input
         type="text"
-        class="input"
+        class="input w-full"
         placeholder="Title"
         v-model="invoice.name"
       />
@@ -62,15 +62,15 @@ import SelectAddress from './select-address.vue';
 import SelectCurrency from './select-currency.vue';
 
 const Props = Vue.extend({
-  props: ['invoice', 'editMode']
+  props: ['invoice', 'editMode'],
 });
 
 @Component({
   components: {
     SelectBankAccount,
     SelectAddress,
-    SelectCurrency
-  }
+    SelectCurrency,
+  },
 })
 export default class Billing extends Props {
   lastInvoiceNumber: number = 0;
@@ -82,7 +82,7 @@ export default class Billing extends Props {
   async getLastInvoiceNumber() {
     const response = await http('/api/invoices', {
       headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
+      method: 'GET',
     });
 
     const data = await response.json();
