@@ -1,11 +1,11 @@
 {
-  "name": "Zeithub",
+  "name": "zeithub",
   "version": "0.2.0",
   "private": true,
   "engineStrict": true,
   "engines": {
-    "node": "12.10.0",
-    "npm": "6.10.3"
+    "node": "16.11.0",
+    "npm": "8.0.0"
   },
   "scripts": {
     "start": "node ./build/server/index.js",
