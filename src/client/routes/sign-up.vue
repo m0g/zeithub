@@ -6,7 +6,7 @@
       <div class="mt-4">
         <input
           type="text"
-          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring"
           placeholder="User name"
           v-model="username"
         />
@@ -14,7 +14,7 @@
       <div class="mt-4">
         <input
           type="text"
-          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring"
           placeholder="Email"
           v-model="email"
         />
@@ -22,7 +22,7 @@
       <div class="mt-4">
         <input
           type="password"
-          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring"
           placeholder="Password"
           v-model="password"
         />
@@ -30,7 +30,7 @@
       <div class="mt-4">
         <input
           type="password"
-          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring"
           placeholder="Repeat password"
           v-model="passwordRepeat"
         />
@@ -38,7 +38,7 @@
       <div class="mt-4">
         <input
           type="submit"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring"
           value="Send"
         />
       </div>
@@ -57,7 +57,7 @@ import Component from 'vue-class-component';
 import FormErrors from './../components/form-errors.vue';
 
 @Component({
-  components: { FormErrors }
+  components: { FormErrors },
 })
 export default class SignUp extends Vue {
   errors: string[] = [];
@@ -88,13 +88,13 @@ export default class SignUp extends Vue {
       const user = {
         username: this.username,
         password: this.password,
-        email: this.email
+        email: this.email,
       };
 
       const response = await http('/api/sign/up', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: JSON.stringify(user),
       });
 
       const data = await response.json();

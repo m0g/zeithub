@@ -3,7 +3,7 @@
     <div class="border-b p-4 flex bg-gray-700 text-white">
       <h3 class="font-semibold text-lg flex-1">{{ invoice.name }}</h3>
       <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:ring"
         @click="downloadPDF"
       >
         Download PDF
@@ -77,8 +77,8 @@ import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 @Component({
   components: {
     ItemsTable,
-    InvoiceInfo
-  }
+    InvoiceInfo,
+  },
 })
 export default class Invoice extends Vue {
   invoice: M.Invoice = new M.Invoice();
@@ -104,7 +104,7 @@ export default class Invoice extends Vue {
 
     const response = await http(`/api/invoices/${this.$route.params.id}/pdf`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
 
     const blob = await response.blob();
@@ -122,7 +122,7 @@ export default class Invoice extends Vue {
   async getInvoice() {
     const response = await http(`/api/invoices/${this.$route.params.id}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
 
     const data = await response.json();

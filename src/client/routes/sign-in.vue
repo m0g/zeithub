@@ -6,7 +6,7 @@
       <div class="mt-4">
         <input
           type="text"
-          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring"
           placeholder="User name"
           v-model="username"
         />
@@ -14,7 +14,7 @@
       <div class="mt-4">
         <input
           type="password"
-          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring"
           placeholder="Password"
           v-model="password"
         />
@@ -22,7 +22,7 @@
       <div class="mt-4">
         <input
           type="submit"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring"
           value="Send"
         />
       </div>
@@ -37,7 +37,7 @@ import http from '../http';
 import FormErrors from './../components/form-errors.vue';
 
 @Component({
-  components: { FormErrors }
+  components: { FormErrors },
 })
 export default class SignIn extends Vue {
   errors: string[] = [];
@@ -60,13 +60,13 @@ export default class SignIn extends Vue {
     if (this.errors.length === 0) {
       const user = {
         username: this.username,
-        password: this.password
+        password: this.password,
       };
 
       fetch('/api/sign/in', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: JSON.stringify(user),
       })
         .then(response => response.json())
         .then(response => {
