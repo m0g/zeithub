@@ -1,4 +1,4 @@
-FROM node:12.10.0-alpine
+FROM node:16.11.0-alpine
 # Create app directory
 WORKDIR /usr/src/app
 
@@ -17,13 +17,13 @@ RUN apk add --no-cache \
       ca-certificates \
       ttf-freefont
 
-RUN apk --no-cache add g++ gcc libgcc libstdc++ linux-headers make python
+RUN apk --no-cache add g++ gcc libgcc libstdc++ linux-headers make python2
 RUN npm install --quiet node-gyp -g
 RUN npm install
 
 # Bundle app source
 COPY . .
-ENV NODE_ENV=production CHROME_BIN="/usr/bin/chromium-browser"
+ENV CHROME_BIN="/usr/bin/chromium-browser"
 RUN npm run build
 RUN npm prune
 EXPOSE 3000
