@@ -3,7 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import * as express from 'express';
-import * as helmet from 'helmet';
+import helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
 import * as logger from 'morgan';
 import * as fallback from 'express-history-api-fallback';
