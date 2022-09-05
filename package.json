@@ -25,8 +25,8 @@
     "heroku-postbuild": "db-migrate up && webpack --config webpack.prod.js && npm run tsc"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.30",
-    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/fontawesome-svg-core": "6.2.0",
+    "@fortawesome/free-solid-svg-icons": "6.2.0",
     "@fortawesome/vue-fontawesome": "2.0.6",
     "bcrypt": "5.0.1",
     "cookie-parser": "~1.4.5",
