@@ -4,8 +4,8 @@
   "private": true,
   "engineStrict": true,
   "engines": {
-    "node": "16.11.0",
-    "npm": "8.0.0"
+    "node": "16.13.1",
+    "npm": "8.1.2"
   },
   "scripts": {
     "start": "node ./build/server/index.js",
