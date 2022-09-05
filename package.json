@@ -38,7 +38,7 @@
     "helmet": "4.6.0",
     "http-errors": "1.8.0",
     "jsonwebtoken": "8.5.1",
-    "luxon": "2.0.2",
+    "luxon": "3.0.3",
     "morgan": "^1.10.0",
     "mysql2": "2.3.2",
     "puppeteer-core": "chrome-93",
