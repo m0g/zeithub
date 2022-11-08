@@ -28,6 +28,7 @@
     "@fortawesome/fontawesome-svg-core": "6.2.0",
     "@fortawesome/free-solid-svg-icons": "6.2.0",
     "@fortawesome/vue-fontawesome": "2.0.8",
+    "@vue/server-renderer": "^3.2.41",
     "bcrypt": "5.0.1",
     "cookie-parser": "1.4.6",
     "db-migrate": "1.0.0-beta.16",
@@ -43,12 +44,11 @@
     "mysql2": "2.3.3",
     "puppeteer-core": "chrome-93",
     "slugify": "^1.6.5",
-    "vue": "2.6.14",
+    "vue": "3.2.41",
     "vue-class-component": "^7.2.5",
     "vue-imask": "6.0.5",
     "vue-property-decorator": "9.1.2",
-    "vue-router": "^3.4.3",
-    "vue-server-renderer": "2.6.14"
+    "vue-router": "^3.4.3"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "4.1.3",

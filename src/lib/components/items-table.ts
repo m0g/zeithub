@@ -1,8 +1,6 @@
-const Vue = require('vue/dist/vue.common');
+import { currency, percentage } from '../filters';
 
-require('../filters');
-
-module.exports = Vue.component('items-table', {
+export default {
   template: `
     <table class="activities" style="border-collapse: collapse; border: none">
       <tr style="border-bottom: 1px solid black">
@@ -61,24 +59,32 @@ module.exports = Vue.component('items-table', {
   `,
   props: ['invoice', 'items'],
   computed: {
+    currency,
+    percentage,
     computeNetAmount() {
+      // @ts-ignore
       return this.items.reduce((acc, item) => {
         return acc + item.unitPrice * item.qty;
       }, 0);
     },
 
     computeTotal() {
+      // @ts-ignore
       const subTotal = this.items.reduce((acc, item) => {
         return acc + item.unitPrice * item.qty;
       }, 0);
 
       let total = subTotal;
 
+      // @ts-ignore
       if (this.invoice.discount > 0) {
+        // @ts-ignore
         total = total - this.invoice.discount;
       }
 
+      // @ts-ignore
       if (this.invoice.tax > 0) {
+        // @ts-ignore
         total = total * (1 + this.invoice.tax / 100);
       }
 
@@ -88,7 +94,8 @@ module.exports = Vue.component('items-table', {
     taxAmount() {
       const total = this.computeTotal;
 
+      // @ts-ignore
       return total - total / (1 + this.invoice.tax / 100);
-    }
-  }
-});
+    },
+  },
+};

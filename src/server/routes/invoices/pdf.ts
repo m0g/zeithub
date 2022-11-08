@@ -1,11 +1,12 @@
 import * as puppeteer from 'puppeteer-core';
-import * as Vue from 'vue/dist/vue.common.js';
+import * as Vue from 'vue/dist/vue.cjs.js';
 import DB from './../../db';
 import { Invoice, BankAccount, Item, Client } from './../../../models';
 import InvoiceInfo from '../../../lib/components/invoice-info';
 import * as ItemsTable from '../../../lib/components/items-table';
+const { renderToString } = require('@vue/server-renderer');
 
-const renderer = require('vue-server-renderer').createRenderer();
+// const renderer = require('vue-server-renderer').createRenderer();
 const db = new DB();
 
 export default async (req, res) => {
@@ -91,7 +92,7 @@ export default async (req, res) => {
       items,
       me,
       address,
-      client
+      client,
     },
     components: { InvoiceInfo, ItemsTable },
     template: `
@@ -198,13 +199,13 @@ export default async (req, res) => {
         </style>
 
       </section>
-    `
+    `,
   });
 
-  const html = await renderer.renderToString(app);
+  const html = await renderToString(app);
   const browser = await puppeteer.launch({
     executablePath: process.env.CHROME_BIN,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
 

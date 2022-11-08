@@ -1,9 +1,8 @@
-import * as Vue from 'vue/dist/vue.common.js';
+import { formatDate } from '../filters';
 
-import './../filters';
-
-export default Vue.component('invoice-info', {
+export default {
   props: ['invoice', 'me'],
+  computed: { formatDate },
   template: `
     <table class="info">
       <tr>
@@ -19,5 +18,5 @@ export default Vue.component('invoice-info', {
         <td>{{invoice.dueDate | formatDate('dd/MM/yyyy')}}</td>
       </tr>
     </table>
-  `
-});
+  `,
+};
