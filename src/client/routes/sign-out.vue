@@ -3,15 +3,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { defineComponent } from 'vue';
 import { signOut } from './../auth';
 
-@Component({})
-export default class SignOut extends Vue {
+export default defineComponent({
   created() {
     signOut();
     setTimeout(() => (window.location.href = '/'), 1000);
-  }
-}
+  },
+});
 </script>

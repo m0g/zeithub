@@ -16,7 +16,8 @@
       </p>
     </div>
     <form v-if="editMode" @submit="save" method="POST">
-      <form-errors :errors="errors"></form-errors>
+      <FormErrors :errors="errors" />
+
       <p><b>Email:</b> <input type="email" v-model="user.email" /></p>
       <p><b>Username:</b> {{ me.name }}</p>
       <p><b>First name:</b> <input type="text" v-model="user.firstName" /></p>
@@ -34,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import Component from 'vue-class-component';
 import { IMaskDirective } from 'vue-imask';
 
@@ -42,50 +43,62 @@ import FormErrors from './form-errors.vue';
 import http from './../http';
 import { diff } from './../../utils';
 
-const Props = Vue.extend({
-  props: ['me', 'getMe']
-});
+// const Props = Vue.extend({
+//   props: ['me', 'getMe'],
+// });
 
-@Component({
-  components: { FormErrors },
-  directives: { imask: IMaskDirective }
-})
-export default class PersonalInfo extends Props {
-  errors: string[] = [];
-  editMode: Boolean = false;
-  user: {} = {};
-  pass: {} = {};
+// @Component({
+//   components: { FormErrors },
+//   directives: { imask: IMaskDirective },
+// })
+export default defineComponent({
+  props: ['me', 'getMe'],
+  data(): {
+    errors: string[];
+    editMode: Boolean;
+    user: {};
+    pass: {};
+    vatMask: {};
+  } {
+    return {
+      errors: [],
+      editMode: false,
+      user: {},
+      pass: {},
 
-  vatMask: {} = {
-    mask: 'aa 000000000'
-  };
-
+      vatMask: {
+        mask: 'aa 000000000',
+      },
+    };
+  },
   updated() {
     if (Object.keys(this.user).length === 0) {
       this.user = Object.assign({}, this.me);
     }
-  }
+  },
 
-  save(e) {
-    this.errors = [];
-    e.preventDefault();
+  methods: {
+    save(e) {
+      this.errors = [];
+      e.preventDefault();
 
-    if (this.errors.length === 0) {
-      const body = diff(this.me, this.user);
+      if (this.errors.length === 0) {
+        const body = diff(this.me, this.user);
 
-      http('/api/me', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      })
-        .then(response => response.json())
-        .then(response => {
-          if (response.success) {
-            this.getMe();
-            this.editMode = false;
-          }
-        });
-    }
-  }
-}
+        http('/api/me', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        })
+          .then(response => response.json())
+          .then(response => {
+            if (response.success) {
+              this.getMe();
+              this.editMode = false;
+            }
+          });
+      }
+    },
+  },
+});
 </script>

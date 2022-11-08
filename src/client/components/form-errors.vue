@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps(['erros']);
+const props = defineProps(['errors']);
 </script>
 
 

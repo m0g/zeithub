@@ -2,7 +2,7 @@
   <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
     <h2>Sign up</h2>
     <form @submit="signUp" method="post">
-      <form-errors :errors="errors"></form-errors>
+      <FormErrors :errors="errors" />
       <div class="mt-4">
         <input
           type="text"
@@ -51,59 +51,66 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import http from '../http';
-import Component from 'vue-class-component';
 import FormErrors from './../components/form-errors.vue';
 
-@Component({
-  components: { FormErrors },
-})
-export default class SignUp extends Vue {
-  errors: string[] = [];
-  email: string = '';
-  username: string = '';
-  password: string = '';
-  passwordRepeat: string = '';
+export default defineComponent({
+  data(): {
+    errors: string[];
+    email: string;
+    username: string;
+    password: string;
+    passwordRepeat: string;
+  } {
+    return {
+      errors: [],
+      email: '',
+      username: '',
+      password: '',
+      passwordRepeat: '',
+    };
+  },
+  methods: {
+    async signUp(e) {
+      this.errors = [];
+      e.preventDefault();
 
-  async signUp(e) {
-    this.errors = [];
-    e.preventDefault();
-
-    if (!this.username) {
-      this.errors.push('Username is required');
-    }
-
-    if (!this.email) {
-      this.errors.push('Email is required');
-    }
-
-    if (!this.password || !this.passwordRepeat) {
-      this.errors.push('Password is required');
-    } else if (this.password !== this.passwordRepeat) {
-      this.errors.push("Passwords don't match");
-    }
-
-    if (this.errors.length === 0) {
-      const user = {
-        username: this.username,
-        password: this.password,
-        email: this.email,
-      };
-
-      const response = await http('/api/sign/up', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user),
-      });
-
-      const data = await response.json();
-
-      if (data.success === true) {
-        localStorage.setItem('token', data.token);
-        window.location.href = '/';
+      if (!this.username) {
+        this.errors.push('Username is required');
       }
-    }
-  }
-}
+
+      if (!this.email) {
+        this.errors.push('Email is required');
+      }
+
+      if (!this.password || !this.passwordRepeat) {
+        this.errors.push('Password is required');
+      } else if (this.password !== this.passwordRepeat) {
+        this.errors.push("Passwords don't match");
+      }
+
+      if (this.errors.length === 0) {
+        const user = {
+          username: this.username,
+          password: this.password,
+          email: this.email,
+        };
+
+        const response = await http('/api/sign/up', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(user),
+        });
+
+        const data = await response.json();
+
+        if (data.success === true) {
+          localStorage.setItem('token', data.token);
+          window.location.href = '/';
+        }
+      }
+    },
+  },
+});
 </script>

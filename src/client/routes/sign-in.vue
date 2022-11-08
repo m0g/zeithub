@@ -2,7 +2,7 @@
   <div class="bg-white shadow m-4 ml-0 p-4 rounded-lg">
     <h2>Sign-in</h2>
     <form @submit="signIn" method="post">
-      <form-errors :errors="errors"></form-errors>
+      <FormErrors :errors="errors" />
       <div class="mt-4">
         <input
           type="text"
@@ -31,53 +31,56 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
 import FormErrors from './../components/form-errors.vue';
 
-@Component({
-  components: { FormErrors },
-})
-export default class SignIn extends Vue {
-  errors: string[] = [];
-  username: string = '';
-  password: string = '';
+export default defineComponent({
+  data(): {
+    errors: string[];
+    username: string;
+    password: string;
+  } {
+    return { errors: [], username: '', password: '' };
+  },
 
-  signIn(e) {
-    e.preventDefault();
+  methods: {
+    signIn(e) {
+      e.preventDefault();
 
-    this.errors = [];
+      this.errors = [];
 
-    if (!this.username) {
-      this.errors.push('Username is required');
-    }
+      if (!this.username) {
+        this.errors.push('Username is required');
+      }
 
-    if (!this.password) {
-      this.errors.push('Password is required');
-    }
+      if (!this.password) {
+        this.errors.push('Password is required');
+      }
 
-    if (this.errors.length === 0) {
-      const user = {
-        username: this.username,
-        password: this.password,
-      };
+      if (this.errors.length === 0) {
+        const user = {
+          username: this.username,
+          password: this.password,
+        };
 
-      fetch('/api/sign/in', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user),
-      })
-        .then(response => response.json())
-        .then(response => {
-          if (response.success === true) {
-            localStorage.setItem('token', response.token);
-            window.location.href = '/';
-          } else {
-            this.errors.push(response.message);
-          }
-        });
-    }
-  }
-}
+        fetch('/api/sign/in', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(user),
+        })
+          .then(response => response.json())
+          .then(response => {
+            if (response.success === true) {
+              localStorage.setItem('token', response.token);
+              window.location.href = '/';
+            } else {
+              this.errors.push(response.message);
+            }
+          });
+      }
+    },
+  },
+});
 </script>
