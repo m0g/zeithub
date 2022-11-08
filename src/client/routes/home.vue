@@ -9,9 +9,4 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { version } from './../../../package.json';
-
-@Component({})
-export default class Home extends Vue {
-  version: string = version;
-}
 </script>

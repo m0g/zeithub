@@ -23,16 +23,15 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
 
-@Component({})
-export default class Projects extends Vue {
-  projects: {}[] = [];
+let projects: {}[] = [];
 
+export default {
   created() {
     http('/api/projects')
       .then(data => data.json())
       .then(projects => {
-        this.projects = projects;
+        projects = projects;
       });
-  }
-}
+  },
+};
 </script>

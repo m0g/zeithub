@@ -13,7 +13,4 @@ import { isLoggedIn, signOut } from './../auth';
 import http from './../http';
 import Sidebar from './sidebar.vue';
 import pkg from './../../../package.json';
-
-@Component({ components: { Sidebar } })
-export default class App extends Vue {}
 </script>

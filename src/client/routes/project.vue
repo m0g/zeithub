@@ -7,68 +7,78 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
 import http from '../http';
 import { DateTime } from 'luxon';
-import { Route } from 'vue-router';
+import { Route, useRoute, useRouter } from 'vue-router';
+import { defineComponent } from 'vue';
 
 interface WithRoute {
   $route: Route;
 }
 
-@Component({})
-export default class Project extends Vue implements WithRoute {
-  project: {}[] = [];
-  activityGroups: {} = {};
-  stats: {} = {};
+export default defineComponent({
+  data() {
+    let project: {}[] = [];
+    let activityGroups: {} = {};
+    let stats: {} = {};
+
+    return {
+      project,
+      activityGroups,
+      stats,
+    };
+  },
 
   created() {
     this.getProject();
-  }
+  },
 
-  async getProject(query = {}) {
-    const newQuery = Object.assign({}, this.$route.query, query);
+  methods: {
+    async getProject(query = {}) {
+      const route = useRoute();
+      const router = useRouter();
+      const newQuery = Object.assign({}, route.query, query);
 
-    const response = await http(`/api/projects/${this.$route.params.slug}`, {
-      query: newQuery,
-    });
+      const response = await http(`/api/projects/${route.params.slug}`, {
+        query: newQuery,
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      this.project = data.project;
+      if (data.success) {
+        this.project = data.project;
 
-      if (Object.keys(query).length > 0) {
-        this.$router.push({ query });
+        if (Object.keys(query).length > 0) {
+          router.push({ query });
+        }
       }
-    }
-  }
+    },
 
-  getStats(activities) {
-    const durationMinutes = activities
-      .map(activity => activity.durationMinutes)
-      .reduce((acc, duration) => acc + duration);
+    getStats(activities) {
+      const durationMinutes = activities
+        .map(activity => activity.durationMinutes)
+        .reduce((acc, duration) => acc + duration);
 
-    return { durationMinutes };
-  }
+      return { durationMinutes };
+    },
 
-  groupByDate(activities): {} {
-    let activityGroups: {} = {};
+    groupByDate(activities): {} {
+      let activityGroups: {} = {};
 
-    activities.forEach(activity => {
-      const date = DateTime.fromISO(activity.startTime).toFormat('DDDD');
+      activities.forEach(activity => {
+        const date = DateTime.fromISO(activity.startTime).toFormat('DDDD');
 
-      if (!activityGroups[date]) {
-        activityGroups[date] = [];
-      }
+        if (!activityGroups[date]) {
+          activityGroups[date] = [];
+        }
 
-      activityGroups[date].push(activity);
-    });
+        activityGroups[date].push(activity);
+      });
 
-    return activityGroups;
-  }
-}
+      return activityGroups;
+    },
+  },
+});
 </script>
 
 <style scoped>

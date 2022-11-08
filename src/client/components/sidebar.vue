@@ -71,18 +71,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
 import { isLoggedIn, signOut } from './../auth';
 import http from './../http';
 import pkg from './../../../package.json';
 
-@Component({})
-export default class Sidebar extends Vue {
-  isLoggedIn: Boolean = isLoggedIn();
-  name: string = pkg.name;
-  version: string = pkg.version;
+const name: string = pkg.name;
+const version: string = pkg.version;
 
+export default {
   created() {
     http('/api/me')
       .then(data => data.json())
@@ -92,6 +88,6 @@ export default class Sidebar extends Vue {
           setTimeout(() => (window.location.href = '/'), 1000);
         }
       });
-  }
-}
+  },
+};
 </script>
