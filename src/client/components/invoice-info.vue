@@ -16,8 +16,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-export default Vue.extend({
-  props: ['invoice', 'me']
+import { defineComponent } from 'vue';
+import { formatDate } from '../../lib/filters';
+
+export default defineComponent({
+  props: ['invoice', 'me'],
+  methods: { formatDate },
 });
 </script>

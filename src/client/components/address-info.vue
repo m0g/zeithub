@@ -40,54 +40,60 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
 import FormErrors from './form-errors.vue';
 
-const Props = Vue.extend({
-  props: ['address', 'getAddresses']
-});
+export default defineComponent({
+  components: { FormErrors },
+  props: ['address', 'getAddresses'],
 
-@Component({ components: { FormErrors } })
-export default class Address extends Props {
-  editMode: boolean = false;
-  errors: string[] = [];
+  data(): {
+    editMode: boolean;
+    errors: string[];
+    edit: {};
+  } {
+    return {
+      editMode: false,
+      errors: [],
+      edit: Object.assign({}, this.address),
+    };
+  },
+  methods: {
+    async save(e) {
+      this.errors = [];
+      e.preventDefault();
 
-  edit: {} = Object.assign({}, this.address);
-
-  async save(e) {
-    this.errors = [];
-    e.preventDefault();
-
-    console.log(JSON.stringify(this.edit));
-    const response = await http(`/api/addresses/${this.address.id}`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'PUT',
-      body: JSON.stringify(this.edit)
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      this.editMode = false;
-      this.getAddresses();
-    }
-  }
-
-  async remove() {
-    if (window.confirm('Do you really want to delete this address?')) {
+      console.log(JSON.stringify(this.edit));
       const response = await http(`/api/addresses/${this.address.id}`, {
         headers: { 'Content-Type': 'application/json' },
-        method: 'DELETE'
+        method: 'PUT',
+        body: JSON.stringify(this.edit),
       });
 
       const data = await response.json();
 
       if (data.success) {
+        this.editMode = false;
         this.getAddresses();
       }
-    }
-  }
-}
+    },
+
+    async remove() {
+      if (window.confirm('Do you really want to delete this address?')) {
+        const response = await http(`/api/addresses/${this.address.id}`, {
+          headers: { 'Content-Type': 'application/json' },
+          method: 'DELETE',
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          this.getAddresses();
+        }
+      }
+    },
+  },
+});
 </script>

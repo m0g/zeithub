@@ -47,96 +47,100 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import slugify from 'slugify';
-import Component from 'vue-class-component';
-
 import http from '../http';
 import * as M from './../../models';
 
-@Component({})
-export default class Invoices extends Vue {
-  invoices: {}[] = [];
-  me: M.Me = new M.Me();
-
+export default defineComponent({
+  data(): {
+    invoices: {}[];
+    me: M.Me;
+  } {
+    return {
+      invoices: [],
+      me: new M.Me(),
+    };
+  },
   created() {
     this.getInvoices();
     this.getMe();
-  }
+  },
+  methods: {
+    getTotal(invoice) {
+      let total: number = invoice.subTotal;
 
-  getTotal(invoice) {
-    let total: number = invoice.subTotal;
+      if (invoice.discount > 0) {
+        total = total - invoice.discount;
+      }
 
-    if (invoice.discount > 0) {
-      total = total - invoice.discount;
-    }
+      if (invoice.tax > 0) {
+        total = total * (1 + invoice.tax / 100);
+      }
 
-    if (invoice.tax > 0) {
-      total = total * (1 + invoice.tax / 100);
-    }
+      return total;
+    },
 
-    return total;
-  }
-
-  async getInvoices() {
-    const response = await http('/api/invoices', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      this.invoices = data.invoices;
-    }
-  }
-
-  async remove({ id }) {
-    if (window.confirm('Do you really want to delete this invoice?')) {
-      const response = await http(`/api/invoices/${id}`, {
+    async getInvoices() {
+      const response = await http('/api/invoices', {
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        method: 'DELETE',
       });
 
       const data = await response.json();
 
       if (data.success) {
-        this.getInvoices();
+        this.invoices = data.invoices;
       }
-    }
-  }
+    },
 
-  async downloadPDF(invoice) {
-    const title = slugify(invoice.name);
-    const fullName = `${this.me.firstName}-${this.me.lastName}`;
-    const filename = `${invoice.number
-      .toString()
-      .padStart(3, '0')}-${title}-${fullName}.pdf`.toLowerCase();
+    async remove({ id }) {
+      if (window.confirm('Do you really want to delete this invoice?')) {
+        const response = await http(`/api/invoices/${id}`, {
+          headers: { 'Content-Type': 'application/json' },
+          method: 'DELETE',
+        });
 
-    const response = await http(`/api/invoices/${invoice.id}/pdf`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    });
+        const data = await response.json();
 
-    const blob = await response.blob();
-    const file = new Blob([blob], { type: 'application/pdf' });
-    const link = document.createElement('a');
+        if (data.success) {
+          this.getInvoices();
+        }
+      }
+    },
 
-    link.href = window.URL.createObjectURL(file);
-    link.download = filename;
+    async downloadPDF(invoice) {
+      const title = slugify(invoice.name);
+      const fullName = `${this.me.firstName}-${this.me.lastName}`;
+      const filename = `${invoice.number
+        .toString()
+        .padStart(3, '0')}-${title}-${fullName}.pdf`.toLowerCase();
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
+      const response = await http(`/api/invoices/${invoice.id}/pdf`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-  async getMe() {
-    const response = await http('/api/me');
-    const data = await response.json();
+      const blob = await response.blob();
+      const file = new Blob([blob], { type: 'application/pdf' });
+      const link = document.createElement('a');
 
-    if (data.success) {
-      this.me = data.me;
-    }
-  }
-}
+      link.href = window.URL.createObjectURL(file);
+      link.download = filename;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+
+    async getMe() {
+      const response = await http('/api/me');
+      const data = await response.json();
+
+      if (data.success) {
+        this.me = data.me;
+      }
+    },
+  },
+});
 </script>
