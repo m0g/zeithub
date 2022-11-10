@@ -12,39 +12,44 @@
         :key="project.id"
         :value="project.id"
         :selected="project.id === projectId"
-        >{{ project.name }}</option
       >
+        {{ project.name }}
+      </option>
     </select>
   </span>
 </template>
 
 <script lang="ts">
 import http from './../http';
-import { Component, Prop, Watch, Vue, Emit } from 'vue-property-decorator';
 import { Project } from '../../models';
+import { defineComponent } from '@vue/runtime-core';
 
-const Props = Vue.extend({
-  props: ['projectId']
-});
-
-@Component({})
-export default class SelectProject extends Props {
-  projects: Project[] = [];
+export default defineComponent({
+  props: ['projectId'],
+  data(): {
+    projects: Project[];
+  } {
+    return {
+      projects: [],
+    };
+  },
 
   created() {
     this.getProjects();
-  }
+  },
 
-  @Emit('projectId')
-  onChange(e) {
-    return e.target.value;
-  }
+  methods: {
+    // @Emit('projectId')
+    onChange(e) {
+      return e.target.value;
+    },
 
-  async getProjects() {
-    const response = await http('/api/projects');
-    const data = await response.json();
+    async getProjects() {
+      const response = await http('/api/projects');
+      const data = await response.json();
 
-    this.projects = data;
-  }
-}
+      this.projects = data;
+    },
+  },
+});
 </script>

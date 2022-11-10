@@ -16,37 +16,38 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Emit } from 'vue-property-decorator';
+import { defineComponent } from '@vue/runtime-core';
 import http from '../http';
 
-const Props = Vue.extend({
-  props: ['bankAccountId']
-});
-
-@Component({})
-export default class SelectBankAccount extends Props {
-  bankAccounts: Array<Object> = [];
-
+export default defineComponent({
+  props: ['bankAccountId'],
+  data(): {
+    bankAccounts: Array<Object>;
+  } {
+    return { bankAccounts: [] };
+  },
   created() {
     this.getBankAccounts();
-  }
+  },
 
-  @Emit('bankAccountId')
-  onChange(e) {
-    return parseInt(e.target.value);
-  }
+  methods: {
+    // @Emit('bankAccountId')
+    onChange(e) {
+      return parseInt(e.target.value);
+    },
 
-  async getBankAccounts() {
-    const response = await http('/api/bank-accounts', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
-    });
+    async getBankAccounts() {
+      const response = await http('/api/bank-accounts', {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'GET',
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      this.bankAccounts = data.bankAccounts;
-    }
-  }
-}
+      if (data.success) {
+        this.bankAccounts = data.bankAccounts;
+      }
+    },
+  },
+});
 </script>

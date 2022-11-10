@@ -54,50 +54,50 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
-
 import http from './../http';
 import SelectBankAccount from './select-bank-account.vue';
 import SelectAddress from './select-address.vue';
 import SelectCurrency from './select-currency.vue';
+import { defineComponent } from '@vue/runtime-core';
 
-const Props = Vue.extend({
+export default defineComponent({
   props: ['invoice', 'editMode'],
-});
-
-@Component({
   components: {
     SelectBankAccount,
     SelectAddress,
     SelectCurrency,
   },
-})
-export default class Billing extends Props {
-  lastInvoiceNumber: number = 0;
+  data(): {
+    lastInvoiceNumber: number;
+  } {
+    return { lastInvoiceNumber: 0 };
+  },
 
   created() {
     this.getLastInvoiceNumber();
-  }
+  },
 
-  async getLastInvoiceNumber() {
-    const response = await http('/api/invoices', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET',
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      data.invoices.forEach(invoice => {
-        if (invoice.number > this.lastInvoiceNumber) {
-          this.lastInvoiceNumber = invoice.number;
-        }
+  methods: {
+    async getLastInvoiceNumber() {
+      const response = await http('/api/invoices', {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'GET',
       });
 
-      if (!this.editMode) {
-        this.invoice.number = this.lastInvoiceNumber + 1;
+      const data = await response.json();
+
+      if (data.success) {
+        data.invoices.forEach(invoice => {
+          if (invoice.number > this.lastInvoiceNumber) {
+            this.lastInvoiceNumber = invoice.number;
+          }
+        });
+
+        if (!this.editMode) {
+          this.invoice.number = this.lastInvoiceNumber + 1;
+        }
       }
-    }
-  }
-}
+    },
+  },
+});
 </script>

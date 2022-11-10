@@ -14,39 +14,44 @@
         :key="client.id"
         :value="client.id"
         :selected="client.id === clientId"
-        >{{ client.name }}</option
       >
+        {{ client.name }}
+      </option>
     </select>
   </div>
 </template>
 
 <script lang="ts">
 import http from './../http';
-import { Component, Prop, Watch, Vue, Emit } from 'vue-property-decorator';
 import { Client } from '../../models';
+import { defineComponent } from '@vue/runtime-core';
 
-const Props = Vue.extend({
-  props: ['clientId']
-});
-
-@Component({})
-export default class SelectClient extends Props {
-  clients: Client[] = [];
+export default defineComponent({
+  props: ['clientId'],
+  data(): {
+    clients: Client[];
+  } {
+    return {
+      clients: [],
+    };
+  },
 
   created() {
     this.getClients();
-  }
+  },
 
-  @Emit('clientId')
-  onChange(e) {
-    return parseInt(e.target.value);
-  }
+  methods: {
+    // @Emit('clientId')
+    onChange(e) {
+      return parseInt(e.target.value);
+    },
 
-  async getClients() {
-    const response = await http('/api/clients');
-    const data = await response.json();
+    async getClients() {
+      const response = await http('/api/clients');
+      const data = await response.json();
 
-    this.clients = data.clients;
-  }
-}
+      this.clients = data.clients;
+    },
+  },
+});
 </script>

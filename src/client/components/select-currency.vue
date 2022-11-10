@@ -15,37 +15,38 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Emit } from 'vue-property-decorator';
+import { defineComponent } from '@vue/runtime-core';
 import http from '../http';
 
-const Props = Vue.extend({
-  props: ['currencyCode']
-});
-
-@Component({})
-export default class SelectBankAccount extends Props {
-  currencies: Array<Object> = [];
-
-  @Emit('currencyCode')
-  onChange(e) {
-    return e.target.value;
-  }
+export default defineComponent({
+  props: ['currencyCode'],
+  data(): {
+    currencies: Array<Object>;
+  } {
+    return { currencies: [] };
+  },
 
   created() {
     this.getAddresses();
-  }
+  },
 
-  async getAddresses() {
-    const response = await http('/api/currencies', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
-    });
+  methods: {
+    // @Emit('currencyCode')
+    onChange(e) {
+      return e.target.value;
+    },
+    async getAddresses() {
+      const response = await http('/api/currencies', {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'GET',
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      this.currencies = data.currencies;
-    }
-  }
-}
+      if (data.success) {
+        this.currencies = data.currencies;
+      }
+    },
+  },
+});
 </script>

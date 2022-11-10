@@ -73,78 +73,95 @@ import ItemsTable from './../components/items-table.vue';
 import * as M from './../../models';
 
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
+import { defineComponent } from '@vue/runtime-core';
+import { useRoute } from 'vue-router';
 
-@Component({
+export default defineComponent({
   components: {
     ItemsTable,
     InvoiceInfo,
   },
-})
-export default class Invoice extends Vue {
-  invoice: M.Invoice = new M.Invoice();
-  items: M.Item[] = [];
-  me: M.Me = new M.Me();
-  bankAccount: M.BankAccount = new M.BankAccount();
-  address: Object = {};
-  pdfGenerated: boolean = false;
-  totalMinutes: number = 0;
-  client: M.Client = new M.Client();
+  data(): {
+    invoice: M.Invoice;
+    items: M.Item[];
+    me: M.Me;
+    bankAccount: M.BankAccount;
+    address: Object;
+    pdfGenerated: boolean;
+    totalMinutes: number;
+    client: M.Client;
+  } {
+    return {
+      invoice: new M.Invoice(),
+      items: [],
+      me: new M.Me(),
+      bankAccount: new M.BankAccount(),
+      address: {},
+      pdfGenerated: false,
+      totalMinutes: 0,
+      client: new M.Client(),
+    };
+  },
 
   created() {
     this.getInvoice();
     this.getMe();
-  }
+  },
 
-  async downloadPDF() {
-    const title = slugify(this.invoice.name);
-    const fullName = `${this.me.firstName}-${this.me.lastName}`;
-    const filename = `${this.invoice.number
-      .toString()
-      .padStart(3, '0')}-${title}-${fullName}.pdf`.toLowerCase();
+  methods: {
+    async downloadPDF() {
+      const route = useRoute();
+      const title = slugify(this.invoice.name);
+      const fullName = `${this.me.firstName}-${this.me.lastName}`;
+      const filename = `${this.invoice.number
+        .toString()
+        .padStart(3, '0')}-${title}-${fullName}.pdf`.toLowerCase();
 
-    const response = await http(`/api/invoices/${this.$route.params.id}/pdf`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    });
+      const response = await http(`/api/invoices/${route.params.id}/pdf`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    const blob = await response.blob();
-    const file = new Blob([blob], { type: 'application/pdf' });
-    const link = document.createElement('a');
+      const blob = await response.blob();
+      const file = new Blob([blob], { type: 'application/pdf' });
+      const link = document.createElement('a');
 
-    link.href = window.URL.createObjectURL(file);
-    link.download = filename;
+      link.href = window.URL.createObjectURL(file);
+      link.download = filename;
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
 
-  async getInvoice() {
-    const response = await http(`/api/invoices/${this.$route.params.id}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    });
+    async getInvoice() {
+      const route = useRoute();
+      const response = await http(`/api/invoices/${route.params.id}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      this.invoice = data.invoice;
-      this.bankAccount = data.bankAccount;
-      this.address = data.address;
-      this.items = data.items;
-      this.client = data.client;
-    }
-  }
+      if (data.success) {
+        this.invoice = data.invoice;
+        this.bankAccount = data.bankAccount;
+        this.address = data.address;
+        this.items = data.items;
+        this.client = data.client;
+      }
+    },
 
-  async getMe() {
-    const response = await http('/api/me');
-    const data = await response.json();
+    async getMe() {
+      const response = await http('/api/me');
+      const data = await response.json();
 
-    if (data.success) {
-      this.me = data.me;
-    }
-  }
-}
+      if (data.success) {
+        this.me = data.me;
+      }
+    },
+  },
+});
 </script>
 
 <style scoped>

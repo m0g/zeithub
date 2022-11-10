@@ -128,118 +128,130 @@
 
 <script lang="ts">
 import http from './../http';
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 import { Item, Project, Invoice } from './../../models';
 import FormErrors from './../components/form-errors.vue';
 import SelectClient from './../components/select-client.vue';
 import SelectProject from './../components/select-project.vue';
 import Billing from './../components/billing.vue';
+import { defineComponent } from '@vue/runtime-core';
+import { useRouter } from 'vue-router';
 
-@Component({
+export default defineComponent({
   components: {
     FormErrors,
     SelectProject,
     SelectClient,
     Billing,
   },
-})
-export default class AddInvoice extends Vue {
-  items: Item[] = [];
-  invoice: Invoice = new Invoice();
-  subTotal: number = 0;
-  total: number = 0;
-  errors: Array<string> = [];
+  data(): {
+    items: Item[];
+    invoice: Invoice;
+    subTotal: number;
+    total: number;
+    errors: Array<string>;
+  } {
+    return {
+      items: [],
+      invoice: new Invoice(),
+      subTotal: 0,
+      total: 0,
+      errors: [],
+    };
+  },
 
   created() {
     window.addEventListener('beforeunload', this.storeForm);
     this.retrieveForm();
-  }
+  },
 
-  retrieveForm() {
-    const json = localStorage.getItem('newInvoice');
+  methods: {
+    retrieveForm() {
+      const json = localStorage.getItem('newInvoice');
 
-    if (json) {
-      const data = JSON.parse(json);
+      if (json) {
+        const data = JSON.parse(json);
 
-      if (data.invoice) {
-        this.invoice = data.invoice;
+        if (data.invoice) {
+          this.invoice = data.invoice;
+        }
+
+        if (data.items) {
+          this.items = data.items;
+          this.computeTotal(); // Otherwise totals will remain at 0
+        }
+      }
+    },
+
+    storeForm() {
+      console.log('store form');
+      localStorage.setItem(
+        'newInvoice',
+        JSON.stringify({
+          invoice: this.invoice,
+          items: this.items,
+        })
+      );
+    },
+
+    appendItem(e) {
+      e.preventDefault();
+      this.items.push(new Item());
+    },
+
+    computeTotal() {
+      this.subTotal = this.items.reduce((acc: number, item: Item) => {
+        return acc + item.unitPrice * item.qty;
+      }, 0);
+
+      this.total = this.subTotal;
+
+      if (this.invoice.discount > 0) {
+        this.total = this.total - this.invoice.discount;
       }
 
-      if (data.items) {
-        this.items = data.items;
-        this.computeTotal(); // Otherwise totals will remain at 0
+      if (this.invoice.tax > 0) {
+        this.total = this.total * (1 + this.invoice.tax / 100);
       }
-    }
-  }
+    },
 
-  storeForm() {
-    console.log('store form');
-    localStorage.setItem(
-      'newInvoice',
-      JSON.stringify({
-        invoice: this.invoice,
-        items: this.items,
-      })
-    );
-  }
+    async createInvoice(e) {
+      const router = useRouter();
+      e.preventDefault();
+      this.errors = [];
 
-  appendItem(e) {
-    e.preventDefault();
-    this.items.push(new Item());
-  }
+      // TODO: add some invoice check
+      if (this.items.length === 0) {
+        this.errors.push('You should at least add one item');
+      }
 
-  computeTotal() {
-    this.subTotal = this.items.reduce((acc: number, item: Item) => {
-      return acc + item.unitPrice * item.qty;
-    }, 0);
+      if (this.errors.length === 0) {
+        const body = {
+          invoice: this.invoice,
+          items: this.items,
+        };
 
-    this.total = this.subTotal;
-
-    if (this.invoice.discount > 0) {
-      this.total = this.total - this.invoice.discount;
-    }
-
-    if (this.invoice.tax > 0) {
-      this.total = this.total * (1 + this.invoice.tax / 100);
-    }
-  }
-
-  async createInvoice(e) {
-    e.preventDefault();
-    this.errors = [];
-
-    // TODO: add some invoice check
-    if (this.items.length === 0) {
-      this.errors.push('You should at least add one item');
-    }
-
-    if (this.errors.length === 0) {
-      const body = {
-        invoice: this.invoice,
-        items: this.items,
-      };
-
-      const response = await http('/api/invoices/with-items', {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-        body: JSON.stringify(body),
-      });
-
-      const data = await response.json();
-
-      if (data.success && data.invoiceId) {
-        this.invoice = new Invoice();
-        this.items = [];
-
-        localStorage.setItem('newInvoice', '{}');
-
-        this.$router.push({
-          name: 'Invoice',
-          params: { id: data.invoiceId },
+        const response = await http('/api/invoices/with-items', {
+          headers: { 'Content-Type': 'application/json' },
+          method: 'POST',
+          body: JSON.stringify(body),
         });
+
+        const data = await response.json();
+
+        if (data.success && data.invoiceId) {
+          this.invoice = new Invoice();
+          this.items = [];
+
+          localStorage.setItem('newInvoice', '{}');
+
+          router.push({
+            name: 'Invoice',
+            params: { id: data.invoiceId },
+          });
+        }
       }
-    }
-  }
-}
+    },
+  },
+});
 </script>

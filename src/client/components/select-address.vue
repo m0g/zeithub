@@ -16,37 +16,39 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Emit } from 'vue-property-decorator';
+import { defineComponent } from '@vue/runtime-core';
 import http from '../http';
 
-const Props = Vue.extend({
-  props: ['userAddressId']
-});
-
-@Component({})
-export default class SelectBankAccount extends Props {
-  addresses: Array<Object> = [];
-
-  @Emit('userAddressId')
-  onChange(e) {
-    return parseInt(e.target.value);
-  }
+export default defineComponent({
+  props: ['userAddressId'],
+  data(): {
+    addresses: Array<Object>;
+  } {
+    return { addresses: [] };
+  },
 
   created() {
     this.getAddresses();
-  }
+  },
 
-  async getAddresses() {
-    const response = await http('/api/addresses', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
-    });
+  methods: {
+    // @Emit('userAddressId')
+    onChange(e) {
+      return parseInt(e.target.value);
+    },
 
-    const data = await response.json();
+    async getAddresses() {
+      const response = await http('/api/addresses', {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'GET',
+      });
 
-    if (data.success) {
-      this.addresses = data.addresses;
-    }
-  }
-}
+      const data = await response.json();
+
+      if (data.success) {
+        this.addresses = data.addresses;
+      }
+    },
+  },
+});
 </script>
