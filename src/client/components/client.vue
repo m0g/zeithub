@@ -51,53 +51,60 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { defineComponent } from 'vue';
 import Component from 'vue-class-component';
 import http from '../http';
 import FormErrors from './form-errors.vue';
 
-const Props = Vue.extend({
-  props: ['client', 'getClients']
-});
+export default defineComponent({
+  props: ['client', 'getClients'],
+  components: { FormErrors },
 
-@Component({ components: { FormErrors } })
-export default class Client extends Props {
-  editMode: boolean = false;
-  errors: string[] = [];
+  data(): {
+    editMode: boolean;
+    errors: string[];
+    edit: {};
+  } {
+    return {
+      editMode: false,
+      errors: [],
+      edit: Object.assign({}, this.client),
+    };
+  },
 
-  edit: {} = Object.assign({}, this.client);
+  methods: {
+    async save(e) {
+      this.errors = [];
+      e.preventDefault();
 
-  async save(e) {
-    this.errors = [];
-    e.preventDefault();
-
-    const response = await http(`/api/clients/${this.client.id}`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'PUT',
-      body: JSON.stringify(this.edit)
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      this.editMode = false;
-      this.getClients();
-    }
-  }
-
-  async remove() {
-    if (window.confirm('Do you really want to delete this client?')) {
       const response = await http(`/api/clients/${this.client.id}`, {
         headers: { 'Content-Type': 'application/json' },
-        method: 'DELETE'
+        method: 'PUT',
+        body: JSON.stringify(this.edit),
       });
 
       const data = await response.json();
 
       if (data.success) {
+        this.editMode = false;
         this.getClients();
       }
-    }
-  }
-}
+    },
+
+    async remove() {
+      if (window.confirm('Do you really want to delete this client?')) {
+        const response = await http(`/api/clients/${this.client.id}`, {
+          headers: { 'Content-Type': 'application/json' },
+          method: 'DELETE',
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          this.getClients();
+        }
+      }
+    },
+  },
+});
 </script>

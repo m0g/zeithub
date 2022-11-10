@@ -118,92 +118,108 @@ import FormErrors from './../components/form-errors.vue';
 import SelectClient from './../components/select-client.vue';
 import SelectProject from './../components/select-project.vue';
 import Billing from './../components/billing.vue';
+import { defineComponent } from '@vue/runtime-core';
+import { useRouter, useRoute } from 'vue-router';
 
-@Component({
+export default defineComponent({
   components: {
     FormErrors,
     SelectClient,
     SelectProject,
-    Billing
-  }
-})
-export default class EditInvoice extends Vue {
-  items: Item[] = [];
-  invoice: Invoice = new Invoice();
-  subTotal: number = 0;
-  total: number = 0;
-  errors: Array<string> = [];
+    Billing,
+  },
+
+  data(): {
+    items: Item[];
+    invoice: Invoice;
+    subTotal: number;
+    total: number;
+    errors: Array<string>;
+  } {
+    return {
+      items: [],
+      invoice: new Invoice(),
+      subTotal: 0,
+      total: 0,
+      errors: [],
+    };
+  },
 
   created() {
     this.getInvoice();
-  }
+  },
 
-  appendItem(e) {
-    e.preventDefault();
-    this.items.push(new Item());
-  }
+  methods: {
+    appendItem(e) {
+      e.preventDefault();
+      this.items.push(new Item());
+    },
 
-  computeTotal() {
-    this.subTotal = this.items.reduce((acc: number, item: Item) => {
-      return acc + item.unitPrice * item.qty;
-    }, 0);
+    computeTotal() {
+      this.subTotal = this.items.reduce((acc: number, item: Item) => {
+        return acc + item.unitPrice * item.qty;
+      }, 0);
 
-    this.total = this.subTotal;
+      this.total = this.subTotal;
 
-    if (this.invoice.discount > 0) {
-      this.total = this.total - this.invoice.discount;
-    }
+      if (this.invoice.discount > 0) {
+        this.total = this.total - this.invoice.discount;
+      }
 
-    if (this.invoice.tax > 0) {
-      this.total = this.total * (1 + this.invoice.tax / 100);
-    }
-  }
+      if (this.invoice.tax > 0) {
+        this.total = this.total * (1 + this.invoice.tax / 100);
+      }
+    },
 
-  async getInvoice() {
-    const response = await http(`/api/invoices/${this.$route.params.id}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      this.invoice = data.invoice;
-      this.items = data.items;
-      this.invoice.date = data.invoice.date.match(/\d{4}-\d{2}-\d{2}/)[0];
-      this.invoice.dueDate = data.invoice.dueDate.match(/\d{4}-\d{2}-\d{2}/)[0];
-    }
-  }
-
-  async updateInvoice(e) {
-    e.preventDefault();
-    this.errors = [];
-
-    if (this.items.length === 0) {
-      this.errors.push('You should at least add one item');
-    }
-
-    if (this.errors.length === 0) {
-      const body = {
-        invoice: this.invoice,
-        items: this.items
-      };
-
-      const response = await http(`/api/invoices/${this.invoice.id}`, {
+    async getInvoice() {
+      const route = useRoute();
+      const response = await http(`/api/invoices/${route.params.id}`, {
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        method: 'PUT',
-        body: JSON.stringify(body)
       });
 
       const data = await response.json();
 
       if (data.success) {
-        this.$router.push({
-          name: 'Invoice',
-          params: { id: this.invoice.id }
-        });
+        this.invoice = data.invoice;
+        this.items = data.items;
+        this.invoice.date = data.invoice.date.match(/\d{4}-\d{2}-\d{2}/)[0];
+        this.invoice.dueDate =
+          data.invoice.dueDate.match(/\d{4}-\d{2}-\d{2}/)[0];
       }
-    }
-  }
-}
+    },
+
+    async updateInvoice(e) {
+      const router = useRouter();
+      e.preventDefault();
+      this.errors = [];
+
+      if (this.items.length === 0) {
+        this.errors.push('You should at least add one item');
+      }
+
+      if (this.errors.length === 0) {
+        const body = {
+          invoice: this.invoice,
+          items: this.items,
+        };
+
+        const response = await http(`/api/invoices/${this.invoice.id}`, {
+          headers: { 'Content-Type': 'application/json' },
+          method: 'PUT',
+          body: JSON.stringify(body),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          router.push({
+            name: 'Invoice',
+            params: { id: this.invoice.id },
+          });
+        }
+      }
+    },
+  },
+});
 </script>
