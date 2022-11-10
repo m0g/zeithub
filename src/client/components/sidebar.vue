@@ -70,24 +70,21 @@
   </header>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { isLoggedIn, signOut } from './../auth';
 import http from './../http';
-import pkg from './../../../package.json';
 
-const name: string = pkg.name;
-const version: string = pkg.version;
+const name: string = 'Zeithub';
+const version: string = '0.5.0';
 
-export default {
-  created() {
-    http('/api/me')
-      .then(data => data.json())
-      .then(data => {
-        if (data.auth === false && isLoggedIn()) {
-          signOut();
-          setTimeout(() => (window.location.href = '/'), 1000);
-        }
-      });
-  },
-};
+function created() {
+  http('/api/me')
+    .then(data => data.json())
+    .then(data => {
+      if (data.auth === false && isLoggedIn()) {
+        signOut();
+        setTimeout(() => (window.location.href = '/'), 1000);
+      }
+    });
+}
 </script>

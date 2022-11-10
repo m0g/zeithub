@@ -16,36 +16,40 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { defineComponent } from 'vue';
 import http from '../http';
 import AddClient from './../components/add-client.vue';
 import Client from './../components/client.vue';
 
-@Component({
+export default defineComponent({
   components: {
     AddClient,
-    Client
-  }
-})
-export default class Clients extends Vue {
-  clients: {}[] = [];
+    Client,
+  },
+
+  data(): {
+    clients: {}[];
+  } {
+    return { clients: [] };
+  },
 
   created() {
     this.getClients();
-  }
+  },
 
-  async getClients() {
-    const response = await http('/api/clients', {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET'
-    });
+  methods: {
+    async getClients() {
+      const response = await http('/api/clients', {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'GET',
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      this.clients = data.clients;
-    }
-  }
-}
+      if (data.success) {
+        this.clients = data.clients;
+      }
+    },
+  },
+});
 </script>

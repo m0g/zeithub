@@ -1,5 +1,5 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+// import Vue from 'vue';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 import Home from './home.vue';
 import Projects from './projects.vue';
@@ -17,10 +17,8 @@ import Clients from './clients.vue';
 
 import { requireAuth, requireUnauth } from './../auth';
 
-Vue.use(VueRouter);
-
-const router = new VueRouter({
-  mode: 'history',
+const router = createRouter({
+  history: createWebHashHistory(),
   routes: [
     { path: '/', name: 'Home', component: Home },
     {
