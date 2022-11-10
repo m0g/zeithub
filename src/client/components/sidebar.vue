@@ -71,20 +71,30 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from '@vue/runtime-core';
 import { isLoggedIn, signOut } from './../auth';
 import http from './../http';
 
 const name: string = 'Zeithub';
 const version: string = '0.5.0';
 
-function created() {
-  http('/api/me')
-    .then(data => data.json())
-    .then(data => {
-      if (data.auth === false && isLoggedIn()) {
-        signOut();
-        setTimeout(() => (window.location.href = '/'), 1000);
-      }
-    });
-}
+onMounted(async () => {
+  const response = await http('/api/me');
+
+  if (response) {
+    const data = await response.json();
+
+    if (data.auth === false && isLoggedIn()) {
+      signOut();
+      setTimeout(() => (window.location.href = '/'), 1000);
+    }
+  } else {
+    if (isLoggedIn()) {
+      signOut();
+      setTimeout(() => (window.location.href = '/'), 1000);
+    }
+  }
+});
+
+console.log(isLoggedIn());
 </script>

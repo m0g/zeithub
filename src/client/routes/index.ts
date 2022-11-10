@@ -1,6 +1,5 @@
 // import Vue from 'vue';
-import { createRouter, createWebHashHistory } from 'vue-router';
-
+import { createRouter, createWebHistory } from 'vue-router';
 import Home from './home.vue';
 import Projects from './projects.vue';
 import Project from './project.vue';
@@ -18,7 +17,7 @@ import Clients from './clients.vue';
 import { requireAuth, requireUnauth } from './../auth';
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: [
     { path: '/', name: 'Home', component: Home },
     {
@@ -91,6 +90,7 @@ const router = createRouter({
     {
       path: '/clients',
       name: 'Clients',
+      beforeEnter: requireAuth,
       component: Clients,
     },
   ],
