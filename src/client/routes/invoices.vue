@@ -16,7 +16,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr
+        <Invoice
+          v-for="(invoice, index) in invoices"
+          :key="invoice.number"
+          :invoice="invoice"
+          :index="index"
+          :getInvoices="getInvoices"
+          :me="me"
+        />
+        <!-- <tr
           v-for="(invoice, index) in invoices"
           :key="invoice.number"
           :class="{ 'bg-gray-100': index % 2 !== 0 }"
@@ -34,13 +42,13 @@
           </td>
           <td class="align-center border px-2 py-2 text-center">
             <button @click="downloadPDF(invoice)" class="btn">
-              <font-awesome-icon :icon="download" />
+              <font-awesome-icon icon="download" />
             </button>
             <button @click="remove(invoice)" class="btn ml-2">
               <font-awesome-icon icon="trash-alt" />
             </button>
           </td>
-        </tr>
+        </tr> -->
       </tbody>
     </table>
   </div>
@@ -52,8 +60,10 @@ import slugify from 'slugify';
 import http from '../http';
 import * as M from './../../models';
 import { currency } from '../../lib/filters';
+import Invoice from '../components/invoice.vue';
 
 export default defineComponent({
+  components: { Invoice },
   data(): {
     invoices: {}[];
     me: M.Me;
