@@ -28,8 +28,10 @@ import slugify from 'slugify';
 import { currency } from '../../lib/filters';
 import http from '../http';
 import { useInvoicesStore } from '../stores/invoices';
-const { invoice, me } = defineProps(['invoice', 'index', 'me']);
+import { useMeStore } from '../stores/me';
+const { invoice } = defineProps(['invoice', 'index']);
 const { removeInvoice } = useInvoicesStore();
+const { me } = useMeStore();
 
 let total: number = invoice.subTotal;
 

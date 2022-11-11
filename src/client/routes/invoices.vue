@@ -21,34 +21,7 @@
           :key="invoice.number"
           :invoice="invoice"
           :index="index"
-          :getInvoices="getInvoices"
-          :me="me"
         />
-        <!-- <tr
-          v-for="(invoice, index) in invoices"
-          :key="invoice.number"
-          :class="{ 'bg-gray-100': index % 2 !== 0 }"
-        >
-          <td class="align-center text-center text-bold border py-2">
-            {{ invoice.number }}
-          </td>
-          <td class="border px-4 py-2">
-            <router-link :to="{ name: 'Invoice', params: { id: invoice.id } }">
-              {{ invoice.name }}
-            </router-link>
-          </td>
-          <td class="align-center border px-4 py-2">
-            {{ getTotal(invoice) | currency(invoice) }}
-          </td>
-          <td class="align-center border px-2 py-2 text-center">
-            <button @click="downloadPDF(invoice)" class="btn">
-              <font-awesome-icon icon="download" />
-            </button>
-            <button @click="remove(invoice)" class="btn ml-2">
-              <font-awesome-icon icon="trash-alt" />
-            </button>
-          </td>
-        </tr> -->
       </tbody>
     </table>
   </div>
@@ -62,6 +35,7 @@ import * as M from './../../models';
 import { currency } from '../../lib/filters';
 import Invoice from '../components/invoice.vue';
 import { useInvoicesStore } from '../stores/invoices';
+import { useMeStore } from '../stores/me';
 import { mapStores } from 'pinia';
 
 export default defineComponent({
@@ -76,11 +50,10 @@ export default defineComponent({
     };
   },
   created() {
-    // this.getInvoices();
-    this.getMe();
+    this.meStore.fetchMe();
     this.invoicesStore.fetchInvoices();
   },
-  computed: { currency, ...mapStores(useInvoicesStore) },
+  computed: { currency, ...mapStores(useInvoicesStore, useMeStore) },
   methods: {
     getTotal(invoice) {
       let total: number = invoice.subTotal;
@@ -94,67 +67,6 @@ export default defineComponent({
       }
 
       return total;
-    },
-
-    // async getInvoices() {
-    //   const response = await http('/api/invoices', {
-    //     method: 'GET',
-    //     headers: { 'Content-Type': 'application/json' },
-    //   });
-
-    //   const data = await response.json();
-
-    //   if (data.success) {
-    //     this.invoices = data.invoices;
-    //   }
-    // },
-
-    // async remove({ id }) {
-    //   if (window.confirm('Do you really want to delete this invoice?')) {
-    //     const response = await http(`/api/invoices/${id}`, {
-    //       headers: { 'Content-Type': 'application/json' },
-    //       method: 'DELETE',
-    //     });
-
-    //     const data = await response.json();
-
-    //     if (data.success) {
-    //       // this.getInvoices();
-    //     }
-    //   }
-    // },
-
-    async downloadPDF(invoice) {
-      const title = slugify(invoice.name);
-      const fullName = `${this.me.firstName}-${this.me.lastName}`;
-      const filename = `${invoice.number
-        .toString()
-        .padStart(3, '0')}-${title}-${fullName}.pdf`.toLowerCase();
-
-      const response = await http(`/api/invoices/${invoice.id}/pdf`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      const blob = await response.blob();
-      const file = new Blob([blob], { type: 'application/pdf' });
-      const link = document.createElement('a');
-
-      link.href = window.URL.createObjectURL(file);
-      link.download = filename;
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    },
-
-    async getMe() {
-      const response = await http('/api/me');
-      const data = await response.json();
-
-      if (data.success) {
-        this.me = data.me;
-      }
     },
   },
 });
