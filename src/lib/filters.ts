@@ -7,7 +7,10 @@ export const formatDate = (date, format = 'MMMM cccc yyyy, HH:mm:ss') => {
   return DateTime.fromISO(date).toFormat(format);
 };
 
-export const currency = (amount, invoice) => {
+export const currency = (
+  amount,
+  invoice = { currencySign: '€', currencyLeading: false }
+) => {
   if (invoice.currencyLeading) {
     return `${invoice.currencySign}${parseFloat(amount).toFixed(2)}`;
   }

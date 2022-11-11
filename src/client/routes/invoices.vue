@@ -51,6 +51,7 @@ import { defineComponent } from 'vue';
 import slugify from 'slugify';
 import http from '../http';
 import * as M from './../../models';
+import { currency } from '../../lib/filters';
 
 export default defineComponent({
   data(): {
@@ -66,6 +67,7 @@ export default defineComponent({
     this.getInvoices();
     this.getMe();
   },
+  computed: { currency },
   methods: {
     getTotal(invoice) {
       let total: number = invoice.subTotal;
