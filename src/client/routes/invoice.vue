@@ -56,7 +56,7 @@
         <p>
           <b>{{ bankAccount.name }}</b>
         </p>
-        <p><b>IBAN:</b> {{ bankAccount.iban | iban }}</p>
+        <p><b>IBAN:</b> {{ iban(bankAccount.iban) }}</p>
         <p><b>BIC:</b> {{ bankAccount.bic }}</p>
       </div>
     </section>
@@ -69,10 +69,10 @@ import slugify from 'slugify';
 import http from './../http';
 import InvoiceInfo from './../components/invoice-info.vue';
 import ItemsTable from './../components/items-table.vue';
+import { iban } from '../../lib/filters';
 
 import * as M from './../../models';
 
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import { defineComponent } from '@vue/runtime-core';
 import { useRoute } from 'vue-router';
 
@@ -109,18 +109,22 @@ export default defineComponent({
   },
 
   methods: {
+    iban,
     async downloadPDF() {
-      const route = useRoute();
       const title = slugify(this.invoice.name);
       const fullName = `${this.me.firstName}-${this.me.lastName}`;
       const filename = `${this.invoice.number
         .toString()
         .padStart(3, '0')}-${title}-${fullName}.pdf`.toLowerCase();
 
-      const response = await http(`/api/invoices/${route.params.id}/pdf`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      console.log(this.$route.params);
+      const response = await http(
+        `/api/invoices/${this.$route.params.id}/pdf`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
 
       const blob = await response.blob();
       const file = new Blob([blob], { type: 'application/pdf' });
@@ -135,8 +139,7 @@ export default defineComponent({
     },
 
     async getInvoice() {
-      const route = useRoute();
-      const response = await http(`/api/invoices/${route.params.id}`, {
+      const response = await http(`/api/invoices/${this.$route.params.id}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });

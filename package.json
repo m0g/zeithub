@@ -48,7 +48,6 @@
     "slugify": "^1.6.5",
     "vue": "3.2.45",
     "vue-imask": "6.4.3",
-    "vue-property-decorator": "9.1.2",
     "vue-router": "4.1.6"
   },
   "devDependencies": {

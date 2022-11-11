@@ -9,7 +9,7 @@
       </router-link>
     </td>
     <td class="align-center border px-4 py-2">
-      {{ currency(total) }}
+      {{ currency(total, invoice) }}
     </td>
     <td class="align-center border px-2 py-2 text-center">
       <button @click="downloadPDF(invoice)" class="btn">
