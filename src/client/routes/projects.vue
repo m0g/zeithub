@@ -18,20 +18,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+<script lang="ts" setup>
+import { onMounted, ref } from '@vue/runtime-core';
 import http from '../http';
 
-let projects: {}[] = [];
+let projects = ref([]);
 
-export default {
-  created() {
-    http('/api/projects')
-      .then(data => data.json())
-      .then(projects => {
-        projects = projects;
-      });
-  },
-};
+onMounted(() => {
+  http('/api/projects')
+    .then(data => data.json())
+    .then(data => {
+      projects.value = data;
+    });
+});
 </script>
