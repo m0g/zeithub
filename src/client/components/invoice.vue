@@ -15,7 +15,7 @@
       <button @click="downloadPDF(invoice)" class="btn">
         <font-awesome-icon icon="download" />
       </button>
-      <button @click="remove(invoice)" class="btn ml-2">
+      <button @click="removeInvoice(invoice)" class="btn ml-2">
         <font-awesome-icon icon="trash-alt" />
       </button>
     </td>
@@ -29,7 +29,7 @@ import { currency } from '../../lib/filters';
 import http from '../http';
 import { useInvoicesStore } from '../stores/invoices';
 const { invoice, me } = defineProps(['invoice', 'index', 'me']);
-const store = useInvoicesStore();
+const { removeInvoice } = useInvoicesStore();
 
 let total: number = invoice.subTotal;
 
@@ -39,21 +39,6 @@ if (invoice.discount > 0) {
 
 if (invoice.tax > 0) {
   total = total * (1 + invoice.tax / 100);
-}
-
-async function remove({ id }) {
-  if (window.confirm('Do you really want to delete this invoice?')) {
-    const response = await http(`/api/invoices/${id}`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'DELETE',
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      store.fetchInvoices();
-    }
-  }
 }
 
 async function downloadPDF(invoice) {

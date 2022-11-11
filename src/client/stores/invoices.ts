@@ -18,5 +18,20 @@ export const useInvoicesStore = defineStore('invoices', () => {
     }
   }
 
-  return { invoices, fetchInvoices };
+  async function removeInvoice({ id }) {
+    if (window.confirm('Do you really want to delete this invoice?')) {
+      const response = await http(`/api/invoices/${id}`, {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        fetchInvoices();
+      }
+    }
+  }
+
+  return { invoices, fetchInvoices, removeInvoice };
 });
