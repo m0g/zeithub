@@ -28,40 +28,40 @@
     </div>
     <ul class="hidden list-reset m-4 md:block">
       <li>
-        <router-link to="/projects" v-if="isLoggedIn">
+        <router-link to="/projects" v-if="isLoggedIn()">
           <font-awesome-icon icon="folder" />
           <span>Projects</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/clients" v-if="isLoggedIn">
+        <router-link to="/clients" v-if="isLoggedIn()">
           <font-awesome-icon icon="users" />
           <span>Clients</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/invoices" v-if="isLoggedIn">
+        <router-link to="/invoices" v-if="isLoggedIn()">
           <font-awesome-icon icon="file-invoice" />
           <span>Invoices</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/me" v-if="isLoggedIn">
+        <router-link to="/me" v-if="isLoggedIn()">
           <font-awesome-icon icon="user-circle" />
           <span>Profile</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/signin" v-if="!isLoggedIn">
+        <router-link to="/signin" v-if="!isLoggedIn()">
           <font-awesome-icon icon="sign-in-alt" />
           <span>Sign-in</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/signup" v-if="!isLoggedIn">Sign-up</router-link>
+        <router-link to="/signup" v-if="!isLoggedIn()">Sign-up</router-link>
       </li>
       <li>
-        <router-link to="/signout" v-if="isLoggedIn">
+        <router-link to="/signout" v-if="isLoggedIn()">
           <font-awesome-icon icon="sign-out-alt" />
           <span>Sign-out</span>
         </router-link>
@@ -95,6 +95,4 @@ onMounted(async () => {
     }
   }
 });
-
-console.log(isLoggedIn());
 </script>

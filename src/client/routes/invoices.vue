@@ -34,7 +34,7 @@
           </td>
           <td class="align-center border px-2 py-2 text-center">
             <button @click="downloadPDF(invoice)" class="btn">
-              <font-awesome-icon icon="download" />
+              <font-awesome-icon :icon="download" />
             </button>
             <button @click="remove(invoice)" class="btn ml-2">
               <font-awesome-icon icon="trash-alt" />

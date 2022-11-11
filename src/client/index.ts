@@ -33,8 +33,6 @@ library.add(
   faSignOutAlt
 );
 
-// Vue.component('font-awesome-icon', FontAwesomeIcon);
-
 // // Duplication of filters with filter.ts
 // Vue.filter('formatDate', (date, format = 'MMMM cccc yyyy, HH:mm:ss') =>
 //   DateTime.fromISO(date).toFormat(format)
@@ -77,4 +75,5 @@ library.add(
 const app = createApp(App);
 
 app.use(router);
+app.component('font-awesome-icon', FontAwesomeIcon);
 app.mount('#app');

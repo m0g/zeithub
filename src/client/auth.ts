@@ -1,8 +1,9 @@
 export function requireAuth(to, from, next) {
   if (!isLoggedIn()) {
+    console.log('not logged in');
     next({
       path: '/',
-      query: { redirect: to.fullPath }
+      query: { redirect: to.fullPath },
     });
   } else {
     next();
@@ -13,7 +14,7 @@ export function requireUnauth(to, from, next) {
   if (isLoggedIn()) {
     next({
       path: '/',
-      query: { redirect: to.fullPath }
+      query: { redirect: to.fullPath },
     });
   } else {
     next();
