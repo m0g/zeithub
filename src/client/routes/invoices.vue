@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         <Invoice
-          v-for="(invoice, index) in invoices"
+          v-for="(invoice, index) in invoicesStore.invoices"
           :key="invoice.number"
           :invoice="invoice"
           :index="index"
@@ -61,6 +61,8 @@ import http from '../http';
 import * as M from './../../models';
 import { currency } from '../../lib/filters';
 import Invoice from '../components/invoice.vue';
+import { useInvoicesStore } from '../stores/invoices';
+import { mapStores } from 'pinia';
 
 export default defineComponent({
   components: { Invoice },
@@ -74,10 +76,11 @@ export default defineComponent({
     };
   },
   created() {
-    this.getInvoices();
+    // this.getInvoices();
     this.getMe();
+    this.invoicesStore.fetchInvoices();
   },
-  computed: { currency },
+  computed: { currency, ...mapStores(useInvoicesStore) },
   methods: {
     getTotal(invoice) {
       let total: number = invoice.subTotal;
@@ -93,33 +96,33 @@ export default defineComponent({
       return total;
     },
 
-    async getInvoices() {
-      const response = await http('/api/invoices', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+    // async getInvoices() {
+    //   const response = await http('/api/invoices', {
+    //     method: 'GET',
+    //     headers: { 'Content-Type': 'application/json' },
+    //   });
 
-      const data = await response.json();
+    //   const data = await response.json();
 
-      if (data.success) {
-        this.invoices = data.invoices;
-      }
-    },
+    //   if (data.success) {
+    //     this.invoices = data.invoices;
+    //   }
+    // },
 
-    async remove({ id }) {
-      if (window.confirm('Do you really want to delete this invoice?')) {
-        const response = await http(`/api/invoices/${id}`, {
-          headers: { 'Content-Type': 'application/json' },
-          method: 'DELETE',
-        });
+    // async remove({ id }) {
+    //   if (window.confirm('Do you really want to delete this invoice?')) {
+    //     const response = await http(`/api/invoices/${id}`, {
+    //       headers: { 'Content-Type': 'application/json' },
+    //       method: 'DELETE',
+    //     });
 
-        const data = await response.json();
+    //     const data = await response.json();
 
-        if (data.success) {
-          this.getInvoices();
-        }
-      }
-    },
+    //     if (data.success) {
+    //       // this.getInvoices();
+    //     }
+    //   }
+    // },
 
     async downloadPDF(invoice) {
       const title = slugify(invoice.name);

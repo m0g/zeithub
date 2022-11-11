@@ -74,7 +74,6 @@ import { iban } from '../../lib/filters';
 import * as M from './../../models';
 
 import { defineComponent } from '@vue/runtime-core';
-import { useRoute } from 'vue-router';
 
 export default defineComponent({
   components: {

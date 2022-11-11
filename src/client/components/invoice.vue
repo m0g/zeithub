@@ -27,12 +27,9 @@ import { defineProps } from 'vue';
 import slugify from 'slugify';
 import { currency } from '../../lib/filters';
 import http from '../http';
-const { invoice, getInvoices, me } = defineProps([
-  'invoice',
-  'index',
-  'getInvoices',
-  'me',
-]);
+import { useInvoicesStore } from '../stores/invoices';
+const { invoice, me } = defineProps(['invoice', 'index', 'me']);
+const store = useInvoicesStore();
 
 let total: number = invoice.subTotal;
 
@@ -54,7 +51,7 @@ async function remove({ id }) {
     const data = await response.json();
 
     if (data.success) {
-      getInvoices();
+      store.fetchInvoices();
     }
   }
 }
