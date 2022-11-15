@@ -3,16 +3,18 @@
     <h2>Personal information</h2>
     <button @click="editMode = !editMode">&#9998;</button>
     <div v-if="!editMode">
-      <p><b>Email:</b> {{ me.email }}</p>
-      <p><b>Username:</b> {{ me.name }}</p>
-      <p><b>First name:</b> {{ me.firstName }}</p>
-      <p><b>Last name:</b> {{ me.lastName }}</p>
-      <p><b>Telephone:</b> {{ me.tel }}</p>
-      <p><b>Tax number:</b> {{ me.taxNumber }}</p>
-      <p><b>VAT number:</b> {{ me.vatNumber }}</p>
+      <p><b>Email:</b> {{ meStore.me.email }}</p>
+      <p><b>Username:</b> {{ meStore.me.name }}</p>
+      <p><b>First name:</b> {{ meStore.me.firstName }}</p>
+      <p><b>Last name:</b> {{ meStore.me.lastName }}</p>
+      <p><b>Telephone:</b> {{ meStore.me.tel }}</p>
+      <p><b>Tax number:</b> {{ meStore.me.taxNumber }}</p>
+      <p><b>VAT number:</b> {{ meStore.me.vatNumber }}</p>
       <p>
         <b>Website:</b>&nbsp;
-        <a :href="me.website" target="_blank">{{ me.website }}</a>
+        <a :href="meStore.me.website" target="_blank">{{
+          meStore.me.website
+        }}</a>
       </p>
     </div>
     <form v-if="editMode" @submit="save" method="POST">
@@ -36,23 +38,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Component from 'vue-class-component';
 import { IMaskDirective } from 'vue-imask';
 
 import FormErrors from './form-errors.vue';
 import http from './../http';
 import { diff } from './../../utils';
+import { mapStores } from 'pinia';
+import { useMeStore } from '../stores/me';
 
-// const Props = Vue.extend({
-//   props: ['me', 'getMe'],
-// });
-
-// @Component({
-//   components: { FormErrors },
-//   directives: { imask: IMaskDirective },
-// })
 export default defineComponent({
-  props: ['me', 'getMe'],
   data(): {
     errors: string[];
     editMode: Boolean;
@@ -73,9 +67,10 @@ export default defineComponent({
   },
   updated() {
     if (Object.keys(this.user).length === 0) {
-      this.user = Object.assign({}, this.me);
+      this.user = Object.assign({}, this.meStore.me);
     }
   },
+  computed: { ...mapStores(useMeStore) },
 
   methods: {
     save(e) {
@@ -83,7 +78,7 @@ export default defineComponent({
       e.preventDefault();
 
       if (this.errors.length === 0) {
-        const body = diff(this.me, this.user);
+        const body = diff(this.meStore.me, this.user);
 
         http('/api/me', {
           method: 'PUT',
@@ -93,7 +88,7 @@ export default defineComponent({
           .then(response => response.json())
           .then(response => {
             if (response.success) {
-              this.getMe();
+              this.meStore.fetchMe();
               this.editMode = false;
             }
           });

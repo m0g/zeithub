@@ -1,12 +1,13 @@
 import * as puppeteer from 'puppeteer-core';
-import * as Vue from 'vue/dist/vue.cjs.js';
+// import * as Vue from 'vue/dist/vue.cjs.js';
 import DB from './../../db';
 import { Invoice, BankAccount, Item, Client } from './../../../models';
 import InvoiceInfo from '../../../lib/components/invoice-info';
-import * as ItemsTable from '../../../lib/components/items-table';
+import ItemsTable from '../../../lib/components/items-table';
+import { iban } from '../../../lib/filters';
+import { createApp } from 'vue';
 const { renderToString } = require('@vue/server-renderer');
 
-// const renderer = require('vue-server-renderer').createRenderer();
 const db = new DB();
 
 export default async (req, res) => {
@@ -85,16 +86,19 @@ export default async (req, res) => {
     where id = ${invoice.userAddressId}
   `);
 
-  const app = new Vue({
-    data: {
-      invoice,
-      bankAccount,
-      items,
-      me,
-      address,
-      client,
+  const app = createApp({
+    data() {
+      return {
+        invoice,
+        bankAccount,
+        items,
+        me,
+        address,
+        client,
+      };
     },
     components: { InvoiceInfo, ItemsTable },
+    methods: { iban },
     template: `
       <section id="invoice" ref="container">
         <h1>{{invoice.name}}</h1>
@@ -131,7 +135,7 @@ export default async (req, res) => {
         <p v-if="invoice.memo">{{invoice.memo}}</p>
         <div class="footer">
           <p><b>{{bankAccount.name}}</b></p>
-          <p><b>IBAN:</b> {{bankAccount.iban | iban}}</p>
+          <p><b>IBAN:</b> {{iban(bankAccount.iban)}}</p>
           <p><b>BIC:</b> {{bankAccount.bic}}</p>
         </div>
         <style type="text/css" rel="stylesheet" media="all">

@@ -1,6 +1,8 @@
+import { defineComponent } from 'vue';
 import { currency, percentage } from '../filters';
 
-export default {
+export default defineComponent({
+  methods: { currency, percentage },
   template: `
     <table class="activities" style="border-collapse: collapse; border: none">
       <tr style="border-bottom: 1px solid black">
@@ -12,7 +14,7 @@ export default {
       <tr v-for="item in items" :key="item.id">
         <td style="text-align: center">{{ item.title }}</td>
         <td style="text-align: center; font-family: monospace;">
-          {{ item.unitPrice | currency(invoice) }}
+          {{ currency(item.unitPrice, invoice) }}
         </td>
         <td style="text-align: center; font-family: monospace;">{{ item.qty }}</td>
         <td style="text-align: right; font-family: monospace;">{{ (item.qty * item.unitPrice) | currency(invoice) }}</td>
@@ -59,13 +61,13 @@ export default {
   `,
   props: ['invoice', 'items'],
   computed: {
-    currency,
-    percentage,
     computeNetAmount() {
       // @ts-ignore
-      return this.items.reduce((acc, item) => {
+      const netAmount = this.items.reduce((acc, item) => {
         return acc + item.unitPrice * item.qty;
       }, 0);
+
+      currency(netAmount, this.invoice);
     },
 
     computeTotal() {
@@ -98,4 +100,4 @@ export default {
       return total - total / (1 + this.invoice.tax / 100);
     },
   },
-};
+});
