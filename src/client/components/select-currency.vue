@@ -31,10 +31,10 @@ export default defineComponent({
   },
 
   methods: {
-    // @Emit('currencyCode')
     onChange(e) {
-      return e.target.value;
+      this.$emit('currencyCode', e.target.value);
     },
+
     async getAddresses() {
       const response = await http('/api/currencies', {
         headers: { 'Content-Type': 'application/json' },

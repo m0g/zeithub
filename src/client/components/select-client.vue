@@ -41,9 +41,8 @@ export default defineComponent({
   },
 
   methods: {
-    // @Emit('clientId')
     onChange(e) {
-      return parseInt(e.target.value);
+      this.$emit('clientId', parseInt(e.target.value));
     },
 
     async getClients() {

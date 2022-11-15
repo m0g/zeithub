@@ -1,9 +1,12 @@
 import { defineComponent } from 'vue';
-import { formatDate } from '../filters';
+import { formatDate, invoiceNum } from '../filters';
 
 export default defineComponent({
   props: ['invoice', 'me'],
   computed: {
+    invoiceNumber() {
+      return invoiceNum(this.invoice.number);
+    },
     invoiceDate() {
       return formatDate(this.invoice.date, 'dd/MM/yyyy');
     },
@@ -15,7 +18,7 @@ export default defineComponent({
     <table class="info">
       <tr>
         <td>Invoice number</td>
-        <td>{{invoice.number | invoiceNum}}</td>
+        <td>{{ invoiceNumber }}</td>
       </tr>
       <tr>
         <td>Date</td>

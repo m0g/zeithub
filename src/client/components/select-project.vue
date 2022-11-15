@@ -39,9 +39,8 @@ export default defineComponent({
   },
 
   methods: {
-    // @Emit('projectId')
     onChange(e) {
-      return e.target.value;
+      this.$emit('projectId', parseInt(e.target.value));
     },
 
     async getProjects() {

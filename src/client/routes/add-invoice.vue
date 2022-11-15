@@ -61,7 +61,7 @@
               />
             </td>
             <td class="px-4 py-2">
-              {{ (item.qty * item.unitPrice) | currency }}
+              {{ currency(item.qty * item.unitPrice) }}
             </td>
             <td class="px-4 py-2">
               <button @click="items.splice(index, 1)">&#x2718;</button>
@@ -74,7 +74,7 @@
           </tr>
           <tr>
             <th class="px-4 py-2" colspan="3">Sub total</th>
-            <td class="px-4 py-2">{{ subTotal | currency }}</td>
+            <td class="px-4 py-2">{{ currency(subTotal) }}</td>
           </tr>
           <tr>
             <th colspan="3" class="px-4 py-2">Discount</th>
@@ -106,7 +106,7 @@
           </tr>
           <tr>
             <th colspan="3" class="px-4 py-2">Total</th>
-            <td class="px-4 py-2">{{ total | currency }}</td>
+            <td class="px-4 py-2">{{ currency(total) }}</td>
           </tr>
         </table>
       </div>
@@ -135,7 +135,7 @@ import SelectClient from './../components/select-client.vue';
 import SelectProject from './../components/select-project.vue';
 import Billing from './../components/billing.vue';
 import { defineComponent } from '@vue/runtime-core';
-import { useRouter } from 'vue-router';
+import { currency } from '../../lib/filters';
 
 export default defineComponent({
   components: {
@@ -166,6 +166,7 @@ export default defineComponent({
   },
 
   methods: {
+    currency,
     retrieveForm() {
       const json = localStorage.getItem('newInvoice');
 
@@ -216,7 +217,6 @@ export default defineComponent({
     },
 
     async createInvoice(e) {
-      const router = useRouter();
       e.preventDefault();
       this.errors = [];
 
@@ -245,7 +245,7 @@ export default defineComponent({
 
           localStorage.setItem('newInvoice', '{}');
 
-          router.push({
+          this.$router.push({
             name: 'Invoice',
             params: { id: data.invoiceId },
           });

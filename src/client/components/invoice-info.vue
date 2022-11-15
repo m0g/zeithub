@@ -2,25 +2,36 @@
   <table class="info">
     <tr>
       <td>Invoice number</td>
-      <td>{{ invoice.number | invoiceNum }}</td>
+      <td>{{ invoiceNumber }}</td>
     </tr>
     <tr>
       <td>Date</td>
-      <td>{{ invoice.date | formatDate('dd/MM/yyyy') }}</td>
+      <td>{{ invoiceDate }}</td>
     </tr>
     <tr>
       <td>Due date</td>
-      <td>{{ invoice.dueDate | formatDate('dd/MM/yyyy') }}</td>
+      <td>{{ invoiceDueDate }}</td>
     </tr>
   </table>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { formatDate } from '../../lib/filters';
+import { formatDate, invoiceNum } from '../../lib/filters';
 
 export default defineComponent({
   props: ['invoice', 'me'],
   methods: { formatDate },
+  computed: {
+    invoiceNumber() {
+      return invoiceNum(this.invoice.number);
+    },
+    invoiceDate() {
+      return formatDate(this.invoice.date, 'dd/MM/yyyy');
+    },
+    invoiceDueDate() {
+      return formatDate(this.invoice.dueDate, 'dd/MM/yyyy');
+    },
+  },
 });
 </script>

@@ -31,9 +31,8 @@ export default defineComponent({
   },
 
   methods: {
-    // @Emit('bankAccountId')
     onChange(e) {
-      return parseInt(e.target.value);
+      this.$emit('bankAccountId', parseInt(e.target.value));
     },
 
     async getBankAccounts() {

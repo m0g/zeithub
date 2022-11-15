@@ -32,9 +32,8 @@ export default defineComponent({
   },
 
   methods: {
-    // @Emit('userAddressId')
     onChange(e) {
-      return parseInt(e.target.value);
+      this.$emit('userAddressId', parseInt(e.target.value));
     },
 
     async getAddresses() {
