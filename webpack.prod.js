@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
+// const MinifyPlugin = require('babel-minify-webpack-plugin');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
@@ -9,7 +9,7 @@ module.exports = merge(common, {
   },
   mode: 'production',
   plugins: [
-    new MinifyPlugin(),
+    // new MinifyPlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false,

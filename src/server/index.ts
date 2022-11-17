@@ -179,4 +179,4 @@ const createServer = async () => {
   }
 };
 
-createServer();
+export default createServer();

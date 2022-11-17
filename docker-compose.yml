@@ -17,7 +17,7 @@ services:
       NODE_ENV: production
       PORT: 80
     ports:
-      - 80:80
+      - 8080:80
   db:
     image: mariadb
     restart: always
