@@ -1,0 +1,7 @@
+.nuxt
+.output
+.data
+node_modules
+server/db/migrations
+package-lock.json
+flake.lock

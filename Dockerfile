@@ -1,35 +1,39 @@
-FROM node:18.12.1-alpine
-# Create app directory
-WORKDIR /usr/src/app
+# syntax=docker/dockerfile:1
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+# --- Build ---
+FROM node:24-slim AS build
+WORKDIR /app
 
-# Installs latest Chromium package.
-RUN apk add --no-cache \
-      chromium \
-      nss \
-      freetype \
-      freetype-dev \
-      harfbuzz \
-      ca-certificates \
-      ttf-freefont \
-      g++ \
-      gcc \
-      libgcc \
-      libstdc++ \
-      linux-headers \
-      make 
-
-RUN npm install --quiet node-gyp -g
-RUN npm install
-
-# Bundle app source
 COPY . .
-ENV CHROME_BIN="/usr/bin/chromium-browser"
-RUN npm run build
-RUN npm prune
-# EXPOSE 3000
-CMD ["npm", "start"]
+# No install scripts needed: better-sqlite3 ships prebuilt binaries, and
+# skipping scripts avoids its fallback node-gyp build (and a toolchain).
+RUN npm ci --ignore-scripts && npm run build
+
+# --- Run ---
+FROM node:24-slim
+
+# Chromium renders the invoice PDFs.
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    chromium \
+    fonts-liberation \
+    fonts-dejavu-core \
+    ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV NODE_ENV=production \
+    HOST=0.0.0.0 \
+    PORT=3000 \
+    DATABASE_PATH=/data/zeithub.db \
+    CHROME_BIN=/usr/bin/chromium
+
+WORKDIR /app
+COPY --from=build /app/.output ./.output
+
+# The SQLite database lives in /data; mount a volume there.
+RUN mkdir -p /data && chown node:node /data
+USER node
+VOLUME /data
+
+EXPOSE 3000
+CMD ["node", ".output/server/index.mjs"]
