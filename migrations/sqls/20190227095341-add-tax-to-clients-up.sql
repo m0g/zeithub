@@ -1,3 +1,0 @@
-ALTER TABLE `clients`
-ADD COLUMN `tax_number` VARCHAR(45) NULL,
-ADD COLUMN `vat_number` VARCHAR(45) NULL;

@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # GitHub's Ubuntu runners ship Google Chrome; the PDF test uses it.
+      - run: echo "CHROME_BIN=$(command -v google-chrome)" >> "$GITHUB_ENV"
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npx prettier --check .
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build

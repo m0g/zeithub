@@ -1,35 +1,23 @@
-version: '3.1'
-
+# Zeithub: one container, one SQLite file.
+#
+#   export NUXT_APP_SECRET=$(openssl rand -base64 32)
+#   docker compose up -d
+#
+# then open http://localhost:8080
 services:
   zeithub:
     image: m0gd0ck/zeithub:latest
-    container_name: zeithub
-    depends_on:
-      - db
-    build:
-      context: .
+    build: .
+    restart: unless-stopped
     environment:
-      DB_HOST: db
-      DB_USER: zeithub
-      DB_NAME: zeithub
-      DB_PASSWD: zeithub
-      JWT_SECRET: yoursecretaintsecret
-      NODE_ENV: production
-      PORT: 80
+      NUXT_APP_SECRET: ${NUXT_APP_SECRET:?Set NUXT_APP_SECRET, e.g. openssl rand -base64 32}
+      # Session cookies are HTTPS-only (localhost excepted). Uncomment if you
+      # reach Zeithub over plain HTTP on another address.
+      # NUXT_SESSION_COOKIE_SECURE: 'false'
     ports:
-      - 8080:80
-  db:
-    image: mariadb
-    restart: always
-    hostname: db
-    environment:
-      MYSQL_ROOT_PASSWORD: zeithub
-      MYSQL_USER: zeithub
-      MYSQL_PASSWORD: zeithub
-      MYSQL_DATABASE: zeithub
+      - '8080:3000'
     volumes:
-      - ./docker/mysql:/var/lib/mysql
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
+      - zeithub-data:/data
+
+volumes:
+  zeithub-data:

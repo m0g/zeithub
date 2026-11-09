@@ -1,4 +1,11 @@
+.git
+.data
+.nuxt
+.output
 node_modules
-db-data
-build
 dist
+build
+docker
+*.db
+*.db-*
+.env

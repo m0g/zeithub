@@ -1,40 +1,32 @@
 {
-  description = "Zeithub - time tracking, invoicing & expenses (Express + Vue 3 + MySQL)";
+  description = "Zeithub - time tracking, invoicing & expenses (Nuxt 4 + SQLite)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Node 18 (matches .nvmrc / Dockerfile) was removed from unstable
-    nixpkgs-node18.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-node18, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        pkgsNode = import nixpkgs-node18 { inherit system; };
 
         # Puppeteer (invoice PDFs) needs a Chromium binary via CHROME_BIN.
         # nixpkgs has no Chromium on macOS, so fall back to the installed Chrome.
         chromeBin =
-          if pkgs.stdenv.isLinux
+          if pkgs.stdenv.hostPlatform.isLinux
           then "${pkgs.chromium}/bin/chromium"
           else "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
         buildInputs = with pkgs; [
-          pkgsNode.nodejs_18
+          nodejs_24
 
-          # node-gyp toolchain for bcrypt
-          python3
-          pkg-config
+          # Inspect the database: sqlite3 .data/zeithub.db
+          sqlite
 
-          # MySQL/MariaDB client (db access, backups)
-          mariadb.client
-
-          # Docker CLI is expected from the host (docker-compose for the DB)
           git
           fish
-        ] ++ lib.optionals stdenv.isLinux [ chromium ];
+        ] ++ lib.optionals stdenv.hostPlatform.isLinux [ chromium ];
 
       in
       {

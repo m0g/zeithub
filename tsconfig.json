@@ -1,18 +1,9 @@
 {
-  "compilerOptions": {
-    "sourceMap": true,
-    "strict": true,
-    "noImplicitAny": false,
-    "noImplicitReturns": true,
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es2017",
-    "resolveJsonModule": true,
-    "esModuleInterop": false
-  },
-  "include": ["./src/**/*"],
-  "exclude": ["node_modules"]
+  "files": [],
+  "references": [
+    { "path": "./.nuxt/tsconfig.app.json" },
+    { "path": "./.nuxt/tsconfig.server.json" },
+    { "path": "./.nuxt/tsconfig.shared.json" },
+    { "path": "./.nuxt/tsconfig.node.json" }
+  ]
 }

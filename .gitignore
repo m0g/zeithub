@@ -1,7 +1,22 @@
-db-data/
-docker/
+# Dependencies and build output
 node_modules/
-.vagrant
-.env
+.nuxt/
+.output/
 dist/
 build/
+
+# Local data
+.data/
+*.db
+*.db-shm
+*.db-wal
+docker/
+
+# Env
+.env
+.env.*
+!example.env
+
+# Misc
+.DS_Store
+.vagrant
