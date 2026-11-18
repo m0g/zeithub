@@ -10,7 +10,11 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      NUXT_APP_SECRET: ${NUXT_APP_SECRET:?Set NUXT_APP_SECRET, e.g. openssl rand -base64 32}
+      # Required (32+ chars). Not enforced with ${VAR:?} here because that
+      # also fails `docker compose build` (e.g. on Coolify, where runtime
+      # variables aren't present at build time); the server checks it on
+      # startup instead (server/plugins/check-config.ts).
+      NUXT_APP_SECRET: ${NUXT_APP_SECRET:-}
       # Session cookies are HTTPS-only (localhost excepted). Uncomment if you
       # reach Zeithub over plain HTTP on another address.
       # NUXT_SESSION_COOKIE_SECURE: 'false'

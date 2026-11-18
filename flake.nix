@@ -21,6 +21,9 @@
         buildInputs = with pkgs; [
           nodejs_24
 
+          # node-gyp needs Python to build better-sqlite3 when no prebuilt binary is available
+          python3
+
           # Inspect the database: sqlite3 .data/zeithub.db
           sqlite
 
