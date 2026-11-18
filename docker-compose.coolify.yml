@@ -1,0 +1,20 @@
+# Zeithub on Coolify: set "Docker Compose Location" to this file.
+#
+# No host port is published: Coolify's proxy reaches the container on the
+# Docker network. Set the service domain to e.g. https://zeithub.example.com:3000
+# (the :3000 is the container port Traefik routes to, not a public port).
+# Set NUXT_APP_SECRET (32+ chars) in Coolify's environment variables.
+services:
+  zeithub:
+    build: .
+    restart: unless-stopped
+    environment:
+      # Checked on startup (server/plugins/check-config.ts).
+      NUXT_APP_SECRET: ${NUXT_APP_SECRET:-}
+    expose:
+      - '3000'
+    volumes:
+      - zeithub-data:/data
+
+volumes:
+  zeithub-data:
